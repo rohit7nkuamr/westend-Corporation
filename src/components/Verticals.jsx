@@ -13,7 +13,8 @@ const Verticals = () => {
       bgGradient: 'from-primary-50 to-blue-50',
       image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&h=400&fit=crop',
       products: ['Certified Organic Pulses', 'Premium Quality Grains', 'Authentic Spice Blends', 'Traditional Jaggery'],
-      secondaryIcon: Leaf
+      secondaryIcon: Leaf,
+      buttonColor: 'bg-primary-700 hover:bg-primary-800'
     },
     {
       icon: Snowflake,
@@ -23,7 +24,8 @@ const Verticals = () => {
       bgGradient: 'from-green-50 to-emerald-50',
       image: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=600&h=400&fit=crop',
       products: ['IQF Cut Vegetables', 'Whole Frozen Vegetables', 'Ready-to-Cook Range', 'Exotic Varieties'],
-      secondaryIcon: Package
+      secondaryIcon: Package,
+      buttonColor: 'bg-green-600 hover:bg-green-700'
     },
     {
       icon: Box,
@@ -33,16 +35,14 @@ const Verticals = () => {
       bgGradient: 'from-neutral-50 to-gray-50',
       image: 'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?w=600&h=400&fit=crop',
       products: ['Canned Vegetables', 'Ready-to-Eat Meals', 'Frozen Snacks', 'Dairy Products'],
-      secondaryIcon: ShoppingBasket
+      secondaryIcon: ShoppingBasket,
+      buttonColor: 'bg-neutral-700 hover:bg-neutral-800'
     },
   ]
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center pt-24 pb-12 px-3 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Background with gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto w-full">
+    <section id="home" className="relative py-24 px-3 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
+      <div className="max-w-7xl mx-auto w-full">
         {/* Verticals Grid - HERO */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {verticals.map((vertical, index) => (
@@ -53,12 +53,12 @@ const Verticals = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               whileHover={{ y: -10, scale: 1.02 }}
-              className="group relative"
+              className="group relative h-full"
             >
               {/* Card */}
-              <div className="relative h-full bg-white rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl border border-gray-100">
+              <div className="relative bg-white rounded-xl sm:rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl border border-gray-100 flex flex-col h-full min-h-[500px] sm:min-h-[550px]">
                 {/* Image Section */}
-                <div className="relative h-40 sm:h-48 overflow-hidden">
+                <div className="relative h-40 sm:h-48 overflow-hidden flex-shrink-0">
                   <img 
                     src={vertical.image} 
                     alt={vertical.title}
@@ -75,19 +75,19 @@ const Verticals = () => {
                 </div>
 
                 {/* Content Section */}
-                <div className="relative p-4 sm:p-6">
+                <div className="relative p-4 sm:p-6 pb-6 flex-grow flex flex-col">
                   {/* Title */}
                   <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
                     {vertical.title}
                   </h3>
                   
                   {/* Description */}
-                  <p className="text-gray-600 mb-3 sm:mb-4 leading-relaxed text-xs sm:text-sm">
+                  <p className="text-gray-600 mb-3 leading-relaxed text-xs sm:text-sm line-clamp-2">
                     {vertical.description}
                   </p>
 
                   {/* Products List */}
-                  <div className="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
+                  <div className="space-y-1.5 mb-4">
                     {vertical.products.map((product, idx) => (
                       <div
                         key={idx}
@@ -99,10 +99,13 @@ const Verticals = () => {
                     ))}
                   </div>
 
-                  {/* Button */}
-                  <Link to="/products">
+                  {/* Spacer */}
+                  <div className="flex-grow"></div>
+
+                  {/* Button - Always at bottom */}
+                  <Link to="/products" className="mt-4">
                     <button
-                      className={`w-full ${vertical.buttonColor} text-white py-2.5 sm:py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 text-sm sm:text-base`}
+                      className={`w-full ${vertical.buttonColor} text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 text-sm sm:text-base`}
                     >
                       View Products
                     </button>
