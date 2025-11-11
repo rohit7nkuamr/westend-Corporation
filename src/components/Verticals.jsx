@@ -1,0 +1,190 @@
+import React from 'react'
+import { motion } from 'framer-motion'
+import { ShoppingBasket, Snowflake, Package, Wheat, Leaf, Box } from 'lucide-react'
+import { Link } from 'react-router-dom'
+
+const Verticals = () => {
+  const verticals = [
+    {
+      icon: Wheat,
+      title: 'Groceries & Staples',
+      description: 'Certified organic pulses, premium grains, authentic spice blends, and traditional jaggery products sourced from trusted farms',
+      gradient: 'from-primary-600 to-primary-700',
+      bgGradient: 'from-primary-50 to-blue-50',
+      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&h=400&fit=crop',
+      products: ['Certified Organic Pulses', 'Premium Quality Grains', 'Authentic Spice Blends', 'Traditional Jaggery'],
+      secondaryIcon: Leaf
+    },
+    {
+      icon: Snowflake,
+      title: 'Frozen Vegetables',
+      description: 'IQF (Individually Quick Frozen) vegetables processed at peak freshness using advanced cold chain technology to preserve nutrients',
+      gradient: 'from-green-600 to-green-700',
+      bgGradient: 'from-green-50 to-emerald-50',
+      image: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=600&h=400&fit=crop',
+      products: ['IQF Cut Vegetables', 'Whole Frozen Vegetables', 'Ready-to-Cook Range', 'Exotic Varieties'],
+      secondaryIcon: Package
+    },
+    {
+      icon: Box,
+      title: 'Processed Foods',
+      description: 'FSSAI certified processed foods manufactured in state-of-the-art facilities maintaining international hygiene standards',
+      gradient: 'from-neutral-600 to-neutral-700',
+      bgGradient: 'from-neutral-50 to-gray-50',
+      image: 'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?w=600&h=400&fit=crop',
+      products: ['Canned Vegetables', 'Ready-to-Eat Meals', 'Frozen Snacks', 'Dairy Products'],
+      secondaryIcon: ShoppingBasket
+    },
+  ]
+
+  return (
+    <section id="products" className="min-h-screen pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12"
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center justify-center mb-4"
+          >
+            <div className="h-px w-12 bg-gradient-to-r from-transparent to-primary-400 mr-3" />
+            <span className="text-primary-600 font-semibold text-sm tracking-wider uppercase">Westend Corporation</span>
+            <div className="h-px w-12 bg-gradient-to-l from-transparent to-primary-400 ml-3" />
+          </motion.div>
+          
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-primary-900">
+            Premium Food Products
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Leading B2B supplier of quality groceries, frozen vegetables, and processed foods
+          </p>
+          
+          {/* Quick Stats */}
+          <div className="flex flex-wrap justify-center gap-8 mb-8">
+            <div className="text-center">
+              <p className="text-3xl font-bold text-primary-700">15+</p>
+              <p className="text-sm text-gray-600">Years Experience</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-primary-700">500+</p>
+              <p className="text-sm text-gray-600">Happy Clients</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-primary-700">40+</p>
+              <p className="text-sm text-gray-600">Products</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Verticals Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {verticals.map((vertical, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="group relative"
+            >
+              {/* Card */}
+              <div className="relative h-full bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl border border-gray-100">
+                {/* Image Section */}
+                <div className="relative h-48 overflow-hidden">
+                  <img 
+                    src={vertical.image} 
+                    alt={vertical.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  
+                  {/* Icon Badge on Image */}
+                  <div className="absolute top-4 left-4">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${vertical.gradient} rounded-xl flex items-center justify-center shadow-lg`}>
+                      <vertical.icon className="text-white" size={28} strokeWidth={2} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Content Section */}
+                <div className="relative p-6">
+                  {/* Title */}
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                    {vertical.title}
+                  </h3>
+                  
+                  {/* Description */}
+                  <p className="text-gray-600 mb-4 leading-relaxed text-sm">
+                    {vertical.description}
+                  </p>
+
+                  {/* Products List */}
+                  <div className="space-y-2 mb-4">
+                    {vertical.products.map((product, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center text-sm text-gray-600"
+                      >
+                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2`} />
+                        {product}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Button */}
+                  <Link to="/products">
+                    <button
+                      className={`mt-4 w-full ${
+                        vertical.title === 'Groceries & Staples' ? 'bg-primary-700 hover:bg-primary-800' :
+                        vertical.title === 'Frozen Vegetables' ? 'bg-green-600 hover:bg-green-700' :
+                        'bg-neutral-700 hover:bg-neutral-800'
+                      } text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300`}
+                    >
+                      View Products
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-16 text-center"
+        >
+          <div className="bg-white rounded-2xl p-8 md:p-12 max-w-4xl mx-auto shadow-lg border border-gray-100">
+            <h3 className="text-3xl font-bold mb-4 text-primary-900">
+              Need Custom Solutions?
+            </h3>
+            <p className="text-gray-700 mb-6 text-lg">
+              We offer tailored product solutions for bulk orders and specific requirements
+            </p>
+            <Link to="/contact">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-accent-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-accent-700 hover:shadow-2xl transition-all duration-300"
+              >
+                Request a Quote
+              </motion.button>
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+export default Verticals
