@@ -83,7 +83,7 @@ const Verticals = () => {
             <h2 className="text-xl md:text-2xl font-bold text-gray-900">Our Product Categories</h2>
             <Link to="/products" className="text-sm md:text-base text-primary-700 font-semibold hover:text-primary-800">View All →</Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
             {verticals.map((vertical, index) => (
               <motion.div
                 key={index}
@@ -102,22 +102,22 @@ const Verticals = () => {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       {/* Icon Badge */}
-                      <div className="absolute top-4 left-4">
-                        <div className={`w-14 h-14 bg-gradient-to-br ${vertical.gradient} rounded-xl flex items-center justify-center shadow-lg`}>
-                          <vertical.icon className="text-white" size={28} strokeWidth={2.5} />
+                      <div className="absolute top-2 left-2 md:top-4 md:left-4">
+                        <div className={`w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br ${vertical.gradient} rounded-lg md:rounded-xl flex items-center justify-center shadow-lg`}>
+                          <vertical.icon className="text-white" size={20} strokeWidth={2.5} />
                         </div>
                       </div>
                     </div>
                     
                     {/* Product Info */}
-                    <div className="p-6">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">{vertical.title}</h3>
-                      <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-2">{vertical.description}</p>
+                    <div className="p-3 md:p-6">
+                      <h3 className="text-base md:text-2xl font-bold text-gray-900 mb-2 md:mb-3">{vertical.title}</h3>
+                      <p className="text-gray-600 mb-3 md:mb-4 text-xs md:text-sm leading-relaxed line-clamp-2">{vertical.description}</p>
                       
                       {/* Product List */}
-                      <div className="space-y-2 mb-6">
+                      <div className="space-y-1 md:space-y-2 mb-3 md:mb-6 hidden md:block">
                         {vertical.products.slice(0, 3).map((product, idx) => (
-                          <div key={idx} className="flex items-center text-sm text-gray-600">
+                          <div key={idx} className="flex items-center text-xs md:text-sm text-gray-600">
                             <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2`} />
                             {product}
                           </div>
@@ -125,7 +125,7 @@ const Verticals = () => {
                       </div>
                       
                       {/* CTA Button */}
-                      <button className={`w-full ${vertical.buttonColor} text-white py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg`}>
+                      <button className={`w-full ${vertical.buttonColor} text-white py-2 md:py-3 rounded-lg text-xs md:text-base font-semibold transition-all duration-300 hover:shadow-lg`}>
                         Request Quote
                       </button>
                     </div>
