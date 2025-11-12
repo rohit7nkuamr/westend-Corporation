@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Filter, SlidersHorizontal, Star, Heart, Eye } from 'lucide-react'
+import { Search, Filter, SlidersHorizontal, Package } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const ProductsPage = () => {
@@ -12,8 +12,6 @@ const ProductsPage = () => {
     { name: 'Groceries & Staples', count: 16 },
     { name: 'Frozen Vegetables', count: 14 },
     { name: 'Processed Foods', count: 12 },
-    { name: 'Organic Range', count: 8 },
-    { name: 'Spices & Masala', count: 6 },
   ]
 
   const products = [
@@ -21,37 +19,31 @@ const ProductsPage = () => {
       id: 1,
       name: 'Organic Kabuli Chana',
       category: 'Groceries & Staples',
-      price: '₹120/kg',
       image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&h=500&fit=crop',
-      rating: 4.8,
-      reviews: 124,
       badge: 'Organic',
       inStock: true,
-      discount: '15% OFF'
+      moq: 'MOQ: 100 kg',
+      packaging: 'Bulk/Custom'
     },
     {
       id: 2,
       name: 'Frozen Diced Potato (IQF)',
       category: 'Frozen Vegetables',
-      price: '₹85/kg',
       image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=500&h=500&fit=crop',
-      rating: 4.9,
-      reviews: 89,
       badge: 'IQF',
       inStock: true,
-      discount: null
+      moq: 'MOQ: 500 kg',
+      packaging: 'Bulk/Custom'
     },
     {
       id: 3,
       name: 'Punjabi Jaggery Powder',
       category: 'Groceries & Staples',
-      price: '₹95/kg',
       image: 'https://images.unsplash.com/photo-1599909533730-f9d7c4bc0c5d?w=500&h=500&fit=crop',
-      rating: 4.7,
-      reviews: 156,
       badge: 'Traditional',
       inStock: true,
-      discount: '10% OFF'
+      moq: 'MOQ: 200 kg',
+      packaging: 'Bulk/Custom'
     },
     {
       id: 4,
@@ -185,89 +177,55 @@ const ProductsPage = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search and Filter Bar */}
+        {/* Search Bar */}
         <div className="bg-white rounded-xl shadow-md p-4 mb-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Search */}
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-            </div>
-            
-            {/* Filter Button */}
-            <button className="flex items-center gap-2 px-6 py-2.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <SlidersHorizontal size={20} />
-              <span className="font-medium">Filters</span>
-            </button>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+            />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl shadow-md p-6 sticky top-24">
-              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <Filter className="mr-2" size={20} />
-                Categories
-              </h3>
-              <div className="space-y-2">
-                {categories.map((category, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedCategory(category.name)}
-                    className={`w-full text-left px-4 py-2.5 rounded-lg transition-all text-sm ${
-                      selectedCategory === category.name
-                        ? 'bg-primary-700 text-white font-medium'
-                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span>{category.name}</span>
-                      <span className={`text-xs ${
-                        selectedCategory === category.name ? 'text-green-100' : 'text-gray-500'
-                      }`}>
-                        ({category.count})
-                      </span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-
-              {/* CTA */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <Link
-                  to="/contact"
-                  className="block w-full bg-accent-600 text-white text-center py-3 rounded-lg font-medium hover:bg-accent-700 hover:shadow-lg transition-all"
-                >
-                  Bulk Order Inquiry
-                </Link>
-              </div>
-            </div>
+        {/* Horizontal Category Chips */}
+        <div className="mb-6 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-3 pb-2">
+            {categories.map((category, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedCategory(category.name)}
+                className={`flex-shrink-0 px-5 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                  selectedCategory === category.name
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
           </div>
+        </div>
 
-          {/* Products Grid - Amazon Style */}
-          <div className="lg:col-span-3">
+        {/* Products Grid */}
+        <div>
             <div className="mb-4 flex items-center justify-between">
               <p className="text-gray-600">
                 <span className="font-semibold text-gray-900">{filteredProducts.length}</span> results
               </p>
-              <select className="border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500">
+              <select className="border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
                 <option>Sort by: Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Customer Rating</option>
                 <option>Newest First</option>
+                <option>Name: A to Z</option>
+                <option>Name: Z to A</option>
               </select>
             </div>
 
             {/* Product Grid */}
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
               {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
@@ -286,26 +244,11 @@ const ProductsPage = () => {
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         
-                        {/* Badges */}
-                        <div className="absolute top-2 left-2 flex flex-col gap-1">
-                          {product.discount && (
-                            <span className="bg-accent-600 text-white text-xs font-bold px-2 py-1 rounded">
-                              {product.discount}
-                            </span>
-                          )}
-                          <span className="bg-primary-700 text-white text-xs font-semibold px-2 py-1 rounded">
+                        {/* Badge */}
+                        <div className="absolute top-2 left-2">
+                          <span className="bg-primary-600 text-white text-xs font-semibold px-2 py-1 rounded">
                             {product.badge}
                           </span>
-                        </div>
-
-                        {/* Quick Actions */}
-                        <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button className="bg-white p-2 rounded-full shadow-md hover:bg-red-50 transition-colors">
-                            <Heart size={16} className="text-gray-700" />
-                          </button>
-                          <button className="bg-white p-2 rounded-full shadow-md hover:bg-green-50 transition-colors">
-                            <Eye size={16} className="text-gray-700" />
-                          </button>
                         </div>
 
                         {/* Stock Status */}
@@ -320,33 +263,32 @@ const ProductsPage = () => {
 
                       {/* Product Info */}
                       <div className="p-3">
-                        <h3 className="font-medium text-gray-900 text-sm mb-1 line-clamp-2 group-hover:text-green-600 transition-colors">
+                        <h3 className="font-medium text-gray-900 text-sm mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
                           {product.name}
                         </h3>
                         
-                        {/* Rating */}
-                        <div className="flex items-center gap-1 mb-2">
-                          <div className="flex items-center">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                size={12}
-                                className={i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
-                              />
-                            ))}
+                        {/* B2B Info */}
+                        {product.moq && (
+                          <div className="flex items-center gap-1 mb-1">
+                            <Package size={12} className="text-gray-500" />
+                            <span className="text-xs text-gray-600">{product.moq}</span>
                           </div>
-                          <span className="text-xs text-gray-500">({product.reviews})</span>
-                        </div>
+                        )}
+                        {product.packaging && (
+                          <p className="text-xs text-gray-500 mb-2">Packaging: {product.packaging}</p>
+                        )}
 
-                        {/* Contact for Price */}
+                        {/* Request Quote Button */}
                         <div className="mt-2">
-                          <button className="w-full bg-primary-700 text-white text-xs py-2 rounded hover:bg-primary-800 transition-colors font-medium">
-                            Request Quote
-                          </button>
+                          <Link to="/contact">
+                            <button className="w-full bg-primary-600 text-white text-xs py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium border border-primary-500">
+                              Request Quote
+                            </button>
+                          </Link>
                         </div>
 
                         {/* Category Tag */}
-                        <p className="text-xs text-gray-500 mt-1">{product.category}</p>
+                        <p className="text-xs text-gray-500 mt-2">{product.category}</p>
                       </div>
                     </div>
                   </Link>
@@ -365,7 +307,7 @@ const ProductsPage = () => {
                     key={page}
                     className={`px-4 py-2 rounded-lg transition-colors ${
                       page === 1
-                        ? 'bg-green-500 text-white'
+                        ? 'bg-primary-600 text-white'
                         : 'border border-gray-300 hover:bg-gray-50'
                     }`}
                   >
@@ -377,7 +319,6 @@ const ProductsPage = () => {
                 </button>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
