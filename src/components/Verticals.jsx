@@ -61,14 +61,14 @@ const Verticals = () => {
           <p className="text-white text-base md:text-xl max-w-3xl mx-auto mb-8" style={{ textShadow: '1px 1px 6px rgba(0,0,0,0.7)' }}>
           Supplier of quality groceries, frozen vegetables, and processed foods
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto px-4 sm:px-0">
-            <Link to="/contact" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto bg-primary-600 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base md:text-lg border-2 border-primary-500">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto max-w-full">
+            <Link to="/contact" className="w-full sm:w-auto max-w-full">
+              <button className="w-full sm:w-auto bg-primary-600 text-white px-6 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base md:text-lg border-2 border-primary-500">
                 Request Quote
               </button>
             </Link>
-            <Link to="/products" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto bg-white text-primary-700 px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-primary-50 transition-all text-sm sm:text-base md:text-lg shadow-lg border-2 border-white">
+            <Link to="/products" className="w-full sm:w-auto max-w-full">
+              <button className="w-full sm:w-auto bg-white text-primary-700 px-6 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-primary-50 transition-all text-sm sm:text-base md:text-lg shadow-lg border-2 border-white">
                 View Products
               </button>
             </Link>

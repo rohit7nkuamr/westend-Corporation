@@ -32,8 +32,8 @@ const Navbar = () => {
       style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }}
       className="w-full bg-white shadow-md"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 md:h-20">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 md:h-20 gap-2">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -41,16 +41,16 @@ const Navbar = () => {
             transition={{ delay: 0.2 }}
             className="flex items-center"
           >
-            <Link to="/" className="flex items-center gap-2 md:gap-3">
+            <Link to="/" className="flex items-center gap-2 md:gap-3 flex-shrink min-w-0">
               {/* Logo Image */}
               <img 
                 src="/logo.png" 
                 alt="Westend Corporation Logo" 
-                className="h-10 md:h-14 w-auto object-contain"
+                className="h-8 md:h-14 w-auto object-contain flex-shrink-0"
               />
               {/* Company Name - Show on mobile too */}
-              <div>
-                <h1 className="text-base md:text-xl font-bold text-gray-800" style={{ fontFamily: 'serif' }}>
+              <div className="min-w-0 flex-shrink">
+                <h1 className="text-sm md:text-xl font-bold text-gray-800 truncate" style={{ fontFamily: 'serif' }}>
                   Westend Corporation
                 </h1>
                 <p className="text-xs text-primary-600 hidden sm:block">Premium Food Products</p>
@@ -82,12 +82,13 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex-shrink-0">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-700 hover:text-primary-700 transition-colors"
+              className="text-gray-700 hover:text-primary-700 transition-colors p-2"
+              aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
