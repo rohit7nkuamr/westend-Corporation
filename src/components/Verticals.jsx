@@ -83,7 +83,7 @@ const Verticals = () => {
             <h2 className="text-base md:text-xl font-bold text-gray-900">Our Product Categories</h2>
             <Link to="/products" className="text-xs md:text-sm text-primary-700 font-semibold hover:text-primary-800">View All →</Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 [&>*:nth-child(3)]:col-span-2 [&>*:nth-child(3)]:md:col-span-1 [&>*:nth-child(3)]:mx-auto [&>*:nth-child(3)]:max-w-[50%] [&>*:nth-child(3)]:md:max-w-none">
             {verticals.map((vertical, index) => (
               <motion.div
                 key={index}
@@ -115,13 +115,21 @@ const Verticals = () => {
                       <p className="text-gray-600 mb-3 md:mb-4 text-xs md:text-sm leading-relaxed line-clamp-2">{vertical.description}</p>
                       
                       {/* Product List */}
-                      <div className="space-y-1 md:space-y-2 mb-3 md:mb-6 hidden md:block">
-                        {vertical.products.slice(0, 3).map((product, idx) => (
+                      <div className="space-y-1 md:space-y-2 mb-3 md:mb-4">
+                        {vertical.products.slice(0, 2).map((product, idx) => (
                           <div key={idx} className="flex items-center text-xs md:text-sm text-gray-600">
-                            <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2`} />
-                            {product}
+                            <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2 flex-shrink-0`} />
+                            <span className="line-clamp-1">{product}</span>
                           </div>
                         ))}
+                        <div className="hidden md:block">
+                          {vertical.products.slice(2, 3).map((product, idx) => (
+                            <div key={idx} className="flex items-center text-xs md:text-sm text-gray-600">
+                              <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2 flex-shrink-0`} />
+                              <span className="line-clamp-1">{product}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                       
                       {/* CTA Button */}
