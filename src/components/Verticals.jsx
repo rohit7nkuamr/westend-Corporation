@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { ShoppingBasket, Snowflake, Package, Wheat, Leaf, Box } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const Verticals = () => {
+  const scrollContainerRef = useRef(null)
+
+  // Keyboard navigation for horizontal scroll
+  const handleKeyDown = (e) => {
+    if (scrollContainerRef.current) {
+      if (e.key === 'ArrowRight') {
+        scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' })
+      }
+      if (e.key === 'ArrowLeft') {
+        scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' })
+      }
+    }
+  }
+
   const verticals = [
     {
       icon: Wheat,
@@ -85,17 +99,26 @@ const Verticals = () => {
             <h2 className="text-sm md:text-lg font-bold text-gray-900">Our Product Categories</h2>
             <Link to="/products" className="text-xs md:text-sm text-primary-700 font-semibold hover:text-primary-800">View All →</Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 [&>*:nth-child(3)]:col-span-2 [&>*:nth-child(3)]:md:col-span-1 [&>*:nth-child(3)]:mx-auto [&>*:nth-child(3)]:max-w-[50%] [&>*:nth-child(3)]:md:max-w-none items-stretch">
+          {/* Mobile: Horizontal Scroll | Desktop: 3-column Grid */}
+          <div 
+            ref={scrollContainerRef}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+            role="list"
+            aria-label="Product categories"
+            className="flex md:grid md:grid-cols-3 gap-3 md:gap-4 overflow-x-auto md:overflow-visible pb-2 md:pb-0 snap-x snap-mandatory scrollbar-hide -mx-3 px-3 sm:mx-0 sm:px-0"
+          >
             {verticals.map((vertical, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group"
+                className="group flex-shrink-0 w-[85%] sm:w-[45%] md:w-auto snap-start"
+                role="listitem"
               >
                 <Link to="/products">
-                  <div className="bg-white rounded-lg md:rounded-xl overflow-hidden border-2 border-primary-100 hover:border-primary-400 hover:shadow-xl transition-all duration-300 flex flex-col h-full">
+                  <article className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100">
                     {/* Product Image */}
                     <div className="relative h-28 md:h-40 overflow-hidden bg-gray-50 flex-shrink-0">
                       <img 
@@ -139,7 +162,7 @@ const Verticals = () => {
                         Request Quote
                       </button>
                     </div>
-                  </div>
+                  </article>
                 </Link>
               </motion.div>
             ))}
