@@ -57,7 +57,7 @@ const Verticals = () => {
   return (
     <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
       {/* Hero Header with Background Image - Both Mobile & Desktop */}
-      <div className="relative px-4 sm:px-6 lg:px-8 py-4 md:py-12 overflow-hidden" style={{ position: 'relative', minHeight: '150px' }}>
+      <div className="relative px-4 sm:px-6 lg:px-8 py-8 md:py-16 overflow-hidden" style={{ position: 'relative', minHeight: '200px' }}>
         {/* Background Image - Extends to edges */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
           <img 
@@ -71,20 +71,20 @@ const Verticals = () => {
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto text-center" style={{ zIndex: 1 }}>
-          <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1.5">
+          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
             Premium Food Products
           </h1>
-          <p className="text-white text-xs md:text-sm max-w-2xl mx-auto mb-3">
+          <p className="text-white text-sm md:text-base max-w-2xl mx-auto mb-4">
           Supplier of quality groceries, frozen vegetables, and processed foods
           </p>
-          <div className="flex flex-col sm:flex-row gap-2 justify-center items-center w-full sm:w-auto max-w-full">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full sm:w-auto max-w-full">
             <Link to="/contact" className="w-full sm:w-auto max-w-full">
-              <button className="w-full sm:w-auto bg-primary-600 text-white px-4 sm:px-6 py-1.5 sm:py-2.5 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg text-xs sm:text-sm border-2 border-primary-500">
+              <button className="w-full sm:w-auto bg-primary-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg text-sm sm:text-base border-2 border-primary-500">
                 Request Quote
               </button>
             </Link>
             <Link to="/products" className="w-full sm:w-auto max-w-full">
-              <button className="w-full sm:w-auto bg-white text-primary-700 px-4 sm:px-6 py-1.5 sm:py-2.5 rounded-lg font-semibold hover:bg-primary-50 transition-all text-xs sm:text-sm shadow-lg border-2 border-white">
+              <button className="w-full sm:w-auto bg-white text-primary-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-primary-50 transition-all text-sm sm:text-base shadow-lg border-2 border-white">
                 View Products
               </button>
             </Link>
@@ -93,10 +93,10 @@ const Verticals = () => {
       </div>
 
       {/* Product Verticals - Hero Section for Both Mobile & Desktop */}
-      <div className="px-3 sm:px-6 lg:px-8 py-3 md:py-6 bg-white">
+      <div className="px-3 sm:px-6 lg:px-8 py-6 md:py-10 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-1.5 md:mb-2">
-            <h2 className="text-sm md:text-lg font-bold text-gray-900">Our Product Categories</h2>
+          <div className="flex items-center justify-between mb-3 md:mb-4">
+            <h2 className="text-base md:text-xl font-bold text-gray-900">Our Product Categories</h2>
             <Link to="/products" className="text-xs md:text-sm text-primary-700 font-semibold hover:text-primary-800">View All →</Link>
           </div>
           {/* Mobile: Horizontal Scroll | Desktop: 3-column Grid */}
@@ -120,7 +120,7 @@ const Verticals = () => {
                 <Link to="/products">
                   <article className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100">
                     {/* Product Image */}
-                    <div className="relative h-28 md:h-40 overflow-hidden bg-gray-50 flex-shrink-0">
+                    <div className="relative h-36 md:h-48 overflow-hidden bg-gray-50 flex-shrink-0">
                       <img 
                         src={vertical.image} 
                         alt={vertical.title}
@@ -135,22 +135,22 @@ const Verticals = () => {
                     </div>
                     
                     {/* Product Info */}
-                    <div className="p-2 md:p-4 flex flex-col flex-grow">
-                      <h3 className="text-sm md:text-lg font-bold text-gray-900 mb-1.5 md:mb-2">{vertical.title}</h3>
-                      <p className="text-gray-600 mb-2 md:mb-3 text-xs leading-snug line-clamp-2">{vertical.description}</p>
+                    <div className="p-3 md:p-5 flex flex-col flex-grow">
+                      <h3 className="text-base md:text-xl font-bold text-gray-900 mb-2 md:mb-3">{vertical.title}</h3>
+                      <p className="text-gray-600 mb-3 md:mb-4 text-sm leading-relaxed line-clamp-2">{vertical.description}</p>
                       
                       {/* Product List */}
-                      <div className="space-y-0.5 md:space-y-1 mb-2 md:mb-3 flex-grow">
+                      <div className="space-y-1 md:space-y-2 mb-3 md:mb-4 flex-grow">
                         {vertical.products.slice(0, 2).map((product, idx) => (
-                          <div key={idx} className="flex items-start text-xs text-gray-600">
-                            <div className={`w-1 h-1 rounded-full bg-gradient-to-r ${vertical.gradient} mr-1.5 flex-shrink-0 mt-1`} />
+                          <div key={idx} className="flex items-start text-sm text-gray-600">
+                            <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2 flex-shrink-0 mt-1.5`} />
                             <span className="line-clamp-1 leading-tight">{product}</span>
                           </div>
                         ))}
                         <div className="hidden md:block">
                           {vertical.products.slice(2, 3).map((product, idx) => (
-                            <div key={idx} className="flex items-start text-xs text-gray-600">
-                              <div className={`w-1 h-1 rounded-full bg-gradient-to-r ${vertical.gradient} mr-1.5 flex-shrink-0 mt-1`} />
+                            <div key={idx} className="flex items-start text-sm text-gray-600">
+                              <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2 flex-shrink-0 mt-1.5`} />
                               <span className="line-clamp-1 leading-tight">{product}</span>
                             </div>
                           ))}
@@ -158,7 +158,7 @@ const Verticals = () => {
                       </div>
                       
                       {/* CTA Button */}
-                      <button className="w-full bg-primary-500 hover:bg-primary-600 border border-primary-400 text-white py-1.5 md:py-2 rounded-md font-medium transition-all duration-300 hover:shadow-md text-xs md:text-sm mt-auto">
+                      <button className="w-full bg-primary-500 hover:bg-primary-600 border border-primary-400 text-white py-2 md:py-2.5 rounded-lg font-medium transition-all duration-300 hover:shadow-md text-sm md:text-base mt-auto">
                         Request Quote
                       </button>
                     </div>
