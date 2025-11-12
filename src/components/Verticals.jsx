@@ -1,10 +1,12 @@
-import React, { useRef } from 'react'
-import { motion } from 'framer-motion'
-import { ShoppingBasket, Snowflake, Package, Wheat, Leaf, Box } from 'lucide-react'
+import React, { useRef, useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ShoppingBasket, Snowflake, Package, Wheat, Leaf, Box, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const Verticals = () => {
   const scrollContainerRef = useRef(null)
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
   // Keyboard navigation for horizontal scroll
   const handleKeyDown = (e) => {
@@ -18,151 +20,253 @@ const Verticals = () => {
     }
   }
 
+  // Auto-rotate slides - always active for mobile
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % 3)
+    }, 4000) // Change slide every 4 seconds
+    return () => clearInterval(interval)
+  }, [])
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % 3)
+    setIsAutoPlaying(false)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + 3) % 3)
+    setIsAutoPlaying(false)
+  }
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index)
+    setIsAutoPlaying(false)
+  }
+
   const verticals = [
     {
       icon: Wheat,
       title: 'Groceries & Staples',
       description: 'Certified organic pulses, premium grains, authentic spice blends, and traditional jaggery products sourced from trusted farms',
-      gradient: 'from-primary-500 to-primary-700',
+      gradient: 'from-amber-500 to-orange-600',
       bgGradient: 'from-primary-50 to-amber-50',
-      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&h=400&fit=crop',
+      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&h=600&fit=crop',
       products: ['Certified Organic Pulses', 'Premium Quality Grains', 'Authentic Spice Blends', 'Traditional Jaggery'],
       secondaryIcon: Leaf,
-      buttonColor: 'bg-primary-600 hover:bg-primary-700 border-2 border-primary-500'
+      buttonColor: 'from-amber-500 to-orange-600',
+      buttonText: 'REQUEST QUOTE'
     },
     {
       icon: Snowflake,
       title: 'Frozen Vegetables',
       description: 'IQF (Individually Quick Frozen) vegetables processed at peak freshness using advanced cold chain technology to preserve nutrients',
-      gradient: 'from-accent-600 to-accent-800',
-      bgGradient: 'from-accent-50 to-emerald-50',
-      image: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=600&h=400&fit=crop',
-      products: ['IQF Cut Vegetables', 'Whole Frozen Vegetables', 'Ready-to-Cook Range', 'Exotic Varieties'],
+      gradient: 'from-emerald-500 to-teal-600',
+      bgGradient: 'from-emerald-50 to-teal-50',
+      image: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=800&h=600&fit=crop',
+      products: ['IQF Cut Vegetables', 'Whole Frozen Vegetables', 'Ready-to-Cook Range', 'Organic Frozen Options'],
       secondaryIcon: Package,
-      buttonColor: 'bg-accent-700 hover:bg-accent-800 border-2 border-accent-600'
+      buttonColor: 'from-emerald-500 to-teal-600',
+      buttonText: 'REQUEST QUOTE'
     },
     {
       icon: Box,
       title: 'Processed Foods',
       description: 'FSSAI certified processed foods manufactured in state-of-the-art facilities maintaining international hygiene standards',
-      gradient: 'from-gray-700 to-gray-800',
+      gradient: 'from-slate-500 to-blue-600',
       bgGradient: 'from-gray-50 to-neutral-50',
-      image: 'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?w=600&h=400&fit=crop',
+      image: 'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?w=800&h=600&fit=crop',
       products: ['Canned Vegetables', 'Ready-to-Eat Meals', 'Frozen Snacks', 'Dairy Products'],
       secondaryIcon: ShoppingBasket,
-      buttonColor: 'bg-gray-700 hover:bg-gray-800 border-2 border-gray-600'
+      buttonColor: 'from-slate-500 to-blue-600',
+      buttonText: 'REQUEST QUOTE'
     },
   ]
 
   return (
     <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
-      {/* Hero Header with Background Image - Both Mobile & Desktop */}
-      <div className="relative px-4 sm:px-6 lg:px-8 py-8 md:py-16 overflow-hidden" style={{ position: 'relative', minHeight: '200px' }}>
-        {/* Background Image - Extends to edges */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
-          <img 
-            src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2000&auto=format&fit=crop"
-            alt="Fresh Food Background"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          />
-          {/* Dark Overlay for Better Text Readability */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
-        </div>
+      {/* Mobile: Full-Screen Slider | Desktop: All 3 Verticals Visible */}
+      <div className="relative h-[calc(100vh-64px)] overflow-hidden">
+        
+        {/* MOBILE VIEW - Slider */}
+        <div className="md:hidden relative h-full bg-black">
+          <AnimatePresence initial={false} mode="sync">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ 
+                opacity: { duration: 0.8, ease: "easeInOut" },
+                scale: { duration: 0.8, ease: "easeOut" }
+              }}
+              className="absolute inset-0"
+            >
+              {/* Background Image */}
+              <div className="absolute inset-0 bg-black">
+                <motion.img 
+                  src={verticals[currentSlide].image}
+                  alt={verticals[currentSlide].title}
+                  className="w-full h-full object-cover"
+                  initial={{ scale: 1 }}
+                  animate={{ scale: 1.08 }}
+                  transition={{ duration: 4, ease: "linear" }}
+                />
+                {/* Dark Overlay - Lighter for better image visibility */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/55 to-black/70" />
+              </div>
 
-        {/* Hero Content */}
-        <div className="relative max-w-7xl mx-auto text-center" style={{ zIndex: 1 }}>
-          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-2">
-            Premium Food Products
-          </h1>
-          <p className="text-white text-sm md:text-base max-w-2xl mx-auto mb-4">
-          Supplier of quality groceries, frozen vegetables, and processed foods
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center w-full sm:w-auto max-w-full">
-            <Link to="/contact" className="w-full sm:w-auto max-w-full">
-              <button className="w-full sm:w-auto bg-primary-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg text-sm sm:text-base border-2 border-primary-500">
-                Request Quote
-              </button>
-            </Link>
-            <Link to="/products" className="w-full sm:w-auto max-w-full">
-              <button className="w-full sm:w-auto bg-white text-primary-700 px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-primary-50 transition-all text-sm sm:text-base shadow-lg border-2 border-white">
-                View Products
-              </button>
-            </Link>
+              {/* Content */}
+              <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
+                <motion.div
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                  className="max-w-4xl"
+                >
+                  {/* Icon */}
+                  <div className={`w-20 h-20 mx-auto bg-gradient-to-br ${verticals[currentSlide].gradient} rounded-2xl flex items-center justify-center shadow-2xl mb-6`}>
+                    {React.createElement(verticals[currentSlide].icon, { 
+                      className: "text-white", 
+                      size: 40,
+                      strokeWidth: 2 
+                    })}
+                  </div>
+
+                  <p className="text-primary-400 text-sm font-semibold tracking-widest uppercase mb-4">
+                    Premium Quality
+                  </p>
+
+                  <h1 className="text-3xl font-bold text-white mb-4" style={{ fontFamily: 'serif' }}>
+                    {verticals[currentSlide].title}
+                  </h1>
+
+                  <div className="w-24 h-1 bg-gradient-to-r from-primary-400 to-primary-600 mx-auto mb-4" />
+
+                  <p className="text-gray-300 text-sm max-w-2xl mx-auto mb-6 leading-relaxed">
+                    {verticals[currentSlide].description}
+                  </p>
+
+                  <Link to="/products">
+                    <button className="bg-transparent border-2 border-primary-500 text-primary-400 px-8 py-3 rounded-full font-semibold hover:bg-primary-600 hover:text-white hover:border-primary-600 transition-all duration-300 text-sm tracking-wider uppercase">
+                      Explore Collection
+                    </button>
+                  </Link>
+                </motion.div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Mobile Navigation */}
+          <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 rounded-full transition-all z-10" aria-label="Previous">
+            <ChevronLeft size={20} />
+          </button>
+          <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 rounded-full transition-all z-10" aria-label="Next">
+            <ChevronRight size={20} />
+          </button>
+
+          {/* Mobile Dots with Progress */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+            <div className="flex gap-3 mb-2">
+              {verticals.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className="relative"
+                  aria-label={`Slide ${index + 1}`}
+                >
+                  <div className={`transition-all duration-300 rounded-full ${
+                    index === currentSlide ? 'bg-primary-500 w-8 h-3' : 'bg-white/40 hover:bg-white/60 w-3 h-3'
+                  }`} />
+                  {/* Progress bar for active slide */}
+                  {index === currentSlide && (
+                    <motion.div
+                      className="absolute top-0 left-0 h-3 bg-primary-400 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: '100%' }}
+                      transition={{ duration: 4, ease: "linear" }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+            {/* Auto-play indicator */}
+            <p className="text-white/60 text-xs text-center">Auto-playing</p>
           </div>
         </div>
-      </div>
 
-      {/* Product Verticals - Hero Section for Both Mobile & Desktop */}
-      <div className="px-3 sm:px-6 lg:px-8 py-6 md:py-10 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-3 md:mb-4">
-            <h2 className="text-base md:text-xl font-bold text-gray-900">Our Product Categories</h2>
-            <Link to="/products" className="text-xs md:text-sm text-primary-700 font-semibold hover:text-primary-800">View All →</Link>
-          </div>
-          {/* Mobile: Horizontal Scroll | Desktop: 3-column Grid */}
-          <div 
-            ref={scrollContainerRef}
-            onKeyDown={handleKeyDown}
-            tabIndex={0}
-            role="list"
-            aria-label="Product categories"
-            className="flex md:grid md:grid-cols-3 gap-3 md:gap-4 overflow-x-auto md:overflow-visible pb-2 md:pb-0 snap-x snap-mandatory scrollbar-hide -mx-3 px-3 sm:mx-0 sm:px-0"
-          >
+        {/* DESKTOP VIEW - All 3 Verticals with Glowing Boxes */}
+        <div className="hidden md:flex h-full items-center justify-center px-8 lg:px-12 bg-gradient-to-br from-amber-900/20 via-gray-900 to-emerald-900/20">
+          <div className="max-w-7xl w-full grid grid-cols-3 gap-6 lg:gap-8">
             {verticals.map((vertical, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group flex-shrink-0 w-[85%] sm:w-[45%] md:w-auto snap-start"
-                role="listitem"
+                transition={{ delay: index * 0.2, duration: 0.8 }}
+                className="group relative"
               >
                 <Link to="/products">
-                  <article className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100">
-                    {/* Product Image */}
-                    <div className="relative h-36 md:h-48 overflow-hidden bg-gray-50 flex-shrink-0">
+                  {/* Glowing Background Effect */}
+                  <div className={`absolute -inset-1 bg-gradient-to-r ${vertical.gradient} rounded-2xl blur-xl opacity-30 group-hover:opacity-60 transition-all duration-500`} />
+                  
+                  {/* Card */}
+                  <div className="relative bg-gradient-to-br from-gray-800/30 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 lg:p-8 border border-gray-700/50 hover:border-primary-500/50 transition-all duration-500 h-full flex flex-col overflow-hidden">
+                    {/* Background Image with Overlay */}
+                    <div className="absolute inset-0 rounded-2xl overflow-hidden">
                       <img 
-                        src={vertical.image} 
+                        src={vertical.image}
                         alt={vertical.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
                       />
-                      {/* Icon Badge */}
-                      <div className="absolute top-2 left-2 md:top-4 md:left-4">
-                        <div className={`w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br ${vertical.gradient} rounded-lg md:rounded-xl flex items-center justify-center shadow-lg`}>
-                          <vertical.icon className="text-white" size={20} strokeWidth={2.5} />
-                        </div>
-                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 via-gray-900/60 to-gray-900/75" />
                     </div>
-                    
-                    {/* Product Info */}
-                    <div className="p-3 md:p-5 flex flex-col flex-grow">
-                      <h3 className="text-base md:text-xl font-bold text-gray-900 mb-2 md:mb-3">{vertical.title}</h3>
-                      <p className="text-gray-600 mb-3 md:mb-4 text-sm leading-relaxed line-clamp-2">{vertical.description}</p>
-                      
-                      {/* Product List */}
-                      <div className="space-y-1 md:space-y-2 mb-3 md:mb-4 flex-grow">
-                        {vertical.products.slice(0, 2).map((product, idx) => (
-                          <div key={idx} className="flex items-start text-sm text-gray-600">
+
+                    {/* Content */}
+                    <div className="relative z-10 flex flex-col h-full">
+                      {/* Icon */}
+                      <motion.div
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                        className="mb-4"
+                      >
+                        <div className={`w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br ${vertical.gradient} rounded-xl flex items-center justify-center shadow-2xl group-hover:shadow-primary-500/50 transition-all duration-500`}>
+                          {React.createElement(vertical.icon, { 
+                            className: "text-white", 
+                            size: 36,
+                            strokeWidth: 2.5 
+                          })}
+                        </div>
+                      </motion.div>
+
+                      {/* Title */}
+                      <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:text-primary-400 transition-colors duration-300" style={{ fontFamily: 'serif' }}>
+                        {vertical.title}
+                      </h2>
+
+                      {/* Divider */}
+                      <div className={`w-16 h-1 bg-gradient-to-r ${vertical.gradient} mb-4 group-hover:w-24 transition-all duration-500`} />
+
+                      {/* Description */}
+                      <p className="text-gray-300 text-sm lg:text-base leading-relaxed mb-6 flex-grow">
+                        {vertical.description}
+                      </p>
+
+                      {/* Products List */}
+                      <div className="space-y-2 mb-6">
+                        {vertical.products.slice(0, 3).map((product, idx) => (
+                          <div key={idx} className="flex items-start text-sm text-gray-400">
                             <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2 flex-shrink-0 mt-1.5`} />
-                            <span className="line-clamp-1 leading-tight">{product}</span>
+                            <span className="line-clamp-1">{product}</span>
                           </div>
                         ))}
-                        <div className="hidden md:block">
-                          {vertical.products.slice(2, 3).map((product, idx) => (
-                            <div key={idx} className="flex items-start text-sm text-gray-600">
-                              <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2 flex-shrink-0 mt-1.5`} />
-                              <span className="line-clamp-1 leading-tight">{product}</span>
-                            </div>
-                          ))}
-                        </div>
                       </div>
-                      
+
                       {/* CTA Button */}
-                      <button className="w-full bg-primary-500 hover:bg-primary-600 border border-primary-400 text-white py-2 md:py-2.5 rounded-lg font-medium transition-all duration-300 hover:shadow-md text-sm md:text-base mt-auto">
-                        Request Quote
+                      <button className={`w-full bg-gradient-to-r ${vertical.buttonColor} text-white py-3 rounded-lg font-semibold hover:shadow-xl transition-all duration-300 text-sm uppercase tracking-wider hover:scale-105`}>
+                        {vertical.buttonText}
                       </button>
                     </div>
-                  </article>
+                  </div>
                 </Link>
               </motion.div>
             ))}
