@@ -8,44 +8,44 @@ const WhyChooseUs = () => {
       icon: Shield,
       title: 'Quality Assurance',
       description: 'Multi-stage quality control with HACCP and ISO 22000 compliance ensuring product excellence',
-      color: 'from-blue-600 to-blue-700'
+      color: 'from-amber-500 to-orange-600'
     },
     {
       icon: Leaf,
       title: 'Sustainable Sourcing',
       description: 'Direct partnerships with certified organic farms ensuring traceability and sustainability',
-      color: 'from-green-600 to-green-700'
+      color: 'from-emerald-500 to-teal-600'
     },
     {
       icon: Truck,
       title: 'Global Logistics',
       description: 'Temperature-controlled supply chain with real-time tracking for international deliveries',
-      color: 'from-orange-600 to-orange-700'
+      color: 'from-slate-500 to-blue-600'
     },
     {
       icon: CheckCircle,
       title: 'Regulatory Compliance',
       description: 'Full compliance with FSSAI, FDA, and international food safety regulations',
-      color: 'from-purple-600 to-purple-700'
+      color: 'from-amber-500 to-orange-600'
     },
     {
       icon: Clock,
       title: 'Advanced Processing',
       description: 'IQF technology and modern processing ensuring maximum nutrient retention',
-      color: 'from-teal-600 to-teal-700'
+      color: 'from-emerald-500 to-teal-600'
     },
     {
       icon: Star,
       title: 'Industry Experience',
       description: '15+ years serving B2B clients with consistent quality and reliability',
-      color: 'from-indigo-600 to-indigo-700'
+      color: 'from-slate-500 to-blue-600'
     }
   ]
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 opacity-50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 via-white to-primary-50/50" />
       
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
@@ -57,7 +57,7 @@ const WhyChooseUs = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-600 via-primary-600 to-orange-600 bg-clip-text text-transparent">
               Why Choose Us
             </span>
           </h2>
@@ -75,24 +75,24 @@ const WhyChooseUs = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -10, scale: 1.03 }}
-              className="group"
+              whileHover={{ y: -10 }}
+              className="group relative"
             >
-              <div className="bg-white rounded-2xl p-8 h-full relative overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100">
-                {/* Gradient Background on Hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${reason.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-                
+              {/* Glowing Background Effect */}
+              <div className={`absolute -inset-1 bg-gradient-to-r ${reason.color} rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition-all duration-500`} />
+              
+              <div className="relative bg-white rounded-2xl p-8 h-full overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100">
                 {/* Icon */}
                 <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  transition={{ duration: 0.3 }}
-                  className={`w-16 h-16 bg-gradient-to-br ${reason.color} rounded-xl flex items-center justify-center mb-6 shadow-lg`}
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className={`w-16 h-16 bg-gradient-to-br ${reason.color} rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl transition-shadow duration-300`}
                 >
                   <reason.icon className="text-white" size={28} strokeWidth={2} />
                 </motion.div>
 
                 {/* Content */}
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary-600 transition-colors duration-300">
                   {reason.title}
                 </h3>
                 <p className="text-gray-600 leading-relaxed text-sm">
@@ -100,7 +100,7 @@ const WhyChooseUs = () => {
                 </p>
 
                 {/* Decorative Element */}
-                <div className={`absolute -bottom-2 -right-2 w-20 h-20 bg-gradient-to-br ${reason.color} rounded-full opacity-5`} />
+                <div className={`absolute -bottom-2 -right-2 w-20 h-20 bg-gradient-to-br ${reason.color} rounded-full opacity-5 group-hover:opacity-10 transition-opacity duration-300`} />
               </div>
             </motion.div>
           ))}
@@ -126,7 +126,7 @@ const WhyChooseUs = () => {
                 repeat: Infinity,
                 ease: "linear"
               }}
-              className="absolute inset-0 bg-gradient-to-br from-green-400 via-blue-400 to-purple-400 opacity-10"
+              className="absolute inset-0 bg-gradient-to-br from-amber-400 via-primary-400 to-orange-400 opacity-10"
             />
 
             <div className="relative z-10">
@@ -140,7 +140,7 @@ const WhyChooseUs = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all duration-300"
+                  className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transition-all duration-300"
                 >
                   Get Started
                 </motion.button>

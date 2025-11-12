@@ -89,15 +89,15 @@ const Verticals = () => {
         
         {/* MOBILE VIEW - Slider */}
         <div className="md:hidden relative h-full bg-black">
-          <AnimatePresence initial={false} mode="sync">
+          <AnimatePresence initial={false}>
             <motion.div
               key={currentSlide}
-              initial={{ opacity: 0, scale: 1.05 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ 
-                opacity: { duration: 0.8, ease: "easeInOut" },
-                scale: { duration: 0.8, ease: "easeOut" }
+                duration: 1,
+                ease: [0.43, 0.13, 0.23, 0.96]
               }}
               className="absolute inset-0"
             >
@@ -108,8 +108,11 @@ const Verticals = () => {
                   alt={verticals[currentSlide].title}
                   className="w-full h-full object-cover"
                   initial={{ scale: 1 }}
-                  animate={{ scale: 1.08 }}
-                  transition={{ duration: 4, ease: "linear" }}
+                  animate={{ scale: 1.1 }}
+                  transition={{ 
+                    duration: 4,
+                    ease: "linear"
+                  }}
                 />
                 {/* Dark Overlay - Lighter for better image visibility */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/55 to-black/70" />
@@ -117,41 +120,73 @@ const Verticals = () => {
 
               {/* Content */}
               <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-                <motion.div
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                  className="max-w-4xl"
-                >
+                <div className="max-w-4xl">
                   {/* Icon */}
-                  <div className={`w-20 h-20 mx-auto bg-gradient-to-br ${verticals[currentSlide].gradient} rounded-2xl flex items-center justify-center shadow-2xl mb-6`}>
+                  <motion.div
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ 
+                      delay: 0.3,
+                      duration: 0.6,
+                      type: "spring",
+                      stiffness: 200
+                    }}
+                    className={`w-20 h-20 mx-auto bg-gradient-to-br ${verticals[currentSlide].gradient} rounded-2xl flex items-center justify-center shadow-2xl mb-6`}
+                  >
                     {React.createElement(verticals[currentSlide].icon, { 
                       className: "text-white", 
                       size: 40,
                       strokeWidth: 2 
                     })}
-                  </div>
+                  </motion.div>
 
-                  <p className="text-primary-400 text-sm font-semibold tracking-widest uppercase mb-4">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.5 }}
+                    className="text-primary-400 text-sm font-semibold tracking-widest uppercase mb-4"
+                  >
                     Premium Quality
-                  </p>
+                  </motion.p>
 
-                  <h1 className="text-3xl font-bold text-white mb-4" style={{ fontFamily: 'serif' }}>
+                  <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6, duration: 0.5 }}
+                    className="text-3xl font-bold text-white mb-4"
+                    style={{ fontFamily: 'serif' }}
+                  >
                     {verticals[currentSlide].title}
-                  </h1>
+                  </motion.h1>
 
-                  <div className="w-24 h-1 bg-gradient-to-r from-primary-400 to-primary-600 mx-auto mb-4" />
+                  <motion.div
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ delay: 0.7, duration: 0.6 }}
+                    className="w-24 h-1 bg-gradient-to-r from-primary-400 to-primary-600 mx-auto mb-4"
+                  />
 
-                  <p className="text-gray-300 text-sm max-w-2xl mx-auto mb-6 leading-relaxed">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8, duration: 0.5 }}
+                    className="text-gray-300 text-sm max-w-2xl mx-auto mb-6 leading-relaxed"
+                  >
                     {verticals[currentSlide].description}
-                  </p>
+                  </motion.p>
 
-                  <Link to="/products">
-                    <button className="bg-transparent border-2 border-primary-500 text-primary-400 px-8 py-3 rounded-full font-semibold hover:bg-primary-600 hover:text-white hover:border-primary-600 transition-all duration-300 text-sm tracking-wider uppercase">
-                      Explore Collection
-                    </button>
-                  </Link>
-                </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.9, duration: 0.5 }}
+                  >
+                    <Link to="/products">
+                      <button className="bg-transparent border-2 border-primary-500 text-primary-400 px-8 py-3 rounded-full font-semibold hover:bg-primary-600 hover:text-white hover:border-primary-600 transition-all duration-300 text-sm tracking-wider uppercase">
+                        Explore Collection
+                      </button>
+                    </Link>
+                  </motion.div>
+                </div>
               </div>
             </motion.div>
           </AnimatePresence>
