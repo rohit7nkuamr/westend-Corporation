@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -127,6 +127,17 @@ const Navbar = () => {
           </div>
         </motion.div>
       )}
+
+      {/* Fixed Floating WhatsApp Button - Mobile Only */}
+      <a
+        href="https://wa.me/919999999999"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="md:hidden fixed top-20 right-4 z-[10000] bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+        aria-label="WhatsApp"
+      >
+        <MessageCircle size={24} fill="white" strokeWidth={0} />
+      </a>
     </motion.nav>
   )
 }
