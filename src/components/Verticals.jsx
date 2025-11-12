@@ -93,9 +93,9 @@ const Verticals = () => {
                 className="group"
               >
                 <Link to="/products">
-                  <div className="bg-white rounded-xl md:rounded-2xl overflow-hidden border border-primary-100 hover:border-primary-400 hover:shadow-xl transition-all duration-300">
+                  <div className="bg-white rounded-xl md:rounded-2xl overflow-hidden border-2 border-primary-100 hover:border-primary-400 hover:shadow-xl transition-all duration-300">
                     {/* Product Image */}
-                    <div className="relative h-32 md:h-48 overflow-hidden bg-gray-50">
+                    <div className="relative h-40 md:h-52 overflow-hidden bg-gray-50">
                       <img 
                         src={vertical.image} 
                         alt={vertical.title}
@@ -110,9 +110,9 @@ const Verticals = () => {
                     </div>
                     
                     {/* Product Info */}
-                    <div className="p-2 md:p-4">
-                      <h3 className="text-sm md:text-xl font-bold text-gray-900 mb-1 md:mb-2 line-clamp-1">{vertical.title}</h3>
-                      <p className="text-gray-600 mb-2 md:mb-3 text-xs md:text-sm leading-tight line-clamp-1 hidden sm:block">{vertical.description}</p>
+                    <div className="p-3 md:p-5">
+                      <h3 className="text-base md:text-xl font-bold text-gray-900 mb-2 md:mb-3">{vertical.title}</h3>
+                      <p className="text-gray-600 mb-3 md:mb-4 text-xs md:text-sm leading-relaxed line-clamp-2">{vertical.description}</p>
                       
                       {/* Product List */}
                       <div className="space-y-1 md:space-y-2 mb-3 md:mb-6 hidden md:block">
@@ -125,8 +125,8 @@ const Verticals = () => {
                       </div>
                       
                       {/* CTA Button */}
-                      <button className={`w-full ${vertical.buttonColor} text-white py-1.5 md:py-2.5 rounded-md md:rounded-lg text-xs md:text-sm font-semibold transition-all duration-300 hover:shadow-lg`}>
-                        Quote
+                      <button className={`w-full ${vertical.buttonColor} text-white py-2.5 md:py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg text-sm md:text-base`}>
+                        Request Quote
                       </button>
                     </div>
                   </div>
