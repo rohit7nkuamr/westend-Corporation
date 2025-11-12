@@ -43,7 +43,7 @@ const Verticals = () => {
   return (
     <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
       {/* Hero Header with Background Image - Both Mobile & Desktop */}
-      <div className="relative px-4 sm:px-6 lg:px-8 py-12 md:py-20 overflow-hidden" style={{ position: 'relative', minHeight: '300px' }}>
+      <div className="relative px-4 sm:px-6 lg:px-8 py-6 md:py-16 overflow-hidden" style={{ position: 'relative', minHeight: '200px' }}>
         {/* Background Image - Extends to edges */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
           <img 
@@ -55,20 +55,20 @@ const Verticals = () => {
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto text-center" style={{ zIndex: 1 }}>
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-3" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
-            Premium Food Products<br className="hidden md:block" />
+          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-2" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
+            Premium Food Products
           </h1>
-          <p className="text-white text-sm md:text-lg max-w-3xl mx-auto mb-6" style={{ textShadow: '1px 1px 6px rgba(0,0,0,0.7)' }}>
+          <p className="text-white text-xs md:text-base max-w-3xl mx-auto mb-4" style={{ textShadow: '1px 1px 6px rgba(0,0,0,0.7)' }}>
           Supplier of quality groceries, frozen vegetables, and processed foods
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto max-w-full">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center items-center w-full sm:w-auto max-w-full">
             <Link to="/contact" className="w-full sm:w-auto max-w-full">
-              <button className="w-full sm:w-auto bg-primary-600 text-white px-6 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base md:text-lg border-2 border-primary-500">
+              <button className="w-full sm:w-auto bg-primary-600 text-white px-5 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-xs sm:text-sm md:text-base border-2 border-primary-500">
                 Request Quote
               </button>
             </Link>
             <Link to="/products" className="w-full sm:w-auto max-w-full">
-              <button className="w-full sm:w-auto bg-white text-primary-700 px-6 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-primary-50 transition-all text-sm sm:text-base md:text-lg shadow-lg border-2 border-white">
+              <button className="w-full sm:w-auto bg-white text-primary-700 px-5 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold hover:bg-primary-50 transition-all text-xs sm:text-sm md:text-base shadow-lg border-2 border-white">
                 View Products
               </button>
             </Link>
@@ -77,11 +77,11 @@ const Verticals = () => {
       </div>
 
       {/* Product Verticals - Hero Section for Both Mobile & Desktop */}
-      <div className="px-4 sm:px-6 lg:px-8 py-8 md:py-12 bg-white">
+      <div className="px-3 sm:px-6 lg:px-8 py-4 md:py-8 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900">Our Product Categories</h2>
-            <Link to="/products" className="text-sm md:text-base text-primary-700 font-semibold hover:text-primary-800">View All →</Link>
+          <div className="flex items-center justify-between mb-3 md:mb-4">
+            <h2 className="text-base md:text-xl font-bold text-gray-900">Our Product Categories</h2>
+            <Link to="/products" className="text-xs md:text-sm text-primary-700 font-semibold hover:text-primary-800">View All →</Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
             {verticals.map((vertical, index) => (
@@ -93,9 +93,9 @@ const Verticals = () => {
                 className="group"
               >
                 <Link to="/products">
-                  <div className="bg-white rounded-2xl overflow-hidden border-2 border-primary-100 hover:border-primary-400 hover:shadow-xl transition-all duration-300">
+                  <div className="bg-white rounded-xl md:rounded-2xl overflow-hidden border border-primary-100 hover:border-primary-400 hover:shadow-xl transition-all duration-300">
                     {/* Product Image */}
-                    <div className="relative h-48 md:h-56 overflow-hidden bg-gray-50">
+                    <div className="relative h-32 md:h-48 overflow-hidden bg-gray-50">
                       <img 
                         src={vertical.image} 
                         alt={vertical.title}
@@ -110,9 +110,9 @@ const Verticals = () => {
                     </div>
                     
                     {/* Product Info */}
-                    <div className="p-3 md:p-6">
-                      <h3 className="text-base md:text-2xl font-bold text-gray-900 mb-2 md:mb-3">{vertical.title}</h3>
-                      <p className="text-gray-600 mb-3 md:mb-4 text-xs md:text-sm leading-relaxed line-clamp-2">{vertical.description}</p>
+                    <div className="p-2 md:p-4">
+                      <h3 className="text-sm md:text-xl font-bold text-gray-900 mb-1 md:mb-2 line-clamp-1">{vertical.title}</h3>
+                      <p className="text-gray-600 mb-2 md:mb-3 text-xs md:text-sm leading-tight line-clamp-1 hidden sm:block">{vertical.description}</p>
                       
                       {/* Product List */}
                       <div className="space-y-1 md:space-y-2 mb-3 md:mb-6 hidden md:block">
@@ -125,8 +125,8 @@ const Verticals = () => {
                       </div>
                       
                       {/* CTA Button */}
-                      <button className={`w-full ${vertical.buttonColor} text-white py-2 md:py-3 rounded-lg text-xs md:text-base font-semibold transition-all duration-300 hover:shadow-lg`}>
-                        Request Quote
+                      <button className={`w-full ${vertical.buttonColor} text-white py-1.5 md:py-2.5 rounded-md md:rounded-lg text-xs md:text-sm font-semibold transition-all duration-300 hover:shadow-lg`}>
+                        Quote
                       </button>
                     </div>
                   </div>
