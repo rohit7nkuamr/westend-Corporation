@@ -43,7 +43,7 @@ const Verticals = () => {
   return (
     <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
       {/* Hero Header with Background Image - Both Mobile & Desktop */}
-      <div className="relative px-4 sm:px-6 lg:px-8 py-24 md:py-32 overflow-hidden" style={{ position: 'relative', minHeight: '500px' }}>
+      <div className="relative px-4 sm:px-6 lg:px-8 py-12 md:py-20 overflow-hidden" style={{ position: 'relative', minHeight: '300px' }}>
         {/* Background Image - Extends to edges */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
           <img 
@@ -55,10 +55,10 @@ const Verticals = () => {
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto text-center" style={{ zIndex: 1 }}>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-3" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
             Premium Food Products<br className="hidden md:block" />
           </h1>
-          <p className="text-white text-base md:text-xl max-w-3xl mx-auto mb-8" style={{ textShadow: '1px 1px 6px rgba(0,0,0,0.7)' }}>
+          <p className="text-white text-sm md:text-lg max-w-3xl mx-auto mb-6" style={{ textShadow: '1px 1px 6px rgba(0,0,0,0.7)' }}>
           Supplier of quality groceries, frozen vegetables, and processed foods
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto max-w-full">
@@ -77,13 +77,13 @@ const Verticals = () => {
       </div>
 
       {/* Product Verticals - Hero Section for Both Mobile & Desktop */}
-      <div className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-white">
+      <div className="px-4 sm:px-6 lg:px-8 py-8 md:py-12 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Our Product Categories</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900">Our Product Categories</h2>
             <Link to="/products" className="text-sm md:text-base text-primary-700 font-semibold hover:text-primary-800">View All →</Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {verticals.map((vertical, index) => (
               <motion.div
                 key={index}
@@ -95,7 +95,7 @@ const Verticals = () => {
                 <Link to="/products">
                   <div className="bg-white rounded-2xl overflow-hidden border-2 border-primary-100 hover:border-primary-400 hover:shadow-xl transition-all duration-300">
                     {/* Product Image */}
-                    <div className="relative h-64 overflow-hidden bg-gray-50">
+                    <div className="relative h-48 md:h-56 overflow-hidden bg-gray-50">
                       <img 
                         src={vertical.image} 
                         alt={vertical.title}
