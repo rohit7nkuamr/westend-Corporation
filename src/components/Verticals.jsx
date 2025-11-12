@@ -51,14 +51,16 @@ const Verticals = () => {
             alt="Fresh Food Background"
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
+          {/* Dark Overlay for Better Text Readability */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)' }} />
         </div>
 
         {/* Hero Content */}
         <div className="relative max-w-7xl mx-auto text-center" style={{ zIndex: 1 }}>
-          <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1.5" style={{ textShadow: '2px 2px 12px rgba(0,0,0,0.9)' }}>
+          <h1 className="text-lg md:text-2xl lg:text-3xl font-bold text-white mb-1.5">
             Premium Food Products
           </h1>
-          <p className="text-white text-xs md:text-sm max-w-2xl mx-auto mb-3" style={{ textShadow: '2px 2px 10px rgba(0,0,0,0.9)' }}>
+          <p className="text-white text-xs md:text-sm max-w-2xl mx-auto mb-3">
           Supplier of quality groceries, frozen vegetables, and processed foods
           </p>
           <div className="flex flex-col sm:flex-row gap-2 justify-center items-center w-full sm:w-auto max-w-full">
@@ -79,11 +81,11 @@ const Verticals = () => {
       {/* Product Verticals - Hero Section for Both Mobile & Desktop */}
       <div className="px-3 sm:px-6 lg:px-8 py-3 md:py-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-2 md:mb-3">
+          <div className="flex items-center justify-between mb-1.5 md:mb-2">
             <h2 className="text-sm md:text-lg font-bold text-gray-900">Our Product Categories</h2>
             <Link to="/products" className="text-xs md:text-sm text-primary-700 font-semibold hover:text-primary-800">View All →</Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 [&>*:nth-child(3)]:col-span-2 [&>*:nth-child(3)]:md:col-span-1 [&>*:nth-child(3)]:mx-auto [&>*:nth-child(3)]:max-w-[50%] [&>*:nth-child(3)]:md:max-w-none">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 [&>*:nth-child(3)]:col-span-2 [&>*:nth-child(3)]:md:col-span-1 [&>*:nth-child(3)]:mx-auto [&>*:nth-child(3)]:max-w-[50%] [&>*:nth-child(3)]:md:max-w-none items-stretch">
             {verticals.map((vertical, index) => (
               <motion.div
                 key={index}
@@ -93,9 +95,9 @@ const Verticals = () => {
                 className="group"
               >
                 <Link to="/products">
-                  <div className="bg-white rounded-lg md:rounded-xl overflow-hidden border-2 border-primary-100 hover:border-primary-400 hover:shadow-xl transition-all duration-300">
+                  <div className="bg-white rounded-lg md:rounded-xl overflow-hidden border-2 border-primary-100 hover:border-primary-400 hover:shadow-xl transition-all duration-300 flex flex-col h-full">
                     {/* Product Image */}
-                    <div className="relative h-32 md:h-44 overflow-hidden bg-gray-50">
+                    <div className="relative h-28 md:h-40 overflow-hidden bg-gray-50 flex-shrink-0">
                       <img 
                         src={vertical.image} 
                         alt={vertical.title}
@@ -110,12 +112,12 @@ const Verticals = () => {
                     </div>
                     
                     {/* Product Info */}
-                    <div className="p-2 md:p-4">
+                    <div className="p-2 md:p-4 flex flex-col flex-grow">
                       <h3 className="text-sm md:text-lg font-bold text-gray-900 mb-1.5 md:mb-2">{vertical.title}</h3>
                       <p className="text-gray-600 mb-2 md:mb-3 text-xs leading-snug line-clamp-2">{vertical.description}</p>
                       
                       {/* Product List */}
-                      <div className="space-y-0.5 md:space-y-1 mb-2 md:mb-3">
+                      <div className="space-y-0.5 md:space-y-1 mb-2 md:mb-3 flex-grow">
                         {vertical.products.slice(0, 2).map((product, idx) => (
                           <div key={idx} className="flex items-start text-xs text-gray-600">
                             <div className={`w-1 h-1 rounded-full bg-gradient-to-r ${vertical.gradient} mr-1.5 flex-shrink-0 mt-1`} />
@@ -133,7 +135,7 @@ const Verticals = () => {
                       </div>
                       
                       {/* CTA Button */}
-                      <button className="w-full bg-primary-600 hover:bg-primary-700 border border-primary-500 text-white py-1.5 md:py-2 rounded-md font-semibold transition-all duration-300 hover:shadow-lg text-xs md:text-sm">
+                      <button className="w-full bg-primary-500 hover:bg-primary-600 border border-primary-400 text-white py-1.5 md:py-2 rounded-md font-medium transition-all duration-300 hover:shadow-md text-xs md:text-sm mt-auto">
                         Request Quote
                       </button>
                     </div>
