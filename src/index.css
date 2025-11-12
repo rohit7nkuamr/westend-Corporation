@@ -13,6 +13,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Ensure proper stacking context */
+#root {
+  position: relative;
+  z-index: 0;
 }
 
 /* Hide scrollbar for horizontal scroll sections */

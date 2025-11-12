@@ -28,9 +28,9 @@ const Navbar = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
-      }`}
+      transition={{ duration: 0.3 }}
+      style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }}
+      className="w-full bg-white shadow-md"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
@@ -99,15 +99,19 @@ const Navbar = () => {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-white border-t border-neutral-200"
+          className="md:hidden bg-white border-t border-gray-200 shadow-lg"
         >
-          <div className="px-4 pt-2 pb-4 space-y-3">
+          <div className="px-4 pt-3 pb-4 space-y-2">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block text-neutral-700 hover:text-accent-600 transition-colors py-2 font-medium"
+                className={`block py-3 px-4 rounded-lg font-medium transition-colors ${
+                  location.pathname === link.href
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
               >
                 {link.name}
               </Link>
@@ -115,7 +119,7 @@ const Navbar = () => {
             <Link
               to="/contact"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-all duration-300 text-center font-medium border-2 border-primary-500"
+              className="block w-full bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-all duration-300 text-center font-medium border-2 border-primary-500 mt-3"
             >
               Request Quote
             </Link>

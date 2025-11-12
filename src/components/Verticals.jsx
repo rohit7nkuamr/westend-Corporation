@@ -41,34 +41,34 @@ const Verticals = () => {
   ]
 
   return (
-    <section id="home" className="relative bg-white pt-20">
+    <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
       {/* Hero Header with Background Image - Both Mobile & Desktop */}
-      <div className="relative px-4 sm:px-6 lg:px-8 py-16 md:py-24 overflow-hidden">
-        {/* Background Image - No Overlay */}
-        <div className="absolute inset-0 z-0">
+      <div className="relative px-4 sm:px-6 lg:px-8 py-24 md:py-32 overflow-hidden" style={{ position: 'relative', minHeight: '500px' }}>
+        {/* Background Image - Extends to edges */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0 }}>
           <img 
             src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2000&auto=format&fit=crop"
             alt="Fresh Food Background"
-            className="w-full h-full object-cover"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-7xl mx-auto text-center">
+        <div className="relative max-w-7xl mx-auto text-center" style={{ zIndex: 1 }}>
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
             Premium Food Products<br className="hidden md:block" />
           </h1>
           <p className="text-white text-base md:text-xl max-w-3xl mx-auto mb-8" style={{ textShadow: '1px 1px 6px rgba(0,0,0,0.7)' }}>
           Supplier of quality groceries, frozen vegetables, and processed foods
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/contact">
-              <button className="bg-primary-600 text-white px-10 py-4 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-base md:text-lg border-2 border-primary-500">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center w-full sm:w-auto px-4 sm:px-0">
+            <Link to="/contact" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto bg-primary-600 text-white px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base md:text-lg border-2 border-primary-500">
                 Request Quote
               </button>
             </Link>
-            <Link to="/products">
-              <button className="bg-white/95 backdrop-blur-sm border-2 border-primary-600 text-primary-800 px-10 py-4 rounded-lg font-semibold hover:bg-primary-50 transition-all text-base md:text-lg shadow-lg">
+            <Link to="/products" className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto bg-white text-primary-700 px-8 sm:px-10 py-3 sm:py-4 rounded-lg font-semibold hover:bg-primary-50 transition-all text-sm sm:text-base md:text-lg shadow-lg border-2 border-white">
                 View Products
               </button>
             </Link>
