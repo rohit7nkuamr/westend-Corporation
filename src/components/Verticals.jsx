@@ -7,6 +7,8 @@ const Verticals = () => {
   const scrollContainerRef = useRef(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
 
   // Keyboard navigation for horizontal scroll
   const handleKeyDown = (e) => {
@@ -43,6 +45,34 @@ const Verticals = () => {
     setIsAutoPlaying(false)
   }
 
+  // Touch handlers for swipe gestures
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe) {
+      nextSlide()
+    }
+    if (isRightSwipe) {
+      prevSlide()
+    }
+
+    // Reset
+    setTouchStart(0)
+    setTouchEnd(0)
+  }
+
   const verticals = [
     {
       icon: Wheat,
@@ -50,6 +80,7 @@ const Verticals = () => {
       description: 'Certified organic pulses, premium grains, authentic spice blends, and traditional jaggery products sourced from trusted farms',
       gradient: 'from-amber-500 to-orange-600',
       bgGradient: 'from-primary-50 to-amber-50',
+      // Change this to your own image: '/images/groceries.jpg'
       image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&h=600&fit=crop',
       products: ['Certified Organic Pulses', 'Premium Quality Grains', 'Authentic Spice Blends', 'Traditional Jaggery'],
       secondaryIcon: Leaf,
@@ -62,6 +93,7 @@ const Verticals = () => {
       description: 'IQF (Individually Quick Frozen) vegetables processed at peak freshness using advanced cold chain technology to preserve nutrients',
       gradient: 'from-emerald-500 to-teal-600',
       bgGradient: 'from-emerald-50 to-teal-50',
+      // Change this to your own image: '/images/frozen-vegetables.jpg'
       image: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=800&h=600&fit=crop',
       products: ['IQF Cut Vegetables', 'Whole Frozen Vegetables', 'Ready-to-Cook Range', 'Organic Frozen Options'],
       secondaryIcon: Package,
@@ -74,6 +106,7 @@ const Verticals = () => {
       description: 'FSSAI certified processed foods manufactured in state-of-the-art facilities maintaining international hygiene standards',
       gradient: 'from-slate-500 to-blue-600',
       bgGradient: 'from-gray-50 to-neutral-50',
+      // Change this to your own image: '/images/processed-foods.jpg'
       image: 'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?w=800&h=600&fit=crop',
       products: ['Canned Vegetables', 'Ready-to-Eat Meals', 'Frozen Snacks', 'Dairy Products'],
       secondaryIcon: ShoppingBasket,
@@ -88,7 +121,12 @@ const Verticals = () => {
       <div className="relative h-[calc(100vh-64px)] overflow-hidden">
         
         {/* MOBILE VIEW - Slider */}
-        <div className="md:hidden relative h-full bg-black">
+        <div 
+          className="md:hidden relative h-full bg-black"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <AnimatePresence initial={false}>
             <motion.div
               key={currentSlide}
@@ -98,6 +136,17 @@ const Verticals = () => {
               transition={{ 
                 duration: 1,
                 ease: [0.43, 0.13, 0.23, 0.96]
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = Math.abs(offset.x) * velocity.x
+                if (swipe < -500) {
+                  nextSlide()
+                } else if (swipe > 500) {
+                  prevSlide()
+                }
               }}
               className="absolute inset-0"
             >
