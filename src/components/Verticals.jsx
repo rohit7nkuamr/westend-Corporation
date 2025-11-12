@@ -9,57 +9,66 @@ const Verticals = () => {
       icon: Wheat,
       title: 'Groceries & Staples',
       description: 'Certified organic pulses, premium grains, authentic spice blends, and traditional jaggery products sourced from trusted farms',
-      gradient: 'from-primary-600 to-primary-700',
-      bgGradient: 'from-primary-50 to-blue-50',
+      gradient: 'from-primary-500 to-primary-700',
+      bgGradient: 'from-primary-50 to-amber-50',
       image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&h=400&fit=crop',
       products: ['Certified Organic Pulses', 'Premium Quality Grains', 'Authentic Spice Blends', 'Traditional Jaggery'],
       secondaryIcon: Leaf,
-      buttonColor: 'bg-primary-700 hover:bg-primary-800'
+      buttonColor: 'bg-primary-600 hover:bg-primary-700 border-2 border-primary-500'
     },
     {
       icon: Snowflake,
       title: 'Frozen Vegetables',
       description: 'IQF (Individually Quick Frozen) vegetables processed at peak freshness using advanced cold chain technology to preserve nutrients',
-      gradient: 'from-green-600 to-green-700',
-      bgGradient: 'from-green-50 to-emerald-50',
+      gradient: 'from-accent-600 to-accent-800',
+      bgGradient: 'from-accent-50 to-emerald-50',
       image: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=600&h=400&fit=crop',
       products: ['IQF Cut Vegetables', 'Whole Frozen Vegetables', 'Ready-to-Cook Range', 'Exotic Varieties'],
       secondaryIcon: Package,
-      buttonColor: 'bg-green-600 hover:bg-green-700'
+      buttonColor: 'bg-accent-700 hover:bg-accent-800 border-2 border-accent-600'
     },
     {
       icon: Box,
       title: 'Processed Foods',
       description: 'FSSAI certified processed foods manufactured in state-of-the-art facilities maintaining international hygiene standards',
-      gradient: 'from-neutral-600 to-neutral-700',
-      bgGradient: 'from-neutral-50 to-gray-50',
+      gradient: 'from-gray-700 to-gray-800',
+      bgGradient: 'from-gray-50 to-neutral-50',
       image: 'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?w=600&h=400&fit=crop',
       products: ['Canned Vegetables', 'Ready-to-Eat Meals', 'Frozen Snacks', 'Dairy Products'],
       secondaryIcon: ShoppingBasket,
-      buttonColor: 'bg-neutral-700 hover:bg-neutral-800'
+      buttonColor: 'bg-gray-700 hover:bg-gray-800 border-2 border-gray-600'
     },
   ]
 
   return (
     <section id="home" className="relative bg-white pt-20">
-      {/* Hero Header - Both Mobile & Desktop */}
-      <div className="px-4 sm:px-6 lg:px-8 py-8 md:py-12 bg-gradient-to-br from-primary-50 to-white">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="text-primary-700 font-semibold text-sm md:text-base mb-3 uppercase tracking-wider">Westend Corporation • B2B Food Supplier</p>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4">
+      {/* Hero Header with Background Image - Both Mobile & Desktop */}
+      <div className="relative px-4 sm:px-6 lg:px-8 py-16 md:py-24 overflow-hidden">
+        {/* Background Image - No Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2000&auto=format&fit=crop"
+            alt="Fresh Food Background"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-7xl mx-auto text-center">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4" style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}>
             Premium Food Products<br className="hidden md:block" />
           </h1>
-          <p className="text-gray-600 text-base md:text-xl max-w-3xl mx-auto mb-6">
-            Supplier of quality groceries, frozen vegetables, and processed foods
+          <p className="text-white text-base md:text-xl max-w-3xl mx-auto mb-8" style={{ textShadow: '1px 1px 6px rgba(0,0,0,0.7)' }}>
+          Supplier of quality groceries, frozen vegetables, and processed foods
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to="/contact">
-              <button className="bg-accent-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-accent-700 transition-all shadow-md">
+              <button className="bg-primary-600 text-white px-10 py-4 rounded-lg font-semibold hover:bg-primary-700 transition-all shadow-lg hover:shadow-xl text-base md:text-lg border-2 border-primary-500">
                 Request Quote
               </button>
             </Link>
             <Link to="/products">
-              <button className="bg-white border-2 border-primary-700 text-primary-700 px-8 py-3 rounded-lg font-semibold hover:bg-primary-50 transition-all">
+              <button className="bg-white/95 backdrop-blur-sm border-2 border-primary-600 text-primary-800 px-10 py-4 rounded-lg font-semibold hover:bg-primary-50 transition-all text-base md:text-lg shadow-lg">
                 View Products
               </button>
             </Link>
@@ -84,7 +93,7 @@ const Verticals = () => {
                 className="group"
               >
                 <Link to="/products">
-                  <div className="bg-white rounded-2xl overflow-hidden border-2 border-gray-100 hover:border-primary-500 hover:shadow-xl transition-all duration-300">
+                  <div className="bg-white rounded-2xl overflow-hidden border-2 border-primary-100 hover:border-primary-400 hover:shadow-xl transition-all duration-300">
                     {/* Product Image */}
                     <div className="relative h-64 overflow-hidden bg-gray-50">
                       <img 
@@ -129,16 +138,16 @@ const Verticals = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="px-4 sm:px-6 lg:px-8 py-16 bg-gray-50">
+      <div className="px-4 sm:px-6 lg:px-8 py-16 bg-gradient-to-br from-primary-50 via-amber-50 to-primary-50">
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
             Need Custom Solutions?
           </h3>
-          <p className="text-gray-600 mb-8 text-lg">
+          <p className="text-gray-700 mb-8 text-lg">
             We offer tailored product solutions for bulk orders and specific business requirements
           </p>
           <Link to="/contact">
-            <button className="bg-accent-600 text-white px-10 py-4 rounded-lg text-lg font-semibold hover:bg-accent-700 hover:shadow-xl transition-all duration-300">
+            <button className="bg-primary-600 text-white px-10 py-4 rounded-lg text-lg font-semibold hover:bg-primary-700 hover:shadow-xl transition-all duration-300 border-2 border-primary-500">
               Contact Us for Bulk Orders
             </button>
           </Link>

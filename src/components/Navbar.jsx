@@ -29,11 +29,11 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'glass-dark shadow-lg' : 'glass-dark'
+        isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -41,16 +41,19 @@ const Navbar = () => {
             transition={{ delay: 0.2 }}
             className="flex items-center"
           >
-            <Link to="/">
+            <Link to="/" className="flex items-center gap-2 md:gap-3">
+              {/* Logo Image */}
+              <img 
+                src="/logo.png" 
+                alt="Westend Corporation Logo" 
+                className="h-10 md:h-14 w-auto object-contain"
+              />
+              {/* Company Name - Show on mobile too */}
               <div>
-                <h1 className={`text-xl md:text-2xl font-bold transition-colors ${
-                  isScrolled ? 'text-primary-900' : 'text-white'
-                }`}>
+                <h1 className="text-base md:text-xl font-bold text-gray-800" style={{ fontFamily: 'serif' }}>
                   Westend Corporation
                 </h1>
-                <p className={`text-xs hidden md:block transition-colors ${
-                  isScrolled ? 'text-neutral-600' : 'text-gray-300'
-                }`}>Premium Food Products</p>
+                <p className="text-xs text-primary-600 hidden sm:block">Premium Food Products</p>
               </div>
             </Link>
           </motion.div>
@@ -62,7 +65,9 @@ const Navbar = () => {
                 key={link.name}
                 to={link.href}
                 className={`transition-colors duration-300 font-medium ${
-                  isScrolled ? 'text-neutral-700 hover:text-accent-600' : 'text-white hover:text-accent-400'
+                  location.pathname === link.href 
+                    ? 'text-primary-700 border-b-2 border-primary-700' 
+                    : 'text-gray-700 hover:text-primary-700'
                 }`}
               >
                 {link.name}
@@ -70,7 +75,7 @@ const Navbar = () => {
             ))}
             <Link
               to="/contact"
-              className="bg-accent-600 text-white px-6 py-2.5 rounded-lg hover:bg-accent-700 hover:shadow-lg transition-all duration-300 font-medium"
+              className="bg-primary-600 text-white px-6 py-2.5 rounded-lg hover:bg-primary-700 hover:shadow-lg transition-all duration-300 font-medium border-2 border-primary-500"
             >
               Request Quote
             </Link>
@@ -80,9 +85,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`transition-colors ${
-                isScrolled ? 'text-neutral-700 hover:text-accent-600' : 'text-white hover:text-accent-400'
-              }`}
+              className="text-gray-700 hover:text-primary-700 transition-colors"
             >
               {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -112,7 +115,7 @@ const Navbar = () => {
             <Link
               to="/contact"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full bg-accent-600 text-white px-6 py-2 rounded-lg hover:bg-accent-700 transition-all duration-300 text-center font-medium"
+              className="block w-full bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-all duration-300 text-center font-medium border-2 border-primary-500"
             >
               Request Quote
             </Link>
