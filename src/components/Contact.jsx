@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send } from 'lucide-react'
+import { submitContactForm } from '../services/api'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -10,13 +11,24 @@ const Contact = () => {
     company: '',
     message: ''
   })
+  const [submitting, setSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState(null)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // TODO: Connect to Django backend
-    console.log('Form submitted:', formData)
-    alert('Thank you for your inquiry! We will get back to you soon.')
-    setFormData({ name: '', email: '', phone: '', company: '', message: '' })
+    setSubmitting(true)
+    setSubmitStatus(null)
+
+    try {
+      await submitContactForm(formData)
+      setSubmitStatus({ type: 'success', message: 'Thank you for your inquiry! We will get back to you soon.' })
+      setFormData({ name: '', email: '', phone: '', company: '', message: '' })
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setSubmitStatus({ type: 'error', message: 'Failed to submit form. Please try again or contact us directly.' })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handleChange = (e) => {
@@ -206,19 +218,50 @@ const Contact = () => {
                   />
                 </div>
 
+                {/* Submit Status Message */}
+                {submitStatus && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`p-4 rounded-xl ${
+                      submitStatus.type === 'success' 
+                        ? 'bg-green-50 text-green-800 border border-green-200' 
+                        : 'bg-red-50 text-red-800 border border-red-200'
+                    }`}
+                  >
+                    {submitStatus.message}
+                  </motion.div>
+                )}
+
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white py-4 rounded-xl font-semibold hover:shadow-2xl transition-all duration-300 flex items-center justify-center group"
+                  disabled={submitting}
+                  whileHover={{ scale: submitting ? 1 : 1.02 }}
+                  whileTap={{ scale: submitting ? 1 : 0.98 }}
+                  className={`w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white py-4 rounded-xl font-semibold hover:shadow-2xl transition-all duration-300 flex items-center justify-center group ${
+                    submitting ? 'opacity-70 cursor-not-allowed' : ''
+                  }`}
                 >
-                  Send Message
-                  <motion.div
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    <Send className="ml-2" size={20} />
-                  </motion.div>
+                  {submitting ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                      />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <motion.div
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <Send className="ml-2" size={20} />
+                      </motion.div>
+                    </>
+                  )}
                 </motion.button>
               </div>
             </form>

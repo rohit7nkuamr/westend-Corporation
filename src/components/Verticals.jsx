@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ShoppingBasket, Snowflake, Package, Wheat, Leaf, Box, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { getVerticals } from '../services/api'
 
 const Verticals = () => {
   const scrollContainerRef = useRef(null)
@@ -9,6 +10,9 @@ const Verticals = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [touchStart, setTouchStart] = useState(0)
   const [touchEnd, setTouchEnd] = useState(0)
+  const [verticals, setVerticals] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   // Keyboard navigation for horizontal scroll
   const handleKeyDown = (e) => {
@@ -73,47 +77,93 @@ const Verticals = () => {
     setTouchEnd(0)
   }
 
-  const verticals = [
-    {
-      icon: Wheat,
-      title: 'Groceries & Staples',
-      description: 'Certified organic pulses, premium grains, authentic spice blends, and traditional jaggery products sourced from trusted farms',
-      gradient: 'from-amber-500 to-orange-600',
-      bgGradient: 'from-primary-50 to-amber-50',
-      // Change this to your own image: '/images/groceries.jpg'
-      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&h=600&fit=crop',
-      products: ['Certified Organic Pulses', 'Premium Quality Grains', 'Authentic Spice Blends', 'Traditional Jaggery'],
-      secondaryIcon: Leaf,
-      buttonColor: 'from-amber-500 to-orange-600',
-      buttonText: 'REQUEST QUOTE'
-    },
-    {
-      icon: Snowflake,
-      title: 'Frozen Vegetables',
-      description: 'IQF (Individually Quick Frozen) vegetables processed at peak freshness using advanced cold chain technology to preserve nutrients',
-      gradient: 'from-emerald-500 to-teal-600',
-      bgGradient: 'from-emerald-50 to-teal-50',
-      // Change this to your own image: '/images/frozen-vegetables.jpg'
-      image: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=800&h=600&fit=crop',
-      products: ['IQF Cut Vegetables', 'Whole Frozen Vegetables', 'Ready-to-Cook Range', 'Organic Frozen Options'],
-      secondaryIcon: Package,
-      buttonColor: 'from-emerald-500 to-teal-600',
-      buttonText: 'REQUEST QUOTE'
-    },
-    {
-      icon: Box,
-      title: 'Processed Foods',
-      description: 'FSSAI certified processed foods manufactured in state-of-the-art facilities maintaining international hygiene standards',
-      gradient: 'from-slate-500 to-blue-600',
-      bgGradient: 'from-gray-50 to-neutral-50',
-      // Change this to your own image: '/images/processed-foods.jpg'
-      image: 'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?w=800&h=600&fit=crop',
-      products: ['Canned Vegetables', 'Ready-to-Eat Meals', 'Frozen Snacks', 'Dairy Products'],
-      secondaryIcon: ShoppingBasket,
-      buttonColor: 'from-slate-500 to-blue-600',
-      buttonText: 'REQUEST QUOTE'
-    },
-  ]
+  // Icon mapping for backend data
+  const iconMap = {
+    'Wheat': Wheat,
+    'Snowflake': Snowflake,
+    'Box': Box,
+    'Leaf': Leaf,
+    'Package': Package,
+    'ShoppingBasket': ShoppingBasket
+  }
+
+  // Fetch verticals from Django backend
+  useEffect(() => {
+    const fetchVerticals = async () => {
+      try {
+        setLoading(true)
+        const data = await getVerticals()
+        // Map icon names to actual icon components
+        const mappedData = data.map(vertical => ({
+          ...vertical,
+          icon: iconMap[vertical.icon_name] || Wheat,
+          secondaryIcon: iconMap[vertical.secondary_icon_name] || Leaf
+        }))
+        setVerticals(mappedData)
+        setError(null)
+      } catch (err) {
+        console.error('Error fetching verticals:', err)
+        setError('Failed to load categories. Please try again later.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchVerticals()
+  }, [])
+
+  // Loading state
+  if (loading) {
+    return (
+      <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
+        <div className="relative h-[calc(100vh-64px)] overflow-hidden bg-gradient-to-br from-amber-900/20 via-gray-900 to-emerald-900/20 flex items-center justify-center">
+          <div className="text-center">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full mx-auto mb-4"
+            />
+            <p className="text-white text-lg">Loading...</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
+        <div className="relative h-[calc(100vh-64px)] overflow-hidden bg-gradient-to-br from-amber-900/20 via-gray-900 to-emerald-900/20 flex items-center justify-center">
+          <div className="text-center px-4">
+            <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-red-500 text-3xl">!</span>
+            </div>
+            <p className="text-white text-lg mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  // No data state
+  if (!verticals || verticals.length === 0) {
+    return (
+      <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
+        <div className="relative h-[calc(100vh-64px)] overflow-hidden bg-gradient-to-br from-amber-900/20 via-gray-900 to-emerald-900/20 flex items-center justify-center">
+          <div className="text-center px-4">
+            <p className="text-white text-lg">No categories available</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>

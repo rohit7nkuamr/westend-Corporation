@@ -1,20 +1,96 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Search, Filter, SlidersHorizontal, Package } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { getProducts, getVerticals } from '../services/api'
 
 const ProductsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('All Products')
   const [searchQuery, setSearchQuery] = useState('')
+  const [products, setProducts] = useState([])
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  const categories = [
-    { name: 'All Products', count: 42 },
-    { name: 'Groceries & Staples', count: 16 },
-    { name: 'Frozen Vegetables', count: 14 },
-    { name: 'Processed Foods', count: 12 },
-  ]
+  // Fetch products and categories from Django backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        const [productsData, verticalsData] = await Promise.all([
+          getProducts(),
+          getVerticals()
+        ])
+        
+        setProducts(productsData)
+        
+        // Build categories with counts
+        const allCategories = [
+          { name: 'All Products', count: productsData.length }
+        ]
+        verticalsData.forEach(vertical => {
+          const count = productsData.filter(p => p.vertical === vertical.id).length
+          allCategories.push({ name: vertical.title, count, id: vertical.id })
+        })
+        setCategories(allCategories)
+        
+        setError(null)
+      } catch (err) {
+        console.error('Error fetching data:', err)
+        setError('Failed to load products. Please try again later.')
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  const products = [
+    fetchData()
+  }, [])
+
+  // Filter products based on category and search
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedCategory === 'All Products' || product.vertical_name === selectedCategory
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesCategory && matchesSearch
+  })
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-amber-50/30 to-primary-50">
+        <div className="max-w-7xl mx-auto py-20 text-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full mx-auto mb-4"
+          />
+          <p className="text-gray-600 text-lg">Loading products...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen pt-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-amber-50/30 to-primary-50">
+        <div className="max-w-7xl mx-auto py-20 text-center">
+          <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-red-500 text-3xl">!</span>
+          </div>
+          <p className="text-gray-600 text-lg mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Dummy data for reference (remove after backend is ready)
+  const dummyProducts = [
     {
       id: 1,
       name: 'Organic Kabuli Chana',
@@ -155,11 +231,7 @@ const ProductsPage = () => {
     },
   ]
 
-  const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === 'All Products' || product.category === selectedCategory
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesCategory && matchesSearch
-  })
+  // Old filter logic removed - now using the one above that works with backend data
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
