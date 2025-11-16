@@ -9,20 +9,19 @@ const Footer = () => {
     company: [
       { name: 'About Us', href: '#about' },
       { name: 'Our Products', href: '#products' },
-      { name: 'Quality Standards', href: '#' },
-      { name: 'Certifications', href: '#' }
+      { name: 'Why Choose Us', href: '#why-choose-us' },
+      { name: 'Certifications', href: '/certifications' }
     ],
     products: [
-      { name: 'Groceries', href: '#products' },
+      { name: 'Groceries & Staples', href: '#products' },
       { name: 'Frozen Vegetables', href: '#products' },
-      { name: 'Processed Food', href: '#products' },
-      { name: 'Organic Range', href: '#products' }
+      { name: 'Processed Foods', href: '#products' }
     ],
     support: [
       { name: 'Contact Us', href: '#contact' },
-      { name: 'FAQs', href: '#' },
-      { name: 'Shipping Info', href: '#' },
-      { name: 'Terms & Conditions', href: '#' }
+      { name: 'Request Quote', href: '#contact' },
+      { name: 'Privacy Policy', href: '/privacy' },
+      { name: 'Terms & Conditions', href: '/terms' }
     ]
   }
 
@@ -34,7 +33,7 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+    <footer className="bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -45,7 +44,7 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent mb-4">
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-400 via-primary-400 to-orange-400 bg-clip-text text-transparent mb-4">
               Westend Corporation
             </h3>
             <p className="text-gray-400 mb-4 leading-relaxed">
@@ -54,15 +53,32 @@ const Footer = () => {
             <div className="space-y-2 text-sm text-gray-400">
               <div className="flex items-start">
                 <MapPin className="mr-2 flex-shrink-0 mt-1" size={16} />
-                <span>B-106, Okhla Industrial Area, Phase 1, Delhi - 110020</span>
+                <a
+                  href="https://www.google.com/maps/place/Westend+corporation/@28.5420132,77.2756653,383m/data=!3m1!1e3!4m10!1m2!2m1!1sX-57+Phase-II+Okhla,+Delhi+110020!3m6!1s0x390ce30010f472fb:0x1456fe72f05194a7!8m2!3d28.5420132!4d77.2780471!15sCiFYLTU3IFBoYXNlLUlJIE9raGxhLCBEZWxoaSAxMTAwMjCSAQl3YXJlaG91c2WqAWIKDS9nLzExaDJkNnJueXkQASoIIgR4IDU3KAAyHxABIhvY5h26iiHHI4RCMG_ABwDAu3WfLw6-2GboZKsyJBACIiB4IDU3IHBoYXNlIGlpIG9raGxhIGRlbGhpIDExMDAyMOABAA!16s%2Fg%2F11w7fmnqrq?hl=en&entry=ttu&g_ep=EgoyMDI1MTExMi4wIKXMDSoASAFQAw%3D%3D"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-amber-400 transition-colors"
+                >
+                  X-57 Phase-II Okhla, Delhi 110020
+                </a>
               </div>
               <div className="flex items-center">
                 <Phone className="mr-2 flex-shrink-0" size={16} />
-                <span>+91 XXX XXX XXXX</span>
+                <a
+                  href="tel:+919311933481"
+                  className="hover:text-amber-400 transition-colors"
+                >
+                  +91 93119 33481
+                </a>
               </div>
               <div className="flex items-center">
                 <Mail className="mr-2 flex-shrink-0" size={16} />
-                <span>info@westendcorp.com</span>
+                <a
+                  href="mailto:info@westendcorp.com"
+                  className="hover:text-amber-400 transition-colors"
+                >
+                  info@westendcorp.com
+                </a>
               </div>
             </div>
           </motion.div>
@@ -80,7 +96,7 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-green-400 transition-colors duration-300"
+                    className="text-gray-400 hover:text-amber-400 transition-colors duration-300"
                   >
                     {link.name}
                   </a>
@@ -102,7 +118,7 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-green-400 transition-colors duration-300"
+                    className="text-gray-400 hover:text-amber-400 transition-colors duration-300"
                   >
                     {link.name}
                   </a>
@@ -124,7 +140,7 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href={link.href}
-                    className="text-gray-400 hover:text-green-400 transition-colors duration-300"
+                    className="text-gray-400 hover:text-amber-400 transition-colors duration-300"
                   >
                     {link.name}
                   </a>
@@ -165,16 +181,16 @@ const Footer = () => {
               © {currentYear} Westend Corporation Pvt. Ltd. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-green-400 transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-green-400 transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-green-400 transition-colors">Cookie Policy</a>
+              <a href="/privacy" className="hover:text-amber-400 transition-colors">Privacy Policy</a>
+              <a href="/terms" className="hover:text-amber-400 transition-colors">Terms of Service</a>
+              <a href="#contact" className="hover:text-amber-400 transition-colors">Contact</a>
             </div>
           </div>
         </motion.div>
       </div>
 
       {/* Decorative Bottom Gradient */}
-      <div className="h-1 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500" />
+      <div className="h-1 bg-gradient-to-r from-amber-500 via-primary-500 to-orange-500" />
     </footer>
   )
 }

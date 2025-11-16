@@ -7,6 +7,7 @@ import ProductsPage from './pages/ProductsPage'
 import ProductDetail from './pages/ProductDetail'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
+import CertificationsPage from './pages/CertificationsPage'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/certifications" element={<CertificationsPage />} />
           </Routes>
         </main>
         <Footer />

@@ -43,7 +43,7 @@ const WhyChooseUs = () => {
   ]
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <section id="why-choose-us" className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 via-white to-primary-50/50" />
       
