@@ -1,5 +1,6 @@
 // API Service for Django Backend Integration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+// In Vite, env vars are exposed via import.meta.env and must be prefixed with VITE_
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
 // Helper function for API calls
 const apiCall = async (endpoint, options = {}) => {

@@ -42,7 +42,7 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Phone',
-      details: '+91 XXX XXX XXXX',
+      details: '+91 93119 33481',
       color: 'from-amber-500 to-orange-600'
     },
     {
@@ -54,7 +54,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: 'Address',
-      details: 'B-106, Okhla Industrial Area, Phase 1, Delhi - 110020',
+      details: 'X-57 Phase-II Okhla, Delhi 110020',
       color: 'from-slate-500 to-blue-600'
     }
   ]
@@ -113,34 +113,46 @@ const Contact = () => {
                     </motion.div>
                     <div>
                       <h3 className="font-semibold text-gray-800 mb-1">{info.title}</h3>
-                      <p className="text-gray-600">{info.details}</p>
+                      {info.title === 'Phone' ? (
+                        <a
+                          href="tel:+919311933481"
+                          className="block font-medium text-gray-800 hover:text-primary-600 transition-colors text-sm md:text-base"
+                        >
+                          +91 93119 33481
+                        </a>
+                      ) : info.title === 'Address' ? (
+                        <a
+                          href="https://www.google.com/maps/place/Westend+corporation/@28.5420132,77.2756653,383m/data=!3m1!1e3!4m10!1m2!2m1!1sX-57+Phase-II+Okhla,+Delhi+110020!3m6!1s0x390ce30010f472fb:0x1456fe72f05194a7!8m2!3d28.5420132!4d77.2780471!15sCiFYLTU3IFBoYXNlLUlJIE9raGxhLCBEZWxoaSAxMTAwMjCSAQl3YXJlaG91c2WqAWIKDS9nLzExaDJkNnJueXkQASoIIgR4IDU3KAAyHxABIhvY5h26iiHHI4RCMG_ABwDAu3WfLw6-2GboZKsyJBACIiB4IDU3IHBoYXNlIGlpIG9raGxhIGRlbGhpIDExMDAyMOABAA!16s%2Fg%2F11w7fmnqrq?hl=en&entry=ttu&g_ep=EgoyMDI1MTExMi4wIKXMDSoASAFQAw%3D%3D"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-gray-600 hover:text-primary-600 transition-colors text-sm md:text-base"
+                        >
+                          {info.details}
+                        </a>
+                      ) : (
+                        <p className="text-gray-600">{info.details}</p>
+                      )}
                     </div>
                   </div>
                 </motion.div>
               ))}
 
-              {/* Map Placeholder */}
+              {/* Embedded Google Map - Satellite View */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="glass rounded-2xl p-6 h-64 flex items-center justify-center relative overflow-hidden"
+                className="glass rounded-2xl overflow-hidden h-64"
               >
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 5, repeat: Infinity }}
-                  className="absolute inset-0 bg-gradient-to-br from-amber-400 via-primary-400 to-orange-400 opacity-20"
+                <iframe
+                  title="Westend Corporation Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d959.6654389648438!2d77.2780471!3d28.5420132!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce30010f472fb%3A0x1456fe72f05194a7!2sWestend%20corporation!5e1!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full h-full border-0"
+                  allowFullScreen
                 />
-                <div className="relative z-10 text-center">
-                  <motion.div
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    <MapPin className="text-primary-600 mx-auto mb-2" size={48} />
-                  </motion.div>
-                  <p className="text-gray-600 font-medium">Delhi, India</p>
-                </div>
               </motion.div>
             </div>
           </motion.div>
