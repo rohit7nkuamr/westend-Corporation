@@ -1,30 +1,92 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Award, Users, TrendingUp, Heart, Package, CheckCircle } from 'lucide-react'
+import { Award, Users, TrendingUp, Heart, Package, CheckCircle, Shield, Star } from 'lucide-react'
 
 const About = () => {
-  const features = [
-    {
-      icon: Award,
-      title: 'Quality Certified',
-      description: 'All products meet international quality standards'
-    },
-    {
-      icon: Users,
-      title: 'Expert Team',
-      description: 'Experienced professionals ensuring excellence'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Growing Network',
-      description: 'Expanding reach across markets'
-    },
-    {
-      icon: Heart,
-      title: 'Customer First',
-      description: 'Dedicated to customer satisfaction'
+  const [features, setFeatures] = useState([])
+  const [companyInfo, setCompanyInfo] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  
+  // Icon mapping for backend data
+  const iconMap = {
+    'Award': Award,
+    'Users': Users,
+    'TrendingUp': TrendingUp,
+    'Heart': Heart,
+    'Package': Package,
+    'CheckCircle': CheckCircle,
+    'Shield': Shield,
+    'Star': Star
+  }
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        
+        // Fetch features
+        const featuresResponse = await fetch(`${import.meta.env.VITE_API_URL}/features/`)
+        if (!featuresResponse.ok) {
+          throw new Error(`Features API Error: ${featuresResponse.status}`)
+        }
+        const featuresData = await featuresResponse.json()
+        
+        // Map icon names to actual icon components
+        const mappedFeatures = featuresData.map(feature => ({
+          ...feature,
+          icon: iconMap[feature.icon_name] || Package
+        }))
+        
+        setFeatures(mappedFeatures)
+        
+        // Fetch company info
+        const companyResponse = await fetch(`${import.meta.env.VITE_API_URL}/company-info/`)
+        if (!companyResponse.ok) {
+          throw new Error(`Company Info API Error: ${companyResponse.status}`)
+        }
+        const companyData = await companyResponse.json()
+        
+        // If there's at least one company info record, use it
+        if (companyData.length > 0) {
+          setCompanyInfo(companyData[0])
+        }
+        
+        setError(null)
+      } catch (err) {
+        console.error('Error fetching about data:', err)
+        setError('Failed to load about section data')
+        
+        // Fallback to default data
+        setFeatures([
+          {
+            icon: Award,
+            title: 'Quality Certified',
+            description: 'All products meet international quality standards'
+          },
+          {
+            icon: Users,
+            title: 'Expert Team',
+            description: 'Experienced professionals ensuring excellence'
+          },
+          {
+            icon: TrendingUp,
+            title: 'Growing Network',
+            description: 'Expanding reach across markets'
+          },
+          {
+            icon: Heart,
+            title: 'Customer First',
+            description: 'Dedicated to customer satisfaction'
+          }
+        ])
+      } finally {
+        setLoading(false)
+      }
     }
-  ]
+    
+    fetchData()
+  }, [])
 
   return (
     <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-amber-50/30 to-primary-50">
@@ -49,23 +111,19 @@ const About = () => {
               </motion.span>
               <h2 className="text-4xl md:text-5xl font-bold mt-2 mb-6">
                 <span className="bg-gradient-to-r from-amber-600 via-primary-600 to-orange-600 bg-clip-text text-transparent">
-                  Delivering Excellence
+                  {companyInfo ? companyInfo.tagline : 'Delivering Excellence'}
                 </span>
                 <br />
-                <span className="text-gray-800">Since 2010</span>
+                <span className="text-gray-800">Since {companyInfo ? companyInfo.founded_year : '2010'}</span>
               </h2>
             </div>
 
             <p className="text-gray-600 text-lg mb-6 leading-relaxed">
-              Westend Corporation Pvt. Ltd. is a leading B2B exporter and supplier of premium food products, 
-              established in 2010. Headquartered in Delhi's Okhla Industrial Area, we operate state-of-the-art 
-              processing facilities that adhere to international quality and safety standards.
+              {companyInfo ? companyInfo.description : 'Westend Corporation Pvt. Ltd. is a leading B2B exporter and supplier of premium food products, established in 2010. Headquartered in Delhi\'s Okhla Industrial Area, we operate state-of-the-art processing facilities that adhere to international quality and safety standards.'}
             </p>
 
             <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-              Our vertically integrated supply chain, from farm to fork, ensures complete traceability and 
-              quality control. We serve retailers, distributors, food service providers, and institutional 
-              clients across multiple countries, delivering consistent quality and reliable service.
+              {companyInfo ? companyInfo.short_description : 'Our vertically integrated supply chain, from farm to fork, ensures complete traceability and quality control. We serve retailers, distributors, food service providers, and institutional clients across multiple countries, delivering consistent quality and reliable service.'}
             </p>
 
             {/* Features Grid */}

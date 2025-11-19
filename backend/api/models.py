@@ -1,5 +1,47 @@
 from django.db import models
 
+class Feature(models.Model):
+    """Features for the About section"""
+    ICON_CHOICES = [
+        ('Award', 'Award'),
+        ('Users', 'Users'),
+        ('TrendingUp', 'Trending Up'),
+        ('Heart', 'Heart'),
+        ('Package', 'Package'),
+        ('CheckCircle', 'Check Circle'),
+        ('Shield', 'Shield'),
+        ('Star', 'Star'),
+    ]
+    
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    icon_name = models.CharField(max_length=50, choices=ICON_CHOICES)
+    order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['order']
+    
+    def __str__(self):
+        return self.title
+
+class CompanyInfo(models.Model):
+    """Company information for the About section"""
+    name = models.CharField(max_length=200, default='Westend Corporation')
+    tagline = models.CharField(max_length=200, default='Premium Food Products')
+    founded_year = models.IntegerField(default=2010)
+    description = models.TextField()
+    short_description = models.TextField()
+    headquarters = models.CharField(max_length=200, default='Delhi, India')
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = 'Company Info'
+
 class Vertical(models.Model):
     """Product Categories/Verticals"""
     ICON_CHOICES = [

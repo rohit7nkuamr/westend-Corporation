@@ -1,9 +1,13 @@
 // API Service for Django Backend Integration
-// In Vite, env vars are exposed via import.meta.env and must be prefixed with VITE_
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+// In Vite, environment variables are available via import.meta.env
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://157.173.221.140/api';
+
+// Log the API URL for debugging
+console.log('API Base URL:', API_BASE_URL);
 
 // Helper function for API calls
 const apiCall = async (endpoint, options = {}) => {
+  console.log(`Making API call to: ${API_BASE_URL}${endpoint}`);
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       headers: {
@@ -13,11 +17,22 @@ const apiCall = async (endpoint, options = {}) => {
       ...options,
     });
 
+    console.log(`API response status: ${response.status} ${response.statusText}`);
+    
     if (!response.ok) {
+      // Try to get more error details if available
+      try {
+        const errorData = await response.text();
+        console.error('API Error Details:', errorData);
+      } catch (e) {
+        console.error('Could not parse error details');
+      }
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log(`API data received with ${data.results ? data.results.length : 'unknown'} results`);
+    return data;
   } catch (error) {
     console.error('API Call Error:', error);
     throw error;
@@ -26,7 +41,9 @@ const apiCall = async (endpoint, options = {}) => {
 
 // Verticals/Categories API
 export const getVerticals = async () => {
-  return apiCall('/verticals/');
+  const response = await apiCall('/verticals/');
+  // Handle paginated response format
+  return response.results || response;
 };
 
 export const getVerticalById = async (id) => {
@@ -36,7 +53,9 @@ export const getVerticalById = async (id) => {
 // Products API
 export const getProducts = async (params = {}) => {
   const queryString = new URLSearchParams(params).toString();
-  return apiCall(`/products/${queryString ? `?${queryString}` : ''}`);
+  const response = await apiCall(`/products/${queryString ? `?${queryString}` : ''}`);
+  // Handle paginated response format
+  return response.results || response;
 };
 
 export const getProductById = async (id) => {
@@ -44,7 +63,9 @@ export const getProductById = async (id) => {
 };
 
 export const getProductsByCategory = async (categoryId) => {
-  return apiCall(`/products/?category=${categoryId}`);
+  const response = await apiCall(`/products/?category=${categoryId}`);
+  // Handle paginated response format
+  return response.results || response;
 };
 
 // Contact/Inquiry API

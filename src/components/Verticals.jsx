@@ -91,19 +91,42 @@ const Verticals = () => {
   useEffect(() => {
     const fetchVerticals = async () => {
       try {
+        console.log('Fetching verticals...')
         setLoading(true)
+        
+        // Log API URL for debugging
+        console.log('API URL:', import.meta.env.VITE_API_URL)
+        
         const data = await getVerticals()
+        console.log('Verticals data received:', data)
+        
+        if (!data || (Array.isArray(data) && data.length === 0)) {
+          console.warn('No verticals data received or empty array')
+          setVerticals([])
+          setError('No categories available. Please add some categories in the admin panel.')
+          return
+        }
+        
         // Map icon names to actual icon components
-        const mappedData = data.map(vertical => ({
-          ...vertical,
-          icon: iconMap[vertical.icon_name] || Wheat,
-          secondaryIcon: iconMap[vertical.secondary_icon_name] || Leaf
-        }))
-        setVerticals(mappedData)
-        setError(null)
+        try {
+          const mappedData = data.map(vertical => {
+            console.log('Mapping vertical:', vertical.title, 'Icon:', vertical.icon_name)
+            return {
+              ...vertical,
+              icon: iconMap[vertical.icon_name] || Wheat,
+              secondaryIcon: iconMap[vertical.secondary_icon_name] || Leaf
+            }
+          })
+          console.log('Mapped data:', mappedData)
+          setVerticals(mappedData)
+          setError(null)
+        } catch (mappingErr) {
+          console.error('Error mapping verticals data:', mappingErr)
+          setError('Error processing categories data. Please check console for details.')
+        }
       } catch (err) {
         console.error('Error fetching verticals:', err)
-        setError('Failed to load categories. Please try again later.')
+        setError(`Failed to load categories: ${err.message}`)
       } finally {
         setLoading(false)
       }
@@ -390,7 +413,7 @@ const Verticals = () => {
                         {vertical.products.slice(0, 3).map((product, idx) => (
                           <div key={idx} className="flex items-start text-sm text-gray-400">
                             <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2 flex-shrink-0 mt-1.5`} />
-                            <span className="line-clamp-1">{product}</span>
+                            <span className="line-clamp-1">{product.name}</span>
                           </div>
                         ))}
                       </div>

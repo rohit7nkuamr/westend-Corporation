@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo
 
 class VerticalProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,3 +36,13 @@ class QuoteRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuoteRequest
         fields = ['product', 'name', 'email', 'phone', 'company', 'quantity', 'message']
+
+class FeatureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feature
+        fields = ['id', 'title', 'description', 'icon_name', 'order']
+
+class CompanyInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompanyInfo
+        fields = ['id', 'name', 'tagline', 'founded_year', 'description', 'short_description', 'headquarters']

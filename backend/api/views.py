@@ -1,10 +1,11 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Vertical, Product, ContactInquiry, QuoteRequest
+from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo
 from .serializers import (
     VerticalSerializer, ProductSerializer,
-    ContactInquirySerializer, QuoteRequestSerializer
+    ContactInquirySerializer, QuoteRequestSerializer,
+    FeatureSerializer, CompanyInfoSerializer
 )
 
 class VerticalViewSet(viewsets.ReadOnlyModelViewSet):
@@ -45,3 +46,15 @@ def quote_request(request):
             'message': 'Quote request submitted successfully.'
         }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FeatureViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint for about section features"""
+    queryset = Feature.objects.filter(is_active=True)
+    serializer_class = FeatureSerializer
+
+
+class CompanyInfoViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint for company information"""
+    queryset = CompanyInfo.objects.all()
+    serializer_class = CompanyInfoSerializer
