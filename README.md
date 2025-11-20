@@ -178,6 +178,6 @@ This is a modern React application built with best practices:
 ## 🤝 Contact
 
 For any queries regarding this website:
-- Email: info@westendcorp.com
+- Email: support@westendcorporation.in
 - Phone: +91 XXX XXX XXXX
 - Address: B-106, Okhla Industrial Area, Phase 1, Delhi - 110020

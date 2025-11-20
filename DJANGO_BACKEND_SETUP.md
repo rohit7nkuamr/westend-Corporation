@@ -346,7 +346,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'your-email@gmail.com'
 EMAIL_HOST_PASSWORD = 'your-app-password'
-DEFAULT_FROM_EMAIL = 'noreply@westendcorp.com'
+DEFAULT_FROM_EMAIL = 'noreply@westendcorporation.in'
 ```
 
 Update views to send emails:
@@ -363,7 +363,7 @@ def contact_inquiry(request):
             subject=f'New Contact Inquiry from {inquiry.name}',
             message=f'Name: {inquiry.name}\nEmail: {inquiry.email}\nMessage: {inquiry.message}',
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=['info@westendcorp.com'],
+            recipient_list=['support@westendcorporation.in'],
             fail_silently=True,
         )
         

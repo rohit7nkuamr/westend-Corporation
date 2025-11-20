@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Verticals from '../components/Verticals'
-import About from '../components/About'
+import FeaturedProducts from '../components/FeaturedProducts'
 import Certifications from '../components/Certifications'
 import WhyChooseUs from '../components/WhyChooseUs'
 
@@ -8,10 +8,8 @@ const Home = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log('Home component mounted');
     // Catch any errors that might be thrown by child components
     const handleError = (event) => {
-      console.error('Error caught by Home component:', event.error);
       setError(event.error?.message || 'An unknown error occurred');
     };
 
@@ -38,11 +36,10 @@ const Home = () => {
     );
   }
 
-  console.log('Rendering Home components');
   return (
     <>
       <Verticals />
-      <About />
+      <FeaturedProducts />
       <Certifications />
       <WhyChooseUs />
     </>
