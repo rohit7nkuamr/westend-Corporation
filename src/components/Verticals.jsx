@@ -87,18 +87,56 @@ const Verticals = () => {
     'ShoppingBasket': ShoppingBasket
   }
 
+  // Color schemes for each vertical
+  const colorSchemes = [
+    {
+      name: 'Groceries & Staples',
+      gradient: 'from-orange-500 to-amber-600',
+      button_color: 'from-orange-500 to-amber-600',
+      text_color: 'text-amber-400',
+      hover_color: 'group-hover:text-amber-400',
+      icon_bg: 'bg-orange-500'
+    },
+    {
+      name: 'Frozen Vegetables',
+      gradient: 'from-blue-500 to-cyan-600',
+      button_color: 'from-blue-500 to-cyan-600',
+      text_color: 'text-blue-400',
+      hover_color: 'group-hover:text-blue-400',
+      icon_bg: 'bg-blue-500'
+    },
+    {
+      name: 'Processed Foods',
+      gradient: 'from-amber-500 to-yellow-600',
+      button_color: 'from-amber-500 to-yellow-600',
+      text_color: 'text-amber-400',
+      hover_color: 'group-hover:text-amber-400',
+      icon_bg: 'bg-amber-500'
+    }
+  ];
+
   // Fetch verticals from Django backend
   useEffect(() => {
     const fetchVerticals = async () => {
       try {
         setLoading(true)
         const data = await getVerticals()
-        // Map icon names to actual icon components
-        const mappedData = data.map(vertical => ({
-          ...vertical,
-          icon: iconMap[vertical.icon_name] || Wheat,
-          secondaryIcon: iconMap[vertical.secondary_icon_name] || Leaf
-        }))
+        // Map icon names to actual icon components and add color schemes
+        const mappedData = data.map((vertical, index) => {
+          // Find matching color scheme by name or use index as fallback
+          const colorScheme = colorSchemes.find(cs => cs.name === vertical.title) || colorSchemes[index % colorSchemes.length];
+          
+          return {
+            ...vertical,
+            icon: iconMap[vertical.icon_name] || Wheat,
+            secondaryIcon: iconMap[vertical.secondary_icon_name] || Leaf,
+            gradient: colorScheme.gradient,
+            button_color: colorScheme.button_color,
+            text_color: colorScheme.text_color,
+            hover_color: colorScheme.hover_color,
+            icon_bg: colorScheme.icon_bg
+          };
+        })
         setVerticals(mappedData)
         setError(null)
       } catch (err) {
@@ -262,7 +300,7 @@ const Verticals = () => {
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ delay: 0.7, duration: 0.6 }}
-                    className="w-24 h-1 bg-gradient-to-r from-primary-400 to-primary-600 mx-auto mb-4"
+                    className={`w-24 h-1 bg-gradient-to-r ${verticals[currentSlide].gradient} mx-auto mb-4`}
                   />
 
                   <motion.p
@@ -280,7 +318,7 @@ const Verticals = () => {
                     transition={{ delay: 0.9, duration: 0.5 }}
                   >
                     <Link to="/products">
-                      <button className="bg-transparent border-2 border-primary-500 text-primary-400 px-8 py-3 rounded-full font-semibold hover:bg-primary-600 hover:text-white hover:border-primary-600 transition-all duration-300 text-sm tracking-wider uppercase">
+                      <button className={`bg-transparent border-2 border-${verticals[currentSlide].icon_bg} ${verticals[currentSlide].text_color} px-8 py-3 rounded-full font-semibold hover:bg-gradient-to-r hover:${verticals[currentSlide].gradient} hover:text-white hover:border-transparent transition-all duration-300 text-sm tracking-wider uppercase`}>
                         Explore Collection
                       </button>
                     </Link>
@@ -309,12 +347,12 @@ const Verticals = () => {
                   aria-label={`Slide ${index + 1}`}
                 >
                   <div className={`transition-all duration-300 rounded-full ${
-                    index === currentSlide ? 'bg-primary-500 w-8 h-3' : 'bg-white/40 hover:bg-white/60 w-3 h-3'
+                    index === currentSlide ? `bg-gradient-to-r ${verticals[index].gradient} w-8 h-3` : 'bg-white/40 hover:bg-white/60 w-3 h-3'
                   }`} />
                   {/* Progress bar for active slide */}
                   {index === currentSlide && (
                     <motion.div
-                      className="absolute top-0 left-0 h-3 bg-primary-400 rounded-full"
+                      className={`absolute top-0 left-0 h-3 bg-gradient-to-r ${verticals[index].gradient} rounded-full opacity-70`}
                       initial={{ width: 0 }}
                       animate={{ width: '100%' }}
                       transition={{ duration: 4, ease: "linear" }}
@@ -373,7 +411,7 @@ const Verticals = () => {
                       </motion.div>
 
                       {/* Title */}
-                      <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3 group-hover:text-primary-400 transition-colors duration-300" style={{ fontFamily: 'serif' }}>
+                      <h2 className={`text-2xl lg:text-3xl font-bold text-white mb-3 ${vertical.hover_color} transition-colors duration-300`} style={{ fontFamily: 'serif' }}>
                         {vertical.title}
                       </h2>
 
@@ -390,7 +428,7 @@ const Verticals = () => {
                         {vertical.products.slice(0, 3).map((product, idx) => (
                           <div key={idx} className="flex items-start text-sm text-gray-400">
                             <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${vertical.gradient} mr-2 flex-shrink-0 mt-1.5`} />
-                            <span className="line-clamp-1">{product.name}</span>
+                            <span className="line-clamp-1 group-hover:text-gray-300 transition-colors duration-300">{product.name}</span>
                           </div>
                         ))}
                       </div>
