@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, Globe } from 'lucide-react'
 import { submitContactForm } from '../services/api'
 
 const Contact = () => {
@@ -82,8 +82,14 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      details: 'info@westendcorp.com',
+      details: 'support@westendcorporation.in',
       color: 'from-emerald-500 to-teal-600'
+    },
+    {
+      icon: Globe,
+      title: 'Website',
+      details: 'westendcorporation.in',
+      color: 'from-blue-500 to-indigo-600'
     },
     {
       icon: MapPin,
@@ -153,6 +159,22 @@ const Contact = () => {
                           className="block font-medium text-gray-800 hover:text-primary-600 transition-colors text-sm md:text-base"
                         >
                           +91 93119 33481
+                        </a>
+                      ) : info.title === 'Email' ? (
+                        <a
+                          href="mailto:support@westendcorporation.in"
+                          className="block font-medium text-gray-800 hover:text-primary-600 transition-colors text-sm md:text-base"
+                        >
+                          {info.details}
+                        </a>
+                      ) : info.title === 'Website' ? (
+                        <a
+                          href="https://westendcorporation.in"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block font-medium text-gray-800 hover:text-primary-600 transition-colors text-sm md:text-base"
+                        >
+                          {info.details}
                         </a>
                       ) : info.title === 'Address' ? (
                         <a

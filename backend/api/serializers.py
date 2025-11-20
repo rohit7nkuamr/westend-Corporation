@@ -28,7 +28,8 @@ class ProductSerializer(serializers.ModelSerializer):
             'id', 'name', 'description', 'image', 'image_2', 'image_3', 
             'moq', 'packaging', 'badge', 'vertical', 'vertical_name', 
             'stock_status', 'stock_status_display', 'origin', 'shelf_life', 
-            'storage', 'certifications', 'features', 'features_list', 'brand'
+            'storage', 'certifications', 'features', 'features_list', 'brand',
+            'is_featured', 'featured_order'
         ]
     
     def get_features_list(self, obj):

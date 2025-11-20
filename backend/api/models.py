@@ -111,6 +111,8 @@ class Product(models.Model):
     features = models.TextField(blank=True, help_text="Product features, one per line")
     brand = models.CharField(max_length=100, default='Westend Organic', help_text="Brand name")
     is_active = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False, help_text="Feature this product on the home page")
+    featured_order = models.IntegerField(default=0, help_text="Order in which featured products appear (lower numbers appear first)")
     order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

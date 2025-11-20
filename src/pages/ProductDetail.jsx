@@ -20,14 +20,14 @@ const ProductDetail = () => {
         setLoading(true)
         setError(null)
         
-        console.log('Fetching product with ID:', id)
+        // Fetch product with ID
         // Fetch product details
         const productData = await getProductById(id)
-        console.log('Product data received:', productData)
+        // Process product data
         
         // Create an array of images from the product data
         const productImages = [
-          productData.image || 'http://157.173.221.140/media/products/placeholder.svg'
+          productData.image || 'https://westendcorporation.in/media/products/placeholder.svg'
         ];
         
         // Add additional images if they exist
@@ -41,7 +41,7 @@ const ProductDetail = () => {
         
         // If we still have fewer than 3 images, add placeholders
         while (productImages.length < 3) {
-          productImages.push('http://157.173.221.140/media/products/placeholder.svg');
+          productImages.push('https://westendcorporation.in/media/products/placeholder.svg');
         }
         
         // Get features from the API or use default features
@@ -85,9 +85,9 @@ const ProductDetail = () => {
         
         // Fetch related products from the same vertical
         if (productData.vertical) {
-          console.log('Fetching related products for vertical:', productData.vertical)
+          // Fetch related products
           const relatedData = await getProductsByCategory(productData.vertical)
-          console.log('Related products received:', relatedData)
+          // Process related products
           
           // Filter out the current product and limit to 4 items
           const filtered = relatedData
@@ -165,12 +165,12 @@ const ProductDetail = () => {
               {/* Main Image */}
               <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden mb-4">
                 <img
-                  src={product.images && product.images[selectedImage] || product.image || 'http://157.173.221.140/media/products/placeholder.svg'}
+                  src={product.images && product.images[selectedImage] || product.image || 'https://westendcorporation.in/media/products/placeholder.svg'}
                   alt={product.name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = 'http://157.173.221.140/media/products/placeholder.svg';
+                    e.target.src = 'https://westendcorporation.in/media/products/placeholder.svg';
                   }}
                 />
               </div>
@@ -186,12 +186,12 @@ const ProductDetail = () => {
                     }`}
                   >
                     <img 
-                      src={image || product.image || 'http://157.173.221.140/media/products/placeholder.svg'} 
+                      src={image || product.image || 'https://westendcorporation.in/media/products/placeholder.svg'} 
                       alt={`View ${index + 1}`} 
                       className="w-full h-full object-cover" 
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = 'http://157.173.221.140/media/products/placeholder.svg';
+                        e.target.src = 'https://westendcorporation.in/media/products/placeholder.svg';
                       }}
                     />
                   </button>
