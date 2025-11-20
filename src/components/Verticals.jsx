@@ -91,42 +91,19 @@ const Verticals = () => {
   useEffect(() => {
     const fetchVerticals = async () => {
       try {
-        console.log('Fetching verticals...')
         setLoading(true)
-        
-        // Log API URL for debugging
-        console.log('API URL:', import.meta.env.VITE_API_URL)
-        
         const data = await getVerticals()
-        console.log('Verticals data received:', data)
-        
-        if (!data || (Array.isArray(data) && data.length === 0)) {
-          console.warn('No verticals data received or empty array')
-          setVerticals([])
-          setError('No categories available. Please add some categories in the admin panel.')
-          return
-        }
-        
         // Map icon names to actual icon components
-        try {
-          const mappedData = data.map(vertical => {
-            console.log('Mapping vertical:', vertical.title, 'Icon:', vertical.icon_name)
-            return {
-              ...vertical,
-              icon: iconMap[vertical.icon_name] || Wheat,
-              secondaryIcon: iconMap[vertical.secondary_icon_name] || Leaf
-            }
-          })
-          console.log('Mapped data:', mappedData)
-          setVerticals(mappedData)
-          setError(null)
-        } catch (mappingErr) {
-          console.error('Error mapping verticals data:', mappingErr)
-          setError('Error processing categories data. Please check console for details.')
-        }
+        const mappedData = data.map(vertical => ({
+          ...vertical,
+          icon: iconMap[vertical.icon_name] || Wheat,
+          secondaryIcon: iconMap[vertical.secondary_icon_name] || Leaf
+        }))
+        setVerticals(mappedData)
+        setError(null)
       } catch (err) {
         console.error('Error fetching verticals:', err)
-        setError(`Failed to load categories: ${err.message}`)
+        setError('Failed to load categories. Please try again later.')
       } finally {
         setLoading(false)
       }
@@ -419,8 +396,8 @@ const Verticals = () => {
                       </div>
 
                       {/* CTA Button */}
-                      <button className={`w-full bg-gradient-to-r ${vertical.buttonColor} text-white py-3 rounded-lg font-semibold hover:shadow-xl transition-all duration-300 text-sm uppercase tracking-wider hover:scale-105`}>
-                        {vertical.buttonText}
+                      <button className={`w-full bg-gradient-to-r ${vertical.button_color} text-white py-3 rounded-lg font-semibold hover:shadow-xl transition-all duration-300 text-sm uppercase tracking-wider hover:scale-105`}>
+                        {vertical.button_text}
                       </button>
                     </div>
                   </div>

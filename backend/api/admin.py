@@ -30,9 +30,42 @@ class VerticalAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'vertical', 'badge', 'is_active', 'created_at']
-    list_filter = ['vertical', 'is_active']
-    search_fields = ['name', 'description']
+    list_display = ['name', 'vertical', 'badge', 'stock_status', 'is_active', 'created_at']
+    list_filter = ['vertical', 'stock_status', 'is_active', 'badge']
+    search_fields = ['name', 'description', 'features']
+    list_editable = ['stock_status', 'badge']
+    actions = ['mark_as_in_stock', 'mark_as_out_of_stock', 'mark_as_low_stock']
+    
+    fieldsets = [
+        ('Basic Information', {
+            'fields': ['name', 'description', 'vertical', 'badge', 'brand', 'is_active']
+        }),
+        ('Images', {
+            'fields': ['image', 'image_2', 'image_3']
+        }),
+        ('Product Details', {
+            'fields': ['moq', 'packaging', 'stock_status', 'order']
+        }),
+        ('Specifications', {
+            'fields': ['origin', 'shelf_life', 'storage', 'certifications']
+        }),
+        ('Features', {
+            'fields': ['features'],
+            'description': 'Enter one feature per line. These will be displayed as bullet points.'
+        }),
+    ]
+    
+    def mark_as_in_stock(self, request, queryset):
+        queryset.update(stock_status='in_stock')
+    mark_as_in_stock.short_description = "Mark selected products as 'In Stock'"
+    
+    def mark_as_out_of_stock(self, request, queryset):
+        queryset.update(stock_status='out_of_stock')
+    mark_as_out_of_stock.short_description = "Mark selected products as 'Out of Stock'"
+    
+    def mark_as_low_stock(self, request, queryset):
+        queryset.update(stock_status='low_stock')
+    mark_as_low_stock.short_description = "Mark selected products as 'Low Stock'"
 
 @admin.register(ContactInquiry)
 class ContactInquiryAdmin(admin.ModelAdmin):

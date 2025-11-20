@@ -16,16 +16,50 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    // Basic form validation
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'Please fill in all required fields (Name, Email, and Message).' 
+      })
+      return
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.email.trim())) {
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'Please enter a valid email address.' 
+      })
+      return
+    }
+    
     setSubmitting(true)
     setSubmitStatus(null)
 
     try {
       await submitContactForm(formData)
-      setSubmitStatus({ type: 'success', message: 'Thank you for your inquiry! We will get back to you soon.' })
+      setSubmitStatus({ 
+        type: 'success', 
+        message: 'Thank you for your inquiry! We will get back to you soon.' 
+      })
       setFormData({ name: '', email: '', phone: '', company: '', message: '' })
+      
+      // Scroll to the status message
+      setTimeout(() => {
+        window.scrollTo({
+          top: window.scrollY - 100,
+          behavior: 'smooth'
+        })
+      }, 100)
     } catch (error) {
       console.error('Error submitting form:', error)
-      setSubmitStatus({ type: 'error', message: 'Failed to submit form. Please try again or contact us directly.' })
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'Failed to submit form. Please try again or contact us directly.' 
+      })
     } finally {
       setSubmitting(false)
     }
@@ -164,7 +198,7 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+            <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 shadow-lg border-2 border-gray-100 hover:border-primary-100 transition-colors">
               <div className="space-y-6">
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">Name *</label>
@@ -174,7 +208,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white/50"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white/50 hover:border-gray-300"
                     placeholder="Your name"
                   />
                 </div>
@@ -188,7 +222,7 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white/50"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white/50 hover:border-gray-300"
                       placeholder="your@email.com"
                     />
                   </div>
@@ -199,7 +233,7 @@ const Contact = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white/50"
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white/50 hover:border-gray-300"
                       placeholder="+91 XXX XXX XXXX"
                     />
                   </div>
@@ -212,7 +246,7 @@ const Contact = () => {
                     name="company"
                     value={formData.company}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white/50"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all bg-white/50 hover:border-gray-300"
                     placeholder="Your company name"
                   />
                 </div>
@@ -225,7 +259,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows="4"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all resize-none bg-white/50"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all resize-none bg-white/50 hover:border-gray-300"
                     placeholder="Tell us about your requirements..."
                   />
                 </div>
@@ -250,7 +284,7 @@ const Contact = () => {
                   disabled={submitting}
                   whileHover={{ scale: submitting ? 1 : 1.02 }}
                   whileTap={{ scale: submitting ? 1 : 0.98 }}
-                  className={`w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white py-4 rounded-xl font-semibold hover:shadow-2xl transition-all duration-300 flex items-center justify-center group ${
+                  className={`w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white py-4 rounded-xl font-semibold hover:shadow-2xl transition-all duration-300 flex items-center justify-center group border-2 border-transparent hover:border-amber-600 ${
                     submitting ? 'opacity-70 cursor-not-allowed' : ''
                   }`}
                 >

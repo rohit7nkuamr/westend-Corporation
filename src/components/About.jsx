@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Award, Users, TrendingUp, Heart, Package, CheckCircle, Shield, Star } from 'lucide-react'
+import { getFeatures, getCompanyInfo } from '../services/api'
 
 const About = () => {
   const [features, setFeatures] = useState([])
@@ -21,35 +22,37 @@ const About = () => {
   }
   
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAboutData = async () => {
       try {
         setLoading(true)
         
-        // Fetch features
-        const featuresResponse = await fetch(`${import.meta.env.VITE_API_URL}/features/`)
-        if (!featuresResponse.ok) {
-          throw new Error(`Features API Error: ${featuresResponse.status}`)
-        }
-        const featuresData = await featuresResponse.json()
+        // Fetch features using the API service
+        const featuresData = await getFeatures()
+        console.log('Features data:', featuresData)
+        
+        // Check if featuresData is an array or has a results property
+        const featuresArray = Array.isArray(featuresData) ? featuresData : 
+                             (featuresData && featuresData.results ? featuresData.results : [])
         
         // Map icon names to actual icon components
-        const mappedFeatures = featuresData.map(feature => ({
+        const mappedFeatures = featuresArray.map(feature => ({
           ...feature,
           icon: iconMap[feature.icon_name] || Package
         }))
         
         setFeatures(mappedFeatures)
         
-        // Fetch company info
-        const companyResponse = await fetch(`${import.meta.env.VITE_API_URL}/company-info/`)
-        if (!companyResponse.ok) {
-          throw new Error(`Company Info API Error: ${companyResponse.status}`)
-        }
-        const companyData = await companyResponse.json()
+        // Fetch company info using the API service
+        const companyData = await getCompanyInfo()
+        console.log('Company info data:', companyData)
+        
+        // Check if companyData is an array or has a results property
+        const companyArray = Array.isArray(companyData) ? companyData : 
+                           (companyData && companyData.results ? companyData.results : [])
         
         // If there's at least one company info record, use it
-        if (companyData.length > 0) {
-          setCompanyInfo(companyData[0])
+        if (companyArray.length > 0) {
+          setCompanyInfo(companyArray[0])
         }
         
         setError(null)
@@ -85,7 +88,7 @@ const About = () => {
       }
     }
     
-    fetchData()
+    fetchAboutData()
   }, [])
 
   return (

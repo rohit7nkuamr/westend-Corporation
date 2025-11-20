@@ -9,13 +9,23 @@ console.log('API Base URL:', API_BASE_URL);
 const apiCall = async (endpoint, options = {}) => {
   console.log(`Making API call to: ${API_BASE_URL}${endpoint}`);
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+    // Prepare headers with defaults
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      ...options.headers,
+    };
+    
+    // Prepare the request options
+    const requestOptions = {
       ...options,
-    });
+      headers,
+      credentials: 'include', // Include cookies for CSRF if needed
+      mode: 'cors', // Enable CORS
+    };
+    
+    // Make the API call
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, requestOptions);
 
     console.log(`API response status: ${response.status} ${response.statusText}`);
     
@@ -70,17 +80,37 @@ export const getProductsByCategory = async (categoryId) => {
 
 // Contact/Inquiry API
 export const submitContactForm = async (formData) => {
-  return apiCall('/contact/', {
-    method: 'POST',
-    body: JSON.stringify(formData),
-  });
+  console.log('Submitting contact form:', formData);
+  try {
+    // Use the apiCall helper which has been configured for the API
+    const response = await apiCall('/contact/', {
+      method: 'POST',
+      body: JSON.stringify(formData),
+    });
+    
+    console.log('Contact form submission response:', response);
+    return response;
+  } catch (error) {
+    console.error('Contact form submission error:', error);
+    throw error;
+  }
 };
 
 export const submitQuoteRequest = async (quoteData) => {
-  return apiCall('/quote-request/', {
-    method: 'POST',
-    body: JSON.stringify(quoteData),
-  });
+  console.log('Submitting quote request:', quoteData);
+  try {
+    // Use the apiCall helper which has been configured for the API
+    const response = await apiCall('/quote-request/', {
+      method: 'POST',
+      body: JSON.stringify(quoteData),
+    });
+    
+    console.log('Quote request submission response:', response);
+    return response;
+  } catch (error) {
+    console.error('Quote request submission error:', error);
+    throw error;
+  }
 };
 
 // Company Info API

@@ -87,13 +87,29 @@ class VerticalProduct(models.Model):
 
 class Product(models.Model):
     """Main products catalog"""
+    STOCK_STATUS_CHOICES = [
+        ('in_stock', 'In Stock'),
+        ('out_of_stock', 'Out of Stock'),
+        ('low_stock', 'Low Stock'),
+        ('coming_soon', 'Coming Soon'),
+    ]
+    
     vertical = models.ForeignKey(Vertical, on_delete=models.CASCADE, related_name='product_items')
     name = models.CharField(max_length=200)
     description = models.TextField()
     image = models.ImageField(upload_to='products/')
+    image_2 = models.ImageField(upload_to='products/', blank=True, null=True, help_text="Second product image")
+    image_3 = models.ImageField(upload_to='products/', blank=True, null=True, help_text="Third product image")
     moq = models.CharField(max_length=100, help_text="Minimum Order Quantity")
     packaging = models.CharField(max_length=200)
     badge = models.CharField(max_length=50, blank=True, help_text="e.g., 'Bestseller', 'New', 'Organic'")
+    stock_status = models.CharField(max_length=20, choices=STOCK_STATUS_CHOICES, default='in_stock')
+    origin = models.CharField(max_length=100, default='India', help_text="Country or region of origin")
+    shelf_life = models.CharField(max_length=100, default='12 Months', help_text="Product shelf life")
+    storage = models.CharField(max_length=200, default='Cool & Dry Place', help_text="Storage instructions")
+    certifications = models.CharField(max_length=200, blank=True, help_text="e.g., 'FSSAI, Organic India, USDA'")
+    features = models.TextField(blank=True, help_text="Product features, one per line")
+    brand = models.CharField(max_length=100, default='Westend Organic', help_text="Brand name")
     is_active = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
 from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo
 from .serializers import (
     VerticalSerializer, ProductSerializer,
@@ -26,26 +27,74 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
 @api_view(['POST'])
+@csrf_exempt
 def contact_inquiry(request):
     """Handle contact form submissions"""
-    serializer = ContactInquirySerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
+    print(f"Received contact inquiry: {request.data}")
+    
+    # Add CORS headers to the response
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+    }
+    
+    try:
+        serializer = ContactInquirySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                'success': True,
+                'message': 'Thank you for your inquiry. We will get back to you soon.'
+            }, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            print(f"Validation errors: {serializer.errors}")
+            return Response({
+                'success': False,
+                'errors': serializer.errors,
+                'message': 'Please check your form data and try again.'
+            }, status=status.HTTP_400_BAD_REQUEST, headers=headers)
+    except Exception as e:
+        print(f"Error in contact_inquiry: {str(e)}")
         return Response({
-            'message': 'Thank you for your inquiry. We will get back to you soon.'
-        }, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            'success': False,
+            'message': 'An unexpected error occurred. Please try again later.'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR, headers=headers)
 
 @api_view(['POST'])
+@csrf_exempt
 def quote_request(request):
     """Handle quote request submissions"""
-    serializer = QuoteRequestSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
+    print(f"Received quote request: {request.data}")
+    
+    # Add CORS headers to the response
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+    }
+    
+    try:
+        serializer = QuoteRequestSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                'success': True,
+                'message': 'Quote request submitted successfully.'
+            }, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            print(f"Validation errors: {serializer.errors}")
+            return Response({
+                'success': False,
+                'errors': serializer.errors,
+                'message': 'Please check your form data and try again.'
+            }, status=status.HTTP_400_BAD_REQUEST, headers=headers)
+    except Exception as e:
+        print(f"Error in quote_request: {str(e)}")
         return Response({
-            'message': 'Quote request submitted successfully.'
-        }, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            'success': False,
+            'message': 'An unexpected error occurred. Please try again later.'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR, headers=headers)
 
 
 class FeatureViewSet(viewsets.ReadOnlyModelViewSet):
