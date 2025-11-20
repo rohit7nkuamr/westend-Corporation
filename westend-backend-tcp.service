@@ -1,0 +1,13 @@
+[Unit]
+Description=Westend Corporation Backend (TCP)
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/westend-Corporation/backend
+ExecStart=/var/www/westend-Corporation/gunicorn_start.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

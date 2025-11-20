@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-oziwf#ge6505-@^ll+47-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else ['157.173.221.140', 'westendcorporation.in', 'www.westendcorporation.in']
 
 
 # Application definition
@@ -157,8 +157,8 @@ CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if 
     "http://localhost:3000",  # React dev server
     "http://localhost:5173",  # Vite dev server
     "http://157.173.221.140",  # Server IP
-    "http://westend.example.com",
-    "http://www.westend.example.com",
+    "https://westendcorporation.in",  # Production domain
+    "https://www.westendcorporation.in",  # Production www subdomain
 ]
 
 # Additional CORS settings
@@ -188,8 +188,10 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:8000",
     "http://localhost:3000",
     "http://localhost:5173",
-    "http://westend.example.com",
-    "http://www.westend.example.com",
+    "http://westendcorporation.in",
+    "http://www.westendcorporation.in",
+    "https://westendcorporation.in",
+    "https://www.westendcorporation.in",
 ]
 
 # Email settings (if configured)
