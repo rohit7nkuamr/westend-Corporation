@@ -32,7 +32,16 @@ const Hero = () => {
   ]
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-20">
+    <>
+      {/* Wholesale Banner */}
+      <div className="bg-amber-500 text-white py-2 text-center font-bold relative z-50">
+        <div className="container mx-auto flex items-center justify-center">
+          <Sparkles className="mr-2" size={18} />
+          <span className="uppercase tracking-wider">Wholesale Supplier - Bulk Orders Only</span>
+          <Sparkles className="ml-2" size={18} />
+        </div>
+      </div>
+      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-20">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         {/* Background Image - Using Unsplash food/agriculture image */}
@@ -71,6 +80,19 @@ const Hero = () => {
           <span className="text-green-400 font-medium text-sm tracking-wider uppercase">Established 2010</span>
           <div className="h-px w-12 bg-gradient-to-l from-transparent to-green-400 ml-3" />
         </motion.div>
+        
+        {/* Wholesale Badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mb-6"
+        >
+          <div className="inline-flex items-center px-6 py-2.5 bg-gradient-to-r from-yellow-400 to-amber-600 rounded-full shadow-xl border-2 border-white/20">
+            <Sparkles size={20} className="text-white mr-3" />
+            <span className="text-white font-bold text-lg uppercase tracking-wider">WHOLESALE ONLY</span>
+          </div>
+        </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
@@ -78,7 +100,7 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-5xl md:text-7xl font-bold mb-6 leading-tight"
         >
-          <span className="text-white drop-shadow-lg">Premium Food Products</span>
+          <span className="text-white drop-shadow-lg">Wholesale Food Products</span>
           <br />
           <span className="text-accent-400 drop-shadow-lg">
             For Global Markets
@@ -91,8 +113,8 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-xl md:text-2xl text-gray-200 mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-md"
         >
-          Leading exporter of quality groceries, frozen vegetables, and processed foods. 
-          Serving businesses worldwide with excellence and reliability.
+          Leading wholesale supplier and exporter of quality groceries, frozen vegetables, and processed foods.
+          Serving businesses worldwide with bulk quantities, competitive pricing, and reliable delivery.
         </motion.p>
 
         <motion.div
@@ -105,7 +127,7 @@ const Hero = () => {
             to="/products"
             className="group bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary-800 hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center"
           >
-            View Product Range
+            Wholesale Product Range
             <ArrowRight className="ml-2 group-hover:translate-x-2 transition-transform" size={20} />
           </Link>
           <Link
@@ -152,6 +174,11 @@ const Hero = () => {
 
                 {/* Content Section */}
                 <div className="relative p-6">
+                  {/* Wholesale Tag */}
+                  <div className="absolute -top-3 right-4 bg-amber-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    WHOLESALE
+                  </div>
+                  
                   {/* Title */}
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
                     {vertical.title}
@@ -192,6 +219,7 @@ const Hero = () => {
         </div>
       </motion.div>
     </section>
+    </>
   )
 }
 
