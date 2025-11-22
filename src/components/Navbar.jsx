@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Menu, X, MessageCircle } from 'lucide-react'
+import { Menu, X, MessageCircle, Globe } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -54,6 +54,11 @@ const Navbar = () => {
                   Westend Corporation
                 </h1>
                 <p className="text-xs text-primary-600 hidden sm:block">Premium Food Products</p>
+                {/* Visible on both mobile and desktop: exporter badge/pill */}
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 mt-1">
+                  <Globe className="text-amber-700" size={12} />
+                  Exporter from India
+                </span>
               </div>
             </Link>
           </motion.div>
