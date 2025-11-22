@@ -157,3 +157,42 @@ class QuoteRequest(models.Model):
     
     def __str__(self):
         return f"Quote Request - {self.name}"
+
+
+class PageVisit(models.Model):
+    PAGE_CHOICES = [
+        ('home', 'Home Page'),
+        ('products', 'Products Page'),
+        ('product_detail', 'Product Detail'),
+        ('about', 'About Page'),
+        ('contact', 'Contact Page'),
+    ]
+
+    ACTION_CHOICES = [
+        ('page_view', 'Page View'),
+        ('quote_request', 'Quote Request'),
+        ('contact_form', 'Contact Form'),
+        ('product_view', 'Product View'),
+    ]
+
+    page = models.CharField(max_length=50, choices=PAGE_CHOICES)
+    action = models.CharField(max_length=50, choices=ACTION_CHOICES, default='page_view')
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+    user_agent = models.TextField(blank=True)
+    referrer = models.URLField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    session_id = models.CharField(max_length=100, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Page Visit'
+        verbose_name_plural = 'Page Visits'
+        ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['page'], name='api_pagevis_page_idx'),
+            models.Index(fields=['action'], name='api_pagevis_action_idx'),
+            models.Index(fields=['timestamp'], name='api_pagevis_timestamp_idx'),
+        ]
+
+    def __str__(self):
+        return f"{self.page} - {self.action} @ {self.timestamp.isoformat()}"

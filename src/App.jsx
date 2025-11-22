@@ -1,5 +1,5 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -10,10 +10,30 @@ import ContactPage from './pages/ContactPage'
 import CertificationsPage from './pages/CertificationsPage'
 
 function App() {
+  // PageVisit tracker component: reports route changes to the backend
+  function RouteTracker() {
+    const location = useLocation()
+    useEffect(() => {
+      // Send a lightweight page visit event
+      import('./services/api').then(({ submitPageVisit }) => {
+        const pageMap = {
+          '/': 'home',
+          '/products': 'products',
+          '/about': 'about',
+          '/contact': 'contact'
+        }
+        const pageName = pageMap[location.pathname] || (location.pathname.startsWith('/product') ? 'product_detail' : 'home')
+        submitPageVisit({ page: pageName, action: 'page_view', session_id: '' })
+      }).catch(() => {})
+    }, [location])
+    return null
+  }
+
   return (
     <Router>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-blue-50" style={{ position: 'relative' }}>
         <Navbar />
+        <RouteTracker />
         <main style={{ position: 'relative', zIndex: 1 }}>
           <Routes>
             <Route path="/" element={<Home />} />
