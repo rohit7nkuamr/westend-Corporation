@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit
 
 class VerticalProductInline(admin.TabularInline):
     model = VerticalProduct
@@ -119,3 +119,13 @@ class FeatureAdmin(admin.ModelAdmin):
 @admin.register(CompanyInfo)
 class CompanyInfoAdmin(admin.ModelAdmin):
     list_display = ['name', 'tagline', 'founded_year']
+
+
+@admin.register(PageVisit)
+class PageVisitAdmin(admin.ModelAdmin):
+    list_display = ['page', 'action', 'product', 'ip_address', 'referrer', 'timestamp']
+    list_filter = ['page', 'action', 'timestamp']
+    search_fields = ['ip_address', 'user_agent', 'referrer', 'session_id']
+    readonly_fields = ['page', 'action', 'ip_address', 'user_agent', 'referrer', 'timestamp', 'session_id', 'product']
+    date_hierarchy = 'timestamp'
+    ordering = ['-timestamp']

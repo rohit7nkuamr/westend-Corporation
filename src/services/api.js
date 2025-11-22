@@ -119,6 +119,21 @@ export const getStats = async () => {
   return apiCall('/stats/');
 };
 
+// Page visit tracking
+export const submitPageVisit = async (data = {}) => {
+  try {
+    const response = await apiCall('/page-visit/', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    return response;
+  } catch (error) {
+    // don't fail the app if tracking fails
+    console.warn('Page visit tracking failed', error);
+    return null;
+  }
+};
+
 export default {
   getVerticals,
   getVerticalById,

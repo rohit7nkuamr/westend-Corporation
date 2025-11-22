@@ -12,4 +12,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('contact/', views.contact_inquiry, name='contact'),
     path('quote-request/', views.quote_request, name='quote-request'),
+    path('page-visit/', views.page_visit, name='page-visit'),
 ]

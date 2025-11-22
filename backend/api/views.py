@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.core.mail import EmailMessage
 import logging
-from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo
+from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit
 from .serializers import (
     VerticalSerializer, ProductSerializer,
     ContactInquirySerializer, QuoteRequestSerializer,
@@ -127,6 +127,43 @@ def quote_request(request):
             'success': False,
             'message': 'An unexpected error occurred. Please try again later.'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR, headers=headers)
+
+
+@api_view(['POST'])
+@csrf_exempt
+def page_visit(request):
+    """Record a page visit or action from the frontend"""
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+    }
+
+    try:
+        data = request.data if hasattr(request, 'data') else {}
+        page = data.get('page') or data.get('page_name') or 'home'
+        action = data.get('action', 'page_view')
+        session_id = data.get('session_id', '')
+        product_id = data.get('product')
+
+        ip = request.META.get('REMOTE_ADDR') or request.META.get('HTTP_X_FORWARDED_FOR', '').split(',')[0].strip()
+        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        referrer = request.META.get('HTTP_REFERER', '')
+
+        pv = PageVisit.objects.create(
+            page=page,
+            action=action,
+            session_id=session_id,
+            ip_address=ip or None,
+            user_agent=user_agent,
+            referrer=referrer or None,
+            product=Product.objects.filter(id=product_id).first() if product_id else None,
+        )
+
+        return Response({'success': True, 'id': pv.id}, status=status.HTTP_201_CREATED, headers=headers)
+    except Exception:
+        logging.getLogger(__name__).exception('Failed to record page visit')
+        return Response({'success': False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR, headers=headers)
 
 
 class FeatureViewSet(viewsets.ReadOnlyModelViewSet):
