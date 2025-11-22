@@ -107,6 +107,19 @@ const Hero = () => {
           </span>
         </motion.h1>
 
+        {/* Hero subtitle for trust: visible on mobile & desktop */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.35 }}
+          className="mb-6"
+        >
+          <span className="inline-flex items-center justify-center text-lg md:text-2xl text-amber-200 font-semibold">
+            <span className="mr-2 text-sm md:text-base">🇮🇳</span>
+            Premium Food Products — Exporter from India
+          </span>
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

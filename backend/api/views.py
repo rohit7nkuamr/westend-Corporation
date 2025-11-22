@@ -2,6 +2,9 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.core.mail import EmailMessage
+import logging
 from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo
 from .serializers import (
     VerticalSerializer, ProductSerializer,
@@ -49,7 +52,33 @@ def contact_inquiry(request):
     try:
         serializer = ContactInquirySerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            contact = serializer.save()
+
+            # Attempt to forward the inquiry to the support email
+            try:
+                support_email = 'support@westendcorporation.in'
+                from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', f"no-reply@{request.get_host()}")
+                subject = f"New contact inquiry from {contact.name}"
+                body = (
+                    f"Name: {contact.name}\n"
+                    f"Email: {contact.email}\n"
+                    f"Phone: {contact.phone or 'N/A'}\n"
+                    f"Company: {contact.company or 'N/A'}\n\n"
+                    f"Message:\n{contact.message or ''}\n"
+                )
+
+                email = EmailMessage(
+                    subject=subject,
+                    body=body,
+                    from_email=from_email,
+                    to=[support_email],
+                    reply_to=[contact.email] if contact.email else None,
+                )
+                email.send(fail_silently=False)
+            except Exception:
+                logger = logging.getLogger(__name__)
+                logger.exception('Failed to send contact inquiry email to support')
+
             return Response({
                 'success': True,
                 'message': 'Thank you for your inquiry. We will get back to you soon.'
@@ -61,6 +90,7 @@ def contact_inquiry(request):
                 'message': 'Please check your form data and try again.'
             }, status=status.HTTP_400_BAD_REQUEST, headers=headers)
     except Exception as e:
+        logging.getLogger(__name__).exception('Contact inquiry handler failed')
         return Response({
             'success': False,
             'message': 'An unexpected error occurred. Please try again later.'

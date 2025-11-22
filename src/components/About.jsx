@@ -129,6 +129,11 @@ const About = () => {
               {companyInfo ? companyInfo.short_description : 'Our vertically integrated supply chain, from farm to fork, ensures complete traceability and quality control. We serve retailers, distributors, food service providers, and institutional clients across multiple countries, delivering consistent quality and reliable service.'}
             </p>
 
+            {/* Update: 2024 subsidiary in Chicago, USA */}
+            <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+              In 2024, we opened a subsidiary in Chicago, USA to better serve our North American customers and partners.
+            </p>
+
             {/* Features Grid */}
             <div className="grid grid-cols-2 gap-4">
               {features.map((feature, index) => (

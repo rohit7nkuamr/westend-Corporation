@@ -34,6 +34,7 @@ const AboutPage = () => {
     { year: '2016', event: 'Organic Certified', description: 'Received USDA Organic certification' },
     { year: '2019', event: 'Export Expansion', description: 'Expanded to 15+ countries' },
     { year: '2023', event: 'Modern Facility', description: 'Opened state-of-the-art processing unit' },
+    { year: '2024', event: 'US Subsidiary - Chicago', description: 'Opened a subsidiary in Chicago, USA to better serve our North American customers and partners.' },
   ]
 
   const team = [
