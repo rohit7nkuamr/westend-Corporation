@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit
+from .admin_site import westend_admin_site
 
 class VerticalProductInline(admin.TabularInline):
     model = VerticalProduct
@@ -129,3 +130,12 @@ class PageVisitAdmin(admin.ModelAdmin):
     readonly_fields = ['page', 'action', 'ip_address', 'user_agent', 'referrer', 'timestamp', 'session_id', 'product']
     date_hierarchy = 'timestamp'
     ordering = ['-timestamp']
+
+# Register models with custom admin site
+westend_admin_site.register(Vertical, VerticalAdmin)
+westend_admin_site.register(Product, ProductAdmin)
+westend_admin_site.register(ContactInquiry, ContactInquiryAdmin)
+westend_admin_site.register(QuoteRequest, QuoteRequestAdmin)
+westend_admin_site.register(Feature, FeatureAdmin)
+westend_admin_site.register(CompanyInfo, CompanyInfoAdmin)
+westend_admin_site.register(PageVisit, PageVisitAdmin)

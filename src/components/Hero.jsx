@@ -103,7 +103,7 @@ const Hero = () => {
           <span className="text-white drop-shadow-lg">Wholesale Food Products</span>
           <br />
           <span className="text-accent-400 drop-shadow-lg">
-            For Global Markets
+            Exporter from India
           </span>
         </motion.h1>
 

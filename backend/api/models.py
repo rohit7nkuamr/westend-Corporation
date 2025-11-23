@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Feature(models.Model):
     """Features for the About section"""
