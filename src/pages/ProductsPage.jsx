@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Search, Filter, SlidersHorizontal, Package } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { getProducts, getVerticals } from '../services/api'
 import OptimizedImage from '../components/OptimizedImage'
 
 const ProductsPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All Products')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const productsPerPage = 12
+  const [selectedCategory, setSelectedCategory] = useState('All Products');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const productsPerPage = 12;
 
+  // Clear any persisted state on mount to ensure fresh defaults
+  useEffect(() => {
+    sessionStorage.removeItem('productsPageState');
+  }, []);
+
+  // Scroll to top on navigation to this page
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
   // Fetch products and categories from Django backend
   useEffect(() => {
     const fetchData = async () => {
@@ -62,10 +72,19 @@ const ProductsPage = () => {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct)
 
-  // Reset to page 1 when filters change
+  // Reset to page 1 when filters change – handled inline in handlers
+  // Removed useEffect resetting page
+
+
+  // Persist filter and pagination state to sessionStorage
   useEffect(() => {
-    setCurrentPage(1)
-  }, [selectedCategory, searchQuery])
+    const state = {
+      selectedCategory,
+      searchQuery,
+      currentPage,
+    };
+    sessionStorage.setItem('productsPageState', JSON.stringify(state));
+  }, [selectedCategory, searchQuery, currentPage]);
 
   // Loading state
   if (loading) {
@@ -271,7 +290,10 @@ const ProductsPage = () => {
               type="text"
               placeholder="Search products..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+              }}
               className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
             />
           </div>
@@ -283,7 +305,10 @@ const ProductsPage = () => {
             {categories.map((category, index) => (
               <button
                 key={index}
-                onClick={() => setSelectedCategory(category.name)}
+                onClick={() => {
+                  setSelectedCategory(category.name);
+                  setCurrentPage(1);
+                }}
                 className={`flex-shrink-0 px-5 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === category.name
                   ? 'bg-gray-900 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'

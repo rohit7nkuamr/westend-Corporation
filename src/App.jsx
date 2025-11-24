@@ -12,29 +12,14 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsConditions from './pages/TermsConditions'
 
 function App() {
-  // PageVisit tracker component: reports route changes to the backend
-  function RouteTracker() {
-    const location = useLocation()
-    useEffect(() => {
-      // Send a lightweight page visit event
-      import('./services/api').then(({ submitPageVisit }) => {
-        const pageMap = {
-          '/': 'home',
-          '/products': 'products',
-          '/about': 'about',
-          '/contact': 'contact'
-        }
-        const pageName = pageMap[location.pathname] || (location.pathname.startsWith('/product') ? 'product_detail' : 'home')
-        submitPageVisit({ page: pageName, action: 'page_view', session_id: '' })
-      }).catch(() => { })
-    }, [location])
-    return null
-  }
-
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-blue-50" style={{ position: 'relative' }}>
       <Navbar />
-      <RouteTracker />
+
       <main style={{ position: 'relative', zIndex: 1 }}>
         <Routes>
           <Route path="/" element={<Home />} />
