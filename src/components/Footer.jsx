@@ -18,8 +18,8 @@ const Footer = () => {
       { name: 'Processed Foods', href: '#products' }
     ],
     support: [
-      { name: 'Contact Us', href: '#contact' },
-      { name: 'Request Quote', href: '#contact' },
+      { name: 'Contact Us', href: '/contact' },
+      { name: 'Request Quote', href: '/contact' },
       { name: 'Privacy Policy', href: '/privacy' },
       { name: 'Terms & Conditions', href: '/terms' }
     ]
@@ -183,7 +183,7 @@ const Footer = () => {
             <div className="flex space-x-6 text-sm text-gray-400">
               <a href="/privacy" className="hover:text-amber-400 transition-colors">Privacy Policy</a>
               <a href="/terms" className="hover:text-amber-400 transition-colors">Terms of Service</a>
-              <a href="#contact" className="hover:text-amber-400 transition-colors">Contact</a>
+              <a href="/contact" className="hover:text-amber-400 transition-colors">Contact</a>
             </div>
           </div>
         </motion.div>

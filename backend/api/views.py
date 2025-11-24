@@ -54,30 +54,42 @@ def contact_inquiry(request):
         if serializer.is_valid():
             contact = serializer.save()
 
-            # Attempt to forward the inquiry to the support email
-            try:
-                support_email = 'support@westendcorporation.in'
-                from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', f"no-reply@{request.get_host()}")
-                subject = f"New contact inquiry from {contact.name}"
-                body = (
-                    f"Name: {contact.name}\n"
-                    f"Email: {contact.email}\n"
-                    f"Phone: {contact.phone or 'N/A'}\n"
-                    f"Company: {contact.company or 'N/A'}\n\n"
-                    f"Message:\n{contact.message or ''}\n"
-                )
+            # Pre-compute all email details to avoid accessing request in thread
+            support_email = 'support@westendcorporation.in'
+            from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@westendcorporation.in')
+            contact_name = contact.name
+            contact_email = contact.email
+            contact_phone = contact.phone or 'N/A'
+            contact_company = contact.company or 'N/A'
+            contact_message = contact.message or ''
 
-                email = EmailMessage(
-                    subject=subject,
-                    body=body,
-                    from_email=from_email,
-                    to=[support_email],
-                    reply_to=[contact.email] if contact.email else None,
-                )
-                email.send(fail_silently=False)
-            except Exception:
-                logger = logging.getLogger(__name__)
-                logger.exception('Failed to send contact inquiry email to support')
+            # Send email in background thread
+            def send_email_thread():
+                try:
+                    import logging as thread_logging
+                    subject = f"New contact inquiry from {contact_name}"
+                    body = (
+                        f"Name: {contact_name}\n"
+                        f"Email: {contact_email}\n"
+                        f"Phone: {contact_phone}\n"
+                        f"Company: {contact_company}\n\n"
+                        f"Message:\n{contact_message}\n"
+                    )
+
+                    email = EmailMessage(
+                        subject=subject,
+                        body=body,
+                        from_email=from_email,
+                        to=[support_email],
+                        reply_to=[contact_email] if contact_email else None,
+                    )
+                    email.send(fail_silently=False)
+                except Exception:
+                    thread_logging.getLogger(__name__).exception('Failed to send contact inquiry email')
+
+            import threading
+            email_thread = threading.Thread(target=send_email_thread, daemon=True)
+            email_thread.start()
 
             return Response({
                 'success': True,
@@ -111,7 +123,49 @@ def quote_request(request):
     try:
         serializer = QuoteRequestSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            quote = serializer.save()
+
+            # Pre-compute all email details to avoid accessing request in thread
+            support_email = 'support@westendcorporation.in'
+            from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@westendcorporation.in')
+            quote_name = quote.name
+            quote_email = quote.email
+            quote_phone = quote.phone
+            quote_company = quote.company
+            quote_quantity = quote.quantity
+            quote_message = quote.message or ''
+            product_name = quote.product.name if quote.product else "General Inquiry"
+
+            # Send email in background thread
+            def send_quote_email_thread():
+                try:
+                    import logging as thread_logging
+                    subject = f"New Quote Request from {quote_name}"
+                    body = (
+                        f"Name: {quote_name}\n"
+                        f"Email: {quote_email}\n"
+                        f"Phone: {quote_phone}\n"
+                        f"Company: {quote_company}\n"
+                        f"Product: {product_name}\n"
+                        f"Quantity: {quote_quantity}\n\n"
+                        f"Message:\n{quote_message}\n"
+                    )
+
+                    email = EmailMessage(
+                        subject=subject,
+                        body=body,
+                        from_email=from_email,
+                        to=[support_email],
+                        reply_to=[quote_email] if quote_email else None,
+                    )
+                    email.send(fail_silently=False)
+                except Exception:
+                    thread_logging.getLogger(__name__).exception('Failed to send quote request email')
+
+            import threading
+            email_thread = threading.Thread(target=send_quote_email_thread, daemon=True)
+            email_thread.start()
+
             return Response({
                 'success': True,
                 'message': 'Quote request submitted successfully.'
