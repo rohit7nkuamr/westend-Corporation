@@ -145,7 +145,7 @@ const ProductDetail = () => {
       <SEO
         title={`${product.name} - International Exporter to USA, Canada & Worldwide | Westend Corporation`}
         description={`Premium ${product.name} exporter from India to USA, Canada & worldwide markets. ${product.moq ? `MOQ: ${product.moq}.` : 'Bulk export orders.'} FSSAI certified. ${product.packaging ? `Packaging: ${product.packaging}.` : 'Export-quality packaging.'} Contact for competitive international pricing.`}
-        keywords={`${product.name} exporter USA, ${product.name} exporter Canada, international ${product.name} supplier, ${product.brand} export, bulk ${product.name} worldwide, ${product.vertical_name} exporter`}
+        keywords={`${product.name}, ${product.name} exporter, ${product.name} supplier India, buy ${product.name} bulk, ${product.name} wholesale price, ${product.name} manufacturer, organic ${product.name}, ${product.name} export to USA, ${product.name} export to Canada, Westend Corporation ${product.name}, ${product.brand} ${product.name}, bulk food supplier, Indian grocery export, ${product.vertical_name} supplier, premium quality ${product.name}, FSSAI certified ${product.name}`}
         ogImage={product.image}
         ogType="product"
         canonical={`https://westendcorporation.in/product/${product.slug}`}
@@ -206,7 +206,7 @@ const ProductDetail = () => {
                   >
                     <img
                       src={image || product.image || 'https://westendcorporation.in/media/products/placeholder.svg'}
-                      alt={`View ${index + 1}`}
+                      alt={`${product.name} - View ${index + 1}`}
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         e.target.onerror = null;

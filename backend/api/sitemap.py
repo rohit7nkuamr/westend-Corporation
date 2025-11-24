@@ -44,7 +44,7 @@ def sitemap_view(request):
         <lastmod>{lastmod}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
-    </url
+    </url>
     
 '''.format(lastmod=timezone.now().strftime('%Y-%m-%d'))
     

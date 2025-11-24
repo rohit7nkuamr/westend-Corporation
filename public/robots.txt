@@ -9,5 +9,4 @@ Disallow: /api/
 # Sitemap location
 Sitemap: https://westendcorporation.in/sitemap.xml
 
-# Crawl-delay for polite bots
-Crawl-delay: 1
+

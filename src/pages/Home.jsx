@@ -4,6 +4,8 @@ import FeaturedProducts from '../components/FeaturedProducts'
 import Certifications from '../components/Certifications'
 import WhyChooseUs from '../components/WhyChooseUs'
 
+import SEO from '../components/SEO'
+
 const Home = () => {
   const [error, setError] = useState(null);
 
@@ -25,8 +27,8 @@ const Home = () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-red-600 mb-4">Something went wrong</h2>
           <p className="text-gray-700 mb-4">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
           >
             Reload Page
@@ -38,6 +40,11 @@ const Home = () => {
 
   return (
     <>
+      <SEO
+        title="Westend Corporation - Premium International Food Exporter | USA, Canada & Worldwide"
+        description="Westend Corporation is a leading international food exporter from India, specializing in premium groceries, pulses, spices, and frozen vegetables. We export to USA, Canada, and worldwide markets with FSSAI certification."
+        keywords="Westend Corporation, Westend Corporation India, Westend Corporation Delhi, Westend Foods, Westend Exports, international food exporter, food exporter to USA, food exporter to Canada, bulk food export India, FSSAI certified exporter, wholesale food export, B2B food distributor, Indian spices exporter, organic pulses supplier, frozen vegetables exporter"
+      />
       <Verticals />
       <FeaturedProducts />
       <Certifications />

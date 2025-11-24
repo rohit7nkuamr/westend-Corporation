@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet-async'
 const SEO = ({
     title = 'Westend Corporation - Premium International Food Exporter | USA, Canada & Worldwide',
     description = 'Leading international food exporter from India. Shipping to USA, Canada & worldwide. FSSAI certified. Premium groceries, pulses, spices & frozen vegetables. B2B bulk orders. Competitive export pricing since 2010.',
-    keywords = 'international food exporter, food exporter to USA, food exporter to Canada, bulk food export India, FSSAI certified exporter, wholesale food export, B2B food distributor',
+    keywords = 'Westend Corporation, Westend Corporation India, Westend Corporation Delhi, Westend Foods, Westend Exports, Westend Corporation products, Westend Corporation reviews, international food exporter, food exporter to USA, food exporter to Canada, bulk food export India, FSSAI certified exporter, wholesale food export, B2B food distributor, Indian spices exporter, organic pulses supplier, frozen vegetables exporter, ready to eat food manufacturer, Indian grocery exporter',
     ogImage = 'https://westendcorporation.in/og-image.jpg',
     ogType = 'website',
     structuredData = null,
@@ -103,6 +103,7 @@ export const getProductSchema = (product) => {
         },
         "category": product.vertical_name || "Food Products",
         "sku": `WC-${product.id}`,
+        "mpn": `WC-${product.id}`,
         "manufacturer": {
             "@type": "Organization",
             "name": "Westend Corporation",
@@ -111,13 +112,14 @@ export const getProductSchema = (product) => {
         "offers": {
             "@type": "Offer",
             "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-            "price": "0",
+            "price": "0", // 0 indicates 'Contact for Price' in some contexts, but priceSpecification is better
             "priceCurrency": "USD",
             "priceValidUntil": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
             "itemCondition": "https://schema.org/NewCondition",
+            "url": `https://westendcorporation.in/product/${product.slug}`,
             "priceSpecification": {
                 "@type": "UnitPriceSpecification",
-                "price": "0",
+                "priceType": "https://schema.org/InvoicePrice",
                 "priceCurrency": "USD",
                 "referenceQuantity": {
                     "@type": "QuantitativeValue",
