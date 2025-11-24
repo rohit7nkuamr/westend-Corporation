@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -24,29 +24,27 @@ function App() {
         }
         const pageName = pageMap[location.pathname] || (location.pathname.startsWith('/product') ? 'product_detail' : 'home')
         submitPageVisit({ page: pageName, action: 'page_view', session_id: '' })
-      }).catch(() => {})
+      }).catch(() => { })
     }, [location])
     return null
   }
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-blue-50" style={{ position: 'relative' }}>
-        <Navbar />
-        <RouteTracker />
-        <main style={{ position: 'relative', zIndex: 1 }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/certifications" element={<CertificationsPage />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-blue-50" style={{ position: 'relative' }}>
+      <Navbar />
+      <RouteTracker />
+      <main style={{ position: 'relative', zIndex: 1 }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/certifications" element={<CertificationsPage />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
   )
 }
 

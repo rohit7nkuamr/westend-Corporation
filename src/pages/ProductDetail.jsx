@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Star, Heart, Share2, ShoppingCart, Check, Truck, Shield, ArrowLeft, AlertTriangle, Loader } from 'lucide-react'
 import { getProductById, getProductsByCategory } from '../services/api'
+import SEO, { getProductSchema, getBreadcrumbSchema } from '../components/SEO'
 
 const ProductDetail = () => {
   const { id } = useParams()
@@ -19,45 +20,45 @@ const ProductDetail = () => {
       try {
         setLoading(true)
         setError(null)
-        
+
         // Fetch product with ID
         // Fetch product details
         const productData = await getProductById(id)
         // Process product data
-        
+
         // Create an array of images from the product data
         const productImages = [
           productData.image || 'https://westendcorporation.in/media/products/placeholder.svg'
         ];
-        
+
         // Add additional images if they exist
         if (productData.image_2) {
           productImages.push(productData.image_2);
         }
-        
+
         if (productData.image_3) {
           productImages.push(productData.image_3);
         }
-        
+
         // If we still have fewer than 3 images, add placeholders
         while (productImages.length < 3) {
           productImages.push('https://westendcorporation.in/media/products/placeholder.svg');
         }
-        
+
         // Get features from the API or use default features
-        const productFeatures = productData.features_list && productData.features_list.length > 0 
-          ? productData.features_list 
+        const productFeatures = productData.features_list && productData.features_list.length > 0
+          ? productData.features_list
           : [
-              '100% Certified Organic',
-              'USDA & India Organic Certified',
-              'No Pesticides or Chemicals',
-              'High Protein Content',
-              'Rich in Dietary Fiber',
-              'Naturally Gluten-Free',
-              'Farm Fresh Quality',
-              'Vacuum Packed for Freshness'
-            ];
-            
+            '100% Certified Organic',
+            'USDA & India Organic Certified',
+            'No Pesticides or Chemicals',
+            'High Protein Content',
+            'Rich in Dietary Fiber',
+            'Naturally Gluten-Free',
+            'Farm Fresh Quality',
+            'Vacuum Packed for Freshness'
+          ];
+
         // Create specifications object from API data
         const specifications = {
           'Product Type': productData.vertical_name || 'Organic Product',
@@ -69,7 +70,7 @@ const ProductDetail = () => {
           'Minimum Order': productData.moq || '25 kg',
           'Bulk Pricing': 'Available for larger quantities'
         };
-        
+
         // Enhance product with processed data
         const enhancedProduct = {
           ...productData,
@@ -80,15 +81,15 @@ const ProductDetail = () => {
           reviews: 124, // Default review count until we implement a review system
           brand: productData.brand || productData.vertical_name || 'Westend Organic',
         }
-        
+
         setProduct(enhancedProduct)
-        
+
         // Fetch related products from the same vertical
         if (productData.vertical) {
           // Fetch related products
           const relatedData = await getProductsByCategory(productData.vertical)
           // Process related products
-          
+
           // Filter out the current product and limit to 4 items
           const filtered = relatedData
             .filter(item => item.id !== parseInt(id))
@@ -102,10 +103,10 @@ const ProductDetail = () => {
         setLoading(false)
       }
     }
-    
+
     fetchProductData()
   }, [id])
-  
+
   // Loading state
   if (loading) {
     return (
@@ -117,7 +118,7 @@ const ProductDetail = () => {
       </div>
     )
   }
-  
+
   // Error state
   if (error || !product) {
     return (
@@ -126,8 +127,8 @@ const ProductDetail = () => {
           <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-900 mb-2">Product Not Found</h2>
           <p className="text-gray-600 mb-6">{error || 'The requested product could not be found or has been removed.'}</p>
-          <button 
-            onClick={() => navigate('/products')} 
+          <button
+            onClick={() => navigate('/products')}
             className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors"
           >
             Browse Products
@@ -139,6 +140,24 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
+      {/* SEO Meta Tags and Structured Data */}
+      <SEO
+        title={`${product.name} - International Exporter to USA, Canada & Worldwide | Westend Corporation`}
+        description={`Premium ${product.name} exporter from India to USA, Canada & worldwide markets. ${product.moq ? `MOQ: ${product.moq}.` : 'Bulk export orders.'} FSSAI certified. ${product.packaging ? `Packaging: ${product.packaging}.` : 'Export-quality packaging.'} Contact for competitive international pricing.`}
+        keywords={`${product.name} exporter USA, ${product.name} exporter Canada, international ${product.name} supplier, ${product.brand} export, bulk ${product.name} worldwide, ${product.vertical_name} exporter`}
+        ogImage={product.image}
+        ogType="product"
+        canonical={`https://westendcorporation.in/product/${product.id}`}
+        structuredData={[
+          getProductSchema(product),
+          getBreadcrumbSchema([
+            { name: 'Home', url: 'https://westendcorporation.in/' },
+            { name: 'Products', url: 'https://westendcorporation.in/products' },
+            { name: product.name, url: `https://westendcorporation.in/product/${product.id}` }
+          ])
+        ]}
+      />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
@@ -181,14 +200,13 @@ const ProductDetail = () => {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImage === index ? 'border-green-500' : 'border-gray-200 hover:border-gray-300'
-                    }`}
+                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${selectedImage === index ? 'border-green-500' : 'border-gray-200 hover:border-gray-300'
+                      }`}
                   >
-                    <img 
-                      src={image || product.image || 'https://westendcorporation.in/media/products/placeholder.svg'} 
-                      alt={`View ${index + 1}`} 
-                      className="w-full h-full object-cover" 
+                    <img
+                      src={image || product.image || 'https://westendcorporation.in/media/products/placeholder.svg'}
+                      alt={`View ${index + 1}`}
+                      className="w-full h-full object-cover"
                       onError={(e) => {
                         e.target.onerror = null;
                         e.target.src = 'https://westendcorporation.in/media/products/placeholder.svg';

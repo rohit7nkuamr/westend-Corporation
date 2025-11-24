@@ -1,4 +1,13 @@
+# Robots.txt for Westend Corporation
+# Allow all search engines to crawl
+
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /api/
 
+# Sitemap location
 Sitemap: https://westendcorporation.in/sitemap.xml
+
+# Crawl-delay for polite bots
+Crawl-delay: 1
