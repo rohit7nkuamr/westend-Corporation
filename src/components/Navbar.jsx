@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Menu, X, MessageCircle, Globe } from 'lucide-react'
+import { Menu, X, MessageCircle, Globe, ShoppingBag } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -43,9 +43,9 @@ const Navbar = () => {
           >
             <Link to="/" className="flex items-center gap-2 md:gap-3 flex-shrink min-w-0">
               {/* Logo Image */}
-              <img 
-                src="/logo.png" 
-                alt="Westend Corporation Logo" 
+              <img
+                src="/logo.png"
+                alt="Westend Corporation Logo"
                 className="h-8 md:h-14 w-auto object-contain flex-shrink-0"
               />
               {/* Company Name - Show on mobile too */}
@@ -69,11 +69,10 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.href}
-                className={`transition-colors duration-300 font-medium ${
-                  location.pathname === link.href 
-                    ? 'text-primary-700 border-b-2 border-primary-700' 
-                    : 'text-gray-700 hover:text-primary-700'
-                }`}
+                className={`transition-colors duration-300 font-medium ${location.pathname === link.href
+                  ? 'text-primary-700 border-b-2 border-primary-700'
+                  : 'text-gray-700 hover:text-primary-700'
+                  }`}
               >
                 {link.name}
               </Link>
@@ -86,8 +85,15 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex-shrink-0">
+          {/* Mobile Actions: Store Icon & Menu Button */}
+          <div className="md:hidden flex items-center gap-3 flex-shrink-0">
+            <Link
+              to="/products"
+              className="text-gray-700 hover:text-primary-700 transition-colors p-2"
+              aria-label="View Products"
+            >
+              <ShoppingBag size={24} />
+            </Link>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-gray-700 hover:text-primary-700 transition-colors p-2"
@@ -113,11 +119,10 @@ const Navbar = () => {
                 key={link.name}
                 to={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`block py-3 px-4 rounded-lg font-medium transition-colors ${
-                  location.pathname === link.href
-                    ? 'bg-primary-50 text-primary-700'
-                    : 'text-gray-700 hover:bg-gray-50'
-                }`}
+                className={`block py-3 px-4 rounded-lg font-medium transition-colors ${location.pathname === link.href
+                  ? 'bg-primary-50 text-primary-700'
+                  : 'text-gray-700 hover:bg-gray-50'
+                  }`}
               >
                 {link.name}
               </Link>
@@ -133,15 +138,15 @@ const Navbar = () => {
         </motion.div>
       )}
 
-      {/* Fixed Floating WhatsApp Button - Mobile Only */}
+      {/* Fixed Floating WhatsApp Button - Visible on all devices */}
       <a
         href="https://wa.me/919311933481"
         target="_blank"
         rel="noopener noreferrer"
-        className="md:hidden fixed top-20 right-4 z-[10000] bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+        className="fixed top-24 right-4 md:right-6 z-[10000] bg-green-500 hover:bg-green-600 text-white p-3 md:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
         aria-label="WhatsApp"
       >
-        <MessageCircle size={24} fill="white" strokeWidth={0} />
+        <MessageCircle size={24} className="md:w-8 md:h-8" fill="white" strokeWidth={0} />
       </a>
     </motion.nav>
   )

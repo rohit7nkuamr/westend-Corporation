@@ -310,7 +310,7 @@ const ProductsPage = () => {
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {currentProducts.map((product, index) => (
               <motion.div
                 key={product.id}

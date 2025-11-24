@@ -1,21 +1,21 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from 'lucide-react'
+import { Mail, Phone, MapPin } from 'lucide-react'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   const footerLinks = {
     company: [
-      { name: 'About Us', href: '#about' },
-      { name: 'Our Products', href: '#products' },
-      { name: 'Why Choose Us', href: '#why-choose-us' },
+      { name: 'About Us', href: '/about' },
+      { name: 'Our Products', href: '/products' },
+      { name: 'Why Choose Us', href: '/#why-choose-us' },
       { name: 'Certifications', href: '/certifications' }
     ],
     products: [
-      { name: 'Groceries & Staples', href: '#products' },
-      { name: 'Frozen Vegetables', href: '#products' },
-      { name: 'Processed Foods', href: '#products' }
+      { name: 'Groceries & Staples', href: '/products' },
+      { name: 'Frozen Vegetables', href: '/products' },
+      { name: 'Processed Foods', href: '/products' }
     ],
     support: [
       { name: 'Contact Us', href: '/contact' },
@@ -24,13 +24,6 @@ const Footer = () => {
       { name: 'Terms & Conditions', href: '/terms' }
     ]
   }
-
-  const socialLinks = [
-    { icon: Facebook, href: '#', color: 'hover:text-blue-500' },
-    { icon: Twitter, href: '#', color: 'hover:text-sky-500' },
-    { icon: Instagram, href: '#', color: 'hover:text-pink-500' },
-    { icon: Linkedin, href: '#', color: 'hover:text-blue-700' }
-  ]
 
   return (
     <footer className="bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800 text-white">
@@ -147,24 +140,6 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-
-            {/* Social Links */}
-            <div>
-              <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
-              <div className="flex space-x-4">
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={index}
-                    href={social.href}
-                    whileHover={{ scale: 1.2, y: -2 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`text-gray-400 ${social.color} transition-colors duration-300`}
-                  >
-                    <social.icon size={20} />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
           </motion.div>
         </div>
 

@@ -97,7 +97,7 @@ const FeaturedProducts = () => {
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
         {verticals.map((vertical, index) => (
-          <div key={vertical.id} className="mb-12">
+          <div key={vertical.id} className={index === verticals.length - 1 ? '' : 'mb-12'}>
             <div className="flex items-center mb-6">
               <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${index === 0 ? 'from-orange-500 to-amber-600' :
                 index === 1 ? 'from-blue-500 to-cyan-600' :

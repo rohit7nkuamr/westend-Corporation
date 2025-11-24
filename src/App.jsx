@@ -8,6 +8,8 @@ import ProductDetail from './pages/ProductDetail'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
 import CertificationsPage from './pages/CertificationsPage'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsConditions from './pages/TermsConditions'
 
 function App() {
   // PageVisit tracker component: reports route changes to the backend
@@ -41,6 +43,8 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/certifications" element={<CertificationsPage />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsConditions />} />
         </Routes>
       </main>
       <Footer />
