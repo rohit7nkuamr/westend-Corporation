@@ -11,7 +11,7 @@ const apiCall = async (endpoint, options = {}) => {
       'Accept': 'application/json',
       ...options.headers,
     };
-    
+
     // Prepare the request options
     const requestOptions = {
       ...options,
@@ -19,10 +19,10 @@ const apiCall = async (endpoint, options = {}) => {
       credentials: 'include', // Include cookies for CSRF if needed
       mode: 'cors', // Enable CORS
     };
-    
+
     // Make the API call
     const response = await fetch(`${API_BASE_URL}${endpoint}`, requestOptions);
-    
+
     if (!response.ok) {
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
@@ -54,18 +54,21 @@ export const getProducts = async (params = {}) => {
   return response.results || response;
 };
 
-export const getProductById = async (id) => {
-  return apiCall(`/products/${id}/`);
+export const getProductBySlug = async (slug) => {
+  return apiCall(`/products/${slug}/`);
 };
+
+// Alias for backward compatibility if needed, though we should migrate to slug
+export const getProductById = getProductBySlug;
 
 export const getProductsByCategory = async (categoryId, options = {}) => {
   let queryParams = `category=${categoryId}`;
-  
+
   // Add featured filter if specified
   if (options.featured) {
     queryParams += '&featured=true';
   }
-  
+
   const response = await apiCall(`/products/?${queryParams}`);
   // Handle paginated response format
   return response.results || response;
@@ -79,7 +82,7 @@ export const submitContactForm = async (formData) => {
       method: 'POST',
       body: JSON.stringify(formData),
     });
-    
+
     return response;
   } catch (error) {
     throw error;
@@ -93,7 +96,7 @@ export const submitQuoteRequest = async (quoteData) => {
       method: 'POST',
       body: JSON.stringify(quoteData),
     });
-    
+
     return response;
   } catch (error) {
     throw error;

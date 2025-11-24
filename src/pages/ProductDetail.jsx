@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Star, Heart, Share2, ShoppingCart, Check, Truck, Shield, ArrowLeft, AlertTriangle, Loader } from 'lucide-react'
-import { getProductById, getProductsByCategory } from '../services/api'
+import { getProductBySlug, getProductsByCategory } from '../services/api'
 import SEO, { getProductSchema, getBreadcrumbSchema } from '../components/SEO'
 
 const ProductDetail = () => {
-  const { id } = useParams()
+  const { slug } = useParams()
   const navigate = useNavigate()
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
@@ -20,10 +20,13 @@ const ProductDetail = () => {
       try {
         setLoading(true)
         setError(null)
+        setSelectedImage(0) // Reset selected image when product changes
 
-        // Fetch product with ID
-        // Fetch product details
-        const productData = await getProductById(id)
+        // Scroll to top when navigating to a new product
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+
+        // Fetch product with Slug
+        const productData = await getProductBySlug(slug)
         // Process product data
 
         // Create an array of images from the product data
@@ -77,8 +80,6 @@ const ProductDetail = () => {
           images: productImages,
           features: productFeatures,
           specifications: specifications,
-          rating: 4.8, // Default rating until we implement a rating system
-          reviews: 124, // Default review count until we implement a review system
           brand: productData.brand || productData.vertical_name || 'Westend Organic',
         }
 
@@ -92,7 +93,7 @@ const ProductDetail = () => {
 
           // Filter out the current product and limit to 4 items
           const filtered = relatedData
-            .filter(item => item.id !== parseInt(id))
+            .filter(item => item.slug !== productData.slug) // Use slug for comparison
             .slice(0, 4)
           setRelatedProducts(filtered)
         }
@@ -105,7 +106,7 @@ const ProductDetail = () => {
     }
 
     fetchProductData()
-  }, [id])
+  }, [slug])
 
   // Loading state
   if (loading) {
@@ -147,13 +148,13 @@ const ProductDetail = () => {
         keywords={`${product.name} exporter USA, ${product.name} exporter Canada, international ${product.name} supplier, ${product.brand} export, bulk ${product.name} worldwide, ${product.vertical_name} exporter`}
         ogImage={product.image}
         ogType="product"
-        canonical={`https://westendcorporation.in/product/${product.id}`}
+        canonical={`https://westendcorporation.in/product/${product.slug}`}
         structuredData={[
           getProductSchema(product),
           getBreadcrumbSchema([
             { name: 'Home', url: 'https://westendcorporation.in/' },
             { name: 'Products', url: 'https://westendcorporation.in/products' },
-            { name: product.name, url: `https://westendcorporation.in/product/${product.id}` }
+            { name: product.name, url: `https://westendcorporation.in/product/${product.slug}` }
           ])
         ]}
       />
@@ -224,36 +225,40 @@ const ProductDetail = () => {
             animate={{ opacity: 1, x: 0 }}
             className="space-y-6"
           >
-            {/* Title and Rating */}
+            {/* Title */}
             <div>
               <div className="flex items-start justify-between mb-2">
                 <div className="flex-1">
                   <span className="text-sm text-green-600 font-medium">{product.brand}</span>
                   <h1 className="text-3xl font-bold text-gray-900 mt-1">{product.name}</h1>
                 </div>
-                <div className="flex gap-2">
-                  <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50">
-                    <Heart size={20} />
-                  </button>
-                  <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <div className="flex gap-2 relative">
+                  <button
+                    onClick={async () => {
+                      const shareData = {
+                        title: product.name,
+                        text: `Check out ${product.name} from Westend Corporation - Premium Bulk Exporter`,
+                        url: window.location.href
+                      };
+
+                      try {
+                        if (navigator.share) {
+                          await navigator.share(shareData);
+                        } else {
+                          await navigator.clipboard.writeText(window.location.href);
+                          // Simple alert fallback since we don't have a toast component yet
+                          alert('Link copied to clipboard!');
+                        }
+                      } catch (err) {
+                        console.error('Error sharing:', err);
+                      }
+                    }}
+                    className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 hover:text-primary-600 transition-colors"
+                    title="Share Product"
+                  >
                     <Share2 size={20} />
                   </button>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={18}
-                      className={i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}
-                    />
-                  ))}
-                </div>
-                <span className="text-gray-600">
-                  {product.rating} ({product.reviews} reviews)
-                </span>
               </div>
             </div>
 
@@ -305,45 +310,23 @@ const ProductDetail = () => {
 
             {/* Quantity and CTA */}
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Quantity (kg)</label>
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 border border-gray-300 rounded-lg hover:bg-gray-50"
-                  >
-                    -
-                  </button>
-                  <input
-                    type="number"
-                    value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-20 text-center border border-gray-300 rounded-lg py-2"
-                  />
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 border border-gray-300 rounded-lg hover:bg-gray-50"
-                  >
-                    +
-                  </button>
-                  <span className="text-gray-600">Minimum order: 25 kg</span>
-                </div>
-              </div>
-
               {/* Minimum Order Info */}
-              <div className="bg-gray-50 rounded-xl p-4">
-                <h4 className="font-semibold text-gray-900 mb-2">Minimum Order Quantity</h4>
-                <p className="text-gray-600 text-sm">
-                  MOQ varies based on product and packaging. Contact our sales team for detailed information.
-                </p>
+              <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                <h4 className="font-semibold text-gray-900 mb-2">Bulk Order Information</h4>
+                <div className="space-y-2 text-sm text-gray-600">
+                  <p>• Minimum Order Quantity (MOQ): <span className="font-medium text-gray-900">{product.moq || 'Contact for details'}</span></p>
+                  <p>• Packaging: <span className="font-medium text-gray-900">{product.packaging || 'Standard Bulk Packaging'}</span></p>
+                  <p>• Origin: <span className="font-medium text-gray-900">{product.origin || 'India'}</span></p>
+                </div>
               </div>
 
               <div className="flex gap-3">
                 <Link
-                  to="/contact"
-                  className="flex-1 border-2 border-green-600 text-green-600 py-4 rounded-xl font-semibold hover:bg-green-50 transition-all text-center"
+                  to={`/contact?product=${encodeURIComponent(product.name)}`}
+                  className="w-full bg-green-600 text-white py-4 rounded-xl font-bold hover:bg-green-700 transition-all text-center shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                 >
-                  Contact Supplier
+                  <ShoppingCart size={20} />
+                  Request Wholesale Quote
                 </Link>
               </div>
             </div>
@@ -353,15 +336,15 @@ const ProductDetail = () => {
               <div className="flex items-center gap-3">
                 <Truck className="text-blue-600" size={24} />
                 <div>
-                  <p className="font-medium text-gray-900">Free Shipping</p>
-                  <p className="text-sm text-gray-600">On orders above 100 kg</p>
+                  <p className="font-medium text-gray-900">Global Shipping</p>
+                  <p className="text-sm text-gray-600">Export to USA, Canada & Worldwide</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
                 <Shield className="text-blue-600" size={24} />
                 <div>
-                  <p className="font-medium text-gray-900">Quality Assured</p>
-                  <p className="text-sm text-gray-600">100% certified organic</p>
+                  <p className="font-medium text-gray-900">Quality Certified</p>
+                  <p className="text-sm text-gray-600">FSSAI & Export Grade Quality</p>
                 </div>
               </div>
             </div>
@@ -410,7 +393,7 @@ const ProductDetail = () => {
               {relatedProducts.map((relProduct) => (
                 <Link
                   key={relProduct.id}
-                  to={`/product/${relProduct.id}`}
+                  to={`/product/${relProduct.slug}`}
                   className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden group"
                 >
                   <div className="aspect-square bg-gray-100 overflow-hidden relative">
@@ -437,7 +420,7 @@ const ProductDetail = () => {
                     <div className="text-xs text-gray-600 mb-2">{relProduct.packaging}</div>
                     <div className="flex justify-between items-center">
                       <div className="text-xs text-gray-600">MOQ: {relProduct.moq}</div>
-                      <Link to={`/contact?product=${relProduct.id}`} className="text-primary-600 text-xs font-medium hover:underline">
+                      <Link to={`/contact?product=${encodeURIComponent(relProduct.name)}`} className="text-primary-600 text-xs font-medium hover:underline">
                         Inquire
                       </Link>
                     </div>

@@ -319,7 +319,7 @@ const ProductsPage = () => {
                 transition={{ delay: index * 0.05 }}
                 className="group"
               >
-                <Link to={`/product/${product.id}`}>
+                <Link to={`/product/${product.slug}`}>
                   <div className="bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
                     {/* Image Container */}
                     <div className="relative aspect-square bg-gray-100 overflow-hidden">

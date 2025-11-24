@@ -21,6 +21,7 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint for products"""
     queryset = Product.objects.filter(is_active=True)
     serializer_class = ProductSerializer
+    lookup_field = 'slug'
     
     def get_queryset(self):
         queryset = super().get_queryset()

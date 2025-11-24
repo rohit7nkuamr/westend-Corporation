@@ -52,7 +52,7 @@ def sitemap_view(request):
     for product in products:
         sitemap_xml += f'''    <!-- Product: {product.name} -->
     <url>
-        <loc>https://westendcorporation.in/product/{product.id}</loc>
+        <loc>https://westendcorporation.in/product/{product.slug}</loc>
         <lastmod>{product.updated_at.strftime('%Y-%m-%d')}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>

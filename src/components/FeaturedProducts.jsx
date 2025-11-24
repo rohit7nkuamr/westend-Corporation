@@ -17,16 +17,16 @@ const FeaturedProducts = () => {
         // Fetch all verticals
         const verticalsData = await getVerticals()
         setVerticals(verticalsData)
-        
+
         // Fetch products for each vertical
         const productsData = {}
         for (const vertical of verticalsData) {
           // Try to get featured products first
           const products = await getProductsByCategory(vertical.id, { featured: true })
-          
+
           if (products && products.length > 0) {
             // Sort featured products by featured_order
-            const sortedProducts = [...products].sort((a, b) => 
+            const sortedProducts = [...products].sort((a, b) =>
               (a.featured_order || 999) - (b.featured_order || 999)
             )
             // Get up to 4 featured products
@@ -37,7 +37,7 @@ const FeaturedProducts = () => {
             productsData[vertical.id] = regularProducts.slice(0, 4)
           }
         }
-        
+
         setProductsByVertical(productsData)
         setError(null)
       } catch (err) {
@@ -82,13 +82,13 @@ const FeaturedProducts = () => {
     if (name.includes('groceries') || name.includes('staples')) return <Utensils className="text-white" size={24} />;
     if (name.includes('frozen') || name.includes('vegetables')) return <Snowflake className="text-white" size={24} />;
     if (name.includes('processed') || name.includes('foods')) return <Package className="text-white" size={24} />;
-    
+
     // Default icon based on icon_name
     if (vertical.icon_name === 'Wheat') return <ShoppingBag className="text-white" size={24} />;
     if (vertical.icon_name === 'Snowflake') return <Snowflake className="text-white" size={24} />;
     if (vertical.icon_name === 'Box') return <Package className="text-white" size={24} />;
     if (vertical.icon_name === 'Leaf') return <Leaf className="text-white" size={24} />;
-    
+
     // Default fallback
     return <ShoppingBag className="text-white" size={24} />;
   };
@@ -99,11 +99,10 @@ const FeaturedProducts = () => {
         {verticals.map((vertical, index) => (
           <div key={vertical.id} className="mb-12">
             <div className="flex items-center mb-6">
-              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${
-                index === 0 ? 'from-orange-500 to-amber-600' :
+              <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${index === 0 ? 'from-orange-500 to-amber-600' :
                 index === 1 ? 'from-blue-500 to-cyan-600' :
-                'from-amber-500 to-yellow-600'
-              } flex items-center justify-center mr-4`}>
+                  'from-amber-500 to-yellow-600'
+                } flex items-center justify-center mr-4`}>
                 {getIconForVertical(vertical)}
               </div>
               <h2 className="text-2xl font-bold text-gray-900 uppercase">{vertical.title}</h2>
@@ -111,16 +110,16 @@ const FeaturedProducts = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {productsByVertical[vertical.id]?.slice(0, 4).map((product) => (
-                <Link 
-                  key={product.id} 
-                  to={`/product/${product.id}`} 
+                <Link
+                  key={product.id}
+                  to={`/product/${product.slug}`}
                   className="block bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
                 >
                   <div className="relative p-4 flex flex-col items-center">
                     {/* Product Image */}
                     <div className="w-full h-40 mb-3 flex items-center justify-center">
-                      <img 
-                        src={product.image || 'https://westendcorporation.in/media/products/placeholder.svg'} 
+                      <img
+                        src={product.image || 'https://westendcorporation.in/media/products/placeholder.svg'}
                         alt={product.name}
                         className="max-h-full max-w-full object-contain"
                       />
@@ -130,7 +129,7 @@ const FeaturedProducts = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Product Name - Centered */}
                     <h3 className="text-center text-gray-800 font-medium text-sm line-clamp-2">
                       {product.name}
@@ -139,16 +138,15 @@ const FeaturedProducts = () => {
                 </Link>
               ))}
             </div>
-            
+
             {/* Category View All Link - Below Products */}
             <div className="mt-4 text-center">
-              <Link 
-                to={`/products?category=${vertical.id}`} 
-                className={`inline-flex items-center text-sm font-medium ${
-                  index === 0 ? 'text-orange-600 hover:text-orange-700' :
+              <Link
+                to={`/products?category=${vertical.id}`}
+                className={`inline-flex items-center text-sm font-medium ${index === 0 ? 'text-orange-600 hover:text-orange-700' :
                   index === 1 ? 'text-blue-600 hover:text-blue-700' :
-                  'text-amber-600 hover:text-amber-700'
-                }`}
+                    'text-amber-600 hover:text-amber-700'
+                  }`}
               >
                 View all {vertical.title}
                 <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

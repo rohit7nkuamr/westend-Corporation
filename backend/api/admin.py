@@ -50,15 +50,16 @@ class FeaturedProductFilter(admin.SimpleListFilter):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'vertical', 'badge', 'stock_status', 'is_active', 'is_featured', 'featured_order']
+    list_display = ['name', 'slug', 'vertical', 'badge', 'stock_status', 'is_active', 'is_featured', 'featured_order']
     list_filter = ['vertical', 'stock_status', 'is_active', 'badge', FeaturedProductFilter]
-    search_fields = ['name', 'description', 'features']
+    search_fields = ['name', 'slug', 'description', 'features']
     list_editable = ['stock_status', 'badge', 'is_featured', 'featured_order']
+    readonly_fields = ['slug']
     actions = ['mark_as_in_stock', 'mark_as_out_of_stock', 'mark_as_low_stock', 'mark_as_featured', 'mark_as_not_featured']
     
     fieldsets = [
         ('Basic Information', {
-            'fields': ['name', 'description', 'vertical', 'badge', 'brand', 'is_active']
+            'fields': ['name', 'slug', 'description', 'vertical', 'badge', 'brand', 'is_active']
         }),
         ('Images', {
             'fields': ['image', 'image_2', 'image_3']

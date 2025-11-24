@@ -115,12 +115,25 @@ class Product(models.Model):
     is_featured = models.BooleanField(default=False, help_text="Feature this product on the home page")
     featured_order = models.IntegerField(default=0, help_text="Order in which featured products appear (lower numbers appear first)")
     order = models.IntegerField(default=0)
+    slug = models.SlugField(unique=True, blank=True, max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         ordering = ['order', '-created_at']
     
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            from django.utils.text import slugify
+            base_slug = slugify(self.name)
+            slug = base_slug
+            counter = 1
+            while Product.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
