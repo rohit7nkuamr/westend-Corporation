@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet-async'
 const SEO = ({
     title = 'Westend Corporation - Premium International Food Exporter | USA, Canada & Worldwide',
     description = 'Leading international food exporter from India. Shipping to USA, Canada & worldwide. FSSAI certified. Premium groceries, pulses, spices & frozen vegetables. B2B bulk orders. Competitive export pricing since 2010.',
-    keywords = 'Westend Corporation, Westend Corporation India, Westend Corporation Delhi, Westend Foods, Westend Exports, Westend Corporation products, Westend Corporation reviews, international food exporter, food exporter to USA, food exporter to Canada, bulk food export India, FSSAI certified exporter, wholesale food export, B2B food distributor, Indian spices exporter, organic pulses supplier, frozen vegetables exporter, ready to eat food manufacturer, Indian grocery exporter',
+    keywords = 'Westend Corporation, Westend Corporation India, Westend Corporation Delhi, Westend Foods, Westend Exports, Westend Corporation products, Westend Corporation reviews, food exporters, food exporters India, food exports, worldwide food exporter, international food exporter, global food exporters, food export company, Indian food exporters, food exporters to USA, food exporters to Canada, food exporters worldwide, bulk food exporters, wholesale food exporters, organic food exporters, B2B food exporters, FSSAI certified exporters, spices exporters, pulses exporters, frozen vegetables exporters',
     ogImage = 'https://westendcorporation.in/og-image.jpg',
     ogType = 'website',
     structuredData = null,
@@ -65,37 +65,82 @@ export const getOrganizationSchema = () => ({
     "@type": "Organization",
     "name": "Westend Corporation",
     "url": "https://westendcorporation.in",
-    "logo": "https://westendcorporation.in/logo.png",
-    "description": "Premium wholesale food supplier in India since 2010",
+    "logo": {
+        "@type": "ImageObject",
+        "url": "https://westendcorporation.in/logo.png"
+    },
+    "description": "Premium international food exporter from India",
     "address": {
         "@type": "PostalAddress",
+        "streetAddress": "X-57 Phase-II Okhla",
         "addressLocality": "Delhi",
-        "addressRegion": "Delhi",
+        "postalCode": "110020",
         "addressCountry": "IN"
     },
     "contactPoint": {
         "@type": "ContactPoint",
-        "email": "support@westendcorporation.in",
-        "contactType": "Customer Service"
+        "telephone": "+91-93119-33481",
+        "contactType": "Customer Service",
+        "email": "support@westendcorporation.in"
+    }
+})
+
+// Helper function to generate WebSite structured data for sitelinks
+export const getWebSiteSchema = () => ({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Westend Corporation",
+    "alternateName": "Westend Foods & Exports",
+    "url": "https://westendcorporation.in",
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://westendcorporation.in/products?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
     },
-    "sameAs": [
-        "https://www.facebook.com/westendcorporation",
-        "https://www.linkedin.com/company/westendcorporation"
-    ]
+    "about": {
+        "@type": "Organization",
+        "name": "Westend Corporation"
+    }
 })
 
 // Helper function to generate product structured data
 export const getProductSchema = (product) => {
-    // Get real product image URL from backend
-    const productImage = product.image?.startsWith('http')
-        ? product.image
-        : `https://westendcorporation.in${product.image}`
+    // Get all product images (main + additional)
+    const productImages = []
+
+    // Add main image
+    if (product.image) {
+        const mainImage = product.image.startsWith('http')
+            ? product.image
+            : `https://westendcorporation.in${product.image}`
+        productImages.push(mainImage)
+    }
+
+    // Add additional images
+    if (product.image_2) {
+        const image2 = product.image_2.startsWith('http')
+            ? product.image_2
+            : `https://westendcorporation.in${product.image_2}`
+        productImages.push(image2)
+    }
+
+    if (product.image_3) {
+        const image3 = product.image_3.startsWith('http')
+            ? product.image_3
+            : `https://westendcorporation.in${product.image_3}`
+        productImages.push(image3)
+    }
+
+    // NO PLACEHOLDER - Only use real product images from backend
 
     return {
         "@context": "https://schema.org/",
         "@type": "Product",
         "name": product.name,
-        "image": [productImage],
+        "image": productImages,
         "description": product.description || `International bulk exporter of ${product.name}. Premium quality, FSSAI certified. Exporting to USA, Canada, and worldwide. Minimum order quantity: ${product.moq || 'Contact for details'}. Contact for competitive export pricing.`,
         "brand": {
             "@type": "Brand",
@@ -200,3 +245,44 @@ export const getBreadcrumbSchema = (items) => ({
         "item": item.url
     }))
 })
+
+// Helper function to generate FAQ structured data for products
+export const getFAQSchema = (product) => ({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@type": "Question",
+            "name": `What is the minimum order quantity for ${product.name}?`,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": `The minimum order quantity (MOQ) for ${product.name} is ${product.moq || 'available on request'}. We cater to bulk and wholesale orders for international export.`
+            }
+        },
+        {
+            "@type": "Question",
+            "name": `Do you export ${product.name} to USA and Canada?`,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": `Yes, we export ${product.name} to USA, Canada, and worldwide markets. Westend Corporation is a leading international food exporter with FSSAI certification and export-quality packaging.`
+            }
+        },
+        {
+            "@type": "Question",
+            "name": `Is ${product.name} FSSAI certified?`,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": `Yes, all our products including ${product.name} are FSSAI certified and meet international export quality standards. We ensure premium quality for all bulk orders.`
+            }
+        },
+        {
+            "@type": "Question",
+            "name": `What is the packaging for bulk ${product.name} orders?`,
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": `${product.name} is available in ${product.packaging || 'export-quality bulk packaging'}. We can customize packaging based on your requirements for international shipping.`
+            }
+        }
+    ]
+})
+

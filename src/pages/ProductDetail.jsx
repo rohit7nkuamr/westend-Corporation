@@ -3,7 +3,125 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Star, Heart, Share2, ShoppingCart, Check, Truck, Shield, ArrowLeft, AlertTriangle, Loader } from 'lucide-react'
 import { getProductBySlug, getProductsByCategory } from '../services/api'
-import SEO, { getProductSchema, getBreadcrumbSchema } from '../components/SEO'
+import SEO, { getProductSchema, getBreadcrumbSchema, getFAQSchema } from '../components/SEO'
+
+// Helper function to generate smart keywords from product name
+const generateSmartKeywords = (product) => {
+  const baseKeywords = []
+
+  // 1. Extract individual words from product name
+  const nameWords = product.name.toLowerCase().split(' ').filter(word => word.length > 2)
+  baseKeywords.push(...nameWords)
+
+  // 2. Add variations and common misspellings (COMPREHENSIVE LIST)
+  const variations = {
+    // Rice & Grains
+    'khichdi': ['khichadi', 'khichri', 'kitchdi', 'khichari', 'ready to eat meal', 'instant meal', 'rice dish'],
+    'rice': ['basmati', 'rice grains', 'chawal'],
+    'atta': ['flour', 'wheat flour', 'aata', 'whole wheat flour'],
+    'maida': ['all purpose flour', 'refined flour', 'white flour'],
+    'sooji': ['semolina', 'rava', 'suji'],
+    'poha': ['flattened rice', 'beaten rice', 'chura'],
+    'vermicelli': ['sevai', 'seviyan', 'semiya', 'noodles'],
+
+    // Pulses & Lentils
+    'dal': ['daal', 'lentils', 'pulses', 'dhal'],
+    'chana': ['chickpeas', 'gram', 'chole', 'garbanzo beans', 'bengal gram'],
+    'moong': ['mung', 'green gram', 'mung beans', 'green lentils'],
+    'urad': ['black lentils', 'black gram', 'urad dal', 'black beans'],
+    'masoor': ['red lentils', 'masur', 'pink lentils'],
+    'toor': ['arhar', 'pigeon peas', 'tur dal', 'yellow lentils'],
+    'rajma': ['kidney beans', 'red beans'],
+    'kabuli': ['white chickpeas', 'kabuli chana'],
+
+    // Spices & Masala
+    'masala': ['spices', 'spice mix', 'masalas', 'seasoning'],
+    'turmeric': ['haldi', 'turmeric powder', 'yellow spice'],
+    'chilli': ['chili', 'red chilli', 'mirch', 'hot pepper'],
+    'coriander': ['dhania', 'cilantro', 'coriander powder'],
+    'cumin': ['jeera', 'cumin seeds', 'zeera'],
+    'garam': ['garam masala', 'spice blend'],
+    'tikka': ['tikka masala', 'tandoori'],
+    'biryani': ['biriyani', 'biryani masala'],
+    'curry': ['curry powder', 'curry masala'],
+
+    // Tea & Beverages
+    'tea': ['chai', 'tea leaves', 'black tea', 'tea powder'],
+    'coffee': ['instant coffee', 'coffee powder', 'kapi'],
+
+    // Pickles & Preserves
+    'achar': ['pickle', 'pickles', 'aachaar', 'preserved vegetables'],
+    'pickle': ['achar', 'preserved', 'pickled'],
+    'murabba': ['preserve', 'sweet preserve', 'fruit preserve'],
+    'chutney': ['sauce', 'condiment', 'chatni'],
+
+    // Ready to Eat
+    'instant': ['ready to eat', 'RTE', 'instant food'],
+    'ready': ['instant', 'RTE', 'ready to cook', 'RTC'],
+    'mix': ['mixture', 'blend', 'powder mix'],
+    'paratha': ['flatbread', 'stuffed bread', 'indian bread'],
+
+    // Vegetables
+    'aloo': ['potato', 'potatoes', 'batata'],
+    'peas': ['green peas', 'matar'],
+    'potato': ['aloo', 'potatoes'],
+    'okra': ['bhindi', 'ladies finger'],
+    'corn': ['maize', 'sweet corn', 'makka'],
+
+    // Oils & Ghee
+    'ghee': ['clarified butter', 'pure ghee', 'desi ghee'],
+    'oil': ['cooking oil', 'edible oil'],
+
+    // Sweets & Snacks
+    'jaggery': ['gur', 'gud', 'unrefined sugar', 'natural sweetener'],
+    'sugar': ['shakkar', 'khand'],
+    'sev': ['namkeen', 'savory snack'],
+    'namkeen': ['snacks', 'savory snacks', 'mixture'],
+    'rewari': ['sesame brittle', 'til ki gajak'],
+
+    // General Terms
+    'organic': ['natural', 'chemical free', 'pesticide free'],
+    'whole': ['sabut', 'unpolished', 'whole grain'],
+    'split': ['dhuli', 'polished'],
+    'frozen': ['IQF', 'individually quick frozen', 'deep frozen'],
+    'diced': ['cubed', 'chopped'],
+    'powder': ['ground', 'powdered', 'fine'],
+
+    // Common Misspellings
+    'vegetable': ['vegitable', 'vegtable', 'veg'],
+    'chicken': ['chiken', 'chickin'],
+    'butter': ['buter', 'buttar']
+  }
+
+  // 3. Add variations for matched words
+  nameWords.forEach(word => {
+    if (variations[word]) {
+      baseKeywords.push(...variations[word])
+    }
+  })
+
+  // 4. Generate combinations (brand + word, word + exporter, etc.)
+  const smartKeywords = [
+    product.name, // Full name
+    ...nameWords, // Individual words
+    ...baseKeywords, // Variations
+    `${product.brand} ${product.name}`,
+    `Westend ${product.name}`,
+    ...nameWords.map(word => `${word} exporter`),
+    ...nameWords.map(word => `${word} supplier`),
+    ...nameWords.map(word => `buy ${word} bulk`),
+    ...nameWords.map(word => `${word} wholesale`),
+    ...nameWords.map(word => `organic ${word}`),
+    product.vertical_name,
+    `${product.vertical_name} exporter`,
+    'food exporters',
+    'food exports',
+    'worldwide food exporter'
+  ]
+
+  return [...new Set(smartKeywords)].join(', ') // Remove duplicates
+}
+
 
 const ProductDetail = () => {
   const { slug } = useParams()
@@ -145,7 +263,7 @@ const ProductDetail = () => {
       <SEO
         title={`${product.name} - International Exporter to USA, Canada & Worldwide | Westend Corporation`}
         description={`Premium ${product.name} exporter from India to USA, Canada & worldwide markets. ${product.moq ? `MOQ: ${product.moq}.` : 'Bulk export orders.'} FSSAI certified. ${product.packaging ? `Packaging: ${product.packaging}.` : 'Export-quality packaging.'} Contact for competitive international pricing.`}
-        keywords={`${product.name}, ${product.name} exporter, ${product.name} supplier India, buy ${product.name} bulk, ${product.name} wholesale price, ${product.name} manufacturer, organic ${product.name}, ${product.name} export to USA, ${product.name} export to Canada, Westend Corporation ${product.name}, ${product.brand} ${product.name}, bulk food supplier, Indian grocery export, ${product.vertical_name} supplier, premium quality ${product.name}, FSSAI certified ${product.name}`}
+        keywords={generateSmartKeywords(product)}
         ogImage={product.image}
         ogType="product"
         canonical={`https://westendcorporation.in/product/${product.slug}`}
@@ -155,7 +273,8 @@ const ProductDetail = () => {
             { name: 'Home', url: 'https://westendcorporation.in/' },
             { name: 'Products', url: 'https://westendcorporation.in/products' },
             { name: product.name, url: `https://westendcorporation.in/product/${product.slug}` }
-          ])
+          ]),
+          getFAQSchema(product)
         ]}
       />
 
