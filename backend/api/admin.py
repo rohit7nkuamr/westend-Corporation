@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit
 from .admin_site import westend_admin_site
 
@@ -139,3 +141,7 @@ westend_admin_site.register(QuoteRequest, QuoteRequestAdmin)
 westend_admin_site.register(Feature, FeatureAdmin)
 westend_admin_site.register(CompanyInfo, CompanyInfoAdmin)
 westend_admin_site.register(PageVisit, PageVisitAdmin)
+
+# Register Django's default User and Group models
+westend_admin_site.register(User, UserAdmin)
+westend_admin_site.register(Group, GroupAdmin)

@@ -1,15 +1,13 @@
 """
 URL configuration for backend project.
 """
-from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from api.views_dashboard import admin_dashboard
+from api.admin_site import westend_admin_site
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Use default admin site
-    path('admin/dashboard/', admin_dashboard, name='admin_dashboard'),  # Custom dashboard
+    path('admin/', westend_admin_site.urls),  # Use custom admin site with analytics dashboard
     path('api/', include('api.urls')),
 ]
 
