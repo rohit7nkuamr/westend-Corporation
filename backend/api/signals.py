@@ -1,22 +1,54 @@
-from django.db.models.signals import pre_save
+"""
+Auto-trigger pre-rendering when products are added/updated via Django admin
+"""
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from .models import Product, Vertical
-from .utils import compress_image
+from .models import Product
+import subprocess
+import logging
 
+logger = logging.getLogger(__name__)
 
-@receiver(pre_save, sender=Product)
-def compress_product_images(sender, instance, **kwargs):
-    """Compress product images before saving"""
-    if instance.image:
-        instance.image = compress_image(instance.image)
-    if instance.image_2:
-        instance.image_2 = compress_image(instance.image_2)
-    if instance.image_3:
-        instance.image_3 = compress_image(instance.image_3)
+@receiver(post_save, sender=Product)
+def product_saved(sender, instance, created, **kwargs):
+    """
+    Trigger pre-rendering when a product is created or updated
+    """
+    if created:
+        logger.info(f"New product created: {instance.name} (slug: {instance.slug})")
+        action = "created"
+    else:
+        logger.info(f"Product updated: {instance.name} (slug: {instance.slug})")
+        action = "updated"
+    
+    # Trigger pre-rendering in background
+    try:
+        # Run npm run prerender in background
+        subprocess.Popen(
+            ['npm', 'run', 'prerender'],
+            cwd='/var/www/westend-Corporation',
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        logger.info(f"✅ Pre-rendering triggered for {action} product: {instance.name}")
+    except Exception as e:
+        logger.error(f"❌ Failed to trigger pre-rendering: {e}")
 
-
-@receiver(pre_save, sender=Vertical)
-def compress_vertical_image(sender, instance, **kwargs):
-    """Compress vertical images before saving"""
-    if instance.image:
-        instance.image = compress_image(instance.image)
+@receiver(post_delete, sender=Product)
+def product_deleted(sender, instance, **kwargs):
+    """
+    Trigger pre-rendering when a product is deleted
+    """
+    logger.info(f"Product deleted: {instance.name}")
+    
+    # Trigger pre-rendering to update sitemap
+    try:
+        subprocess.Popen(
+            ['npm', 'run', 'prerender'],
+            cwd='/var/www/westend-Corporation',
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        logger.info(f"✅ Pre-rendering triggered after product deletion")
+    except Exception as e:
+        logger.error(f"❌ Failed to trigger pre-rendering: {e}")

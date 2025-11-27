@@ -4,7 +4,8 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
-Disallow: /api/
+# Allow API access for Googlebot to render pages (JSON won't be indexed anyway)
+Allow: /api/
 
 # Sitemap location
 Sitemap: https://westendcorporation.in/sitemap.xml
