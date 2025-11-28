@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { getVerticals, getProductsByCategory } from '../services/api'
 import { ShoppingBag, Star, Award, Tag, Utensils, Leaf, Snowflake, Package } from 'lucide-react'
+import ProductCard from './ProductCard'
 
 const FeaturedProducts = () => {
   const [verticals, setVerticals] = useState([])
@@ -108,34 +109,9 @@ const FeaturedProducts = () => {
               <h2 className="text-2xl font-bold text-gray-900 uppercase">{vertical.title}</h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {productsByVertical[vertical.id]?.slice(0, 4).map((product) => (
-                <Link
-                  key={product.id}
-                  to={`/product/${product.slug}`}
-                  className="block bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
-                >
-                  <div className="relative p-4 flex flex-col items-center">
-                    {/* Product Image */}
-                    <div className="w-full h-40 mb-3 flex items-center justify-center">
-                      <img
-                        src={product.image || 'https://westendcorporation.in/media/products/placeholder.svg'}
-                        alt={product.name}
-                        className="max-h-full max-w-full object-contain"
-                      />
-                      {product.badge && (
-                        <div className="absolute top-2 left-2 bg-orange-500 text-white text-xs font-bold px-2 py-1 rounded">
-                          {product.badge}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Product Name - Centered */}
-                    <h3 className="text-center text-gray-800 font-medium text-sm line-clamp-2">
-                      {product.name}
-                    </h3>
-                  </div>
-                </Link>
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
 

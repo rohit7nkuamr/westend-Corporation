@@ -1,154 +1,137 @@
 import React, { useState, useEffect } from 'react'
-import { Menu, X, MessageCircle, Globe, ShoppingBag } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { Menu, X, Search, Settings, ShoppingBag, User } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 20)
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const location = useLocation()
-
   const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'Products', href: '/products' },
-    { name: 'About', href: '/about' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'HOME', href: '/' },
+    { name: 'PRODUCTS', href: '/products' },
+    { name: 'ABOUT', href: '/about' },
+    { name: 'CONTACT', href: '/contact' },
   ]
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.3 }}
-      style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }}
-      className="w-full bg-white shadow-md"
-    >
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 md:h-20 gap-2">
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center"
-          >
-            <Link to="/" className="flex items-center gap-2 md:gap-3 flex-shrink min-w-0">
-              {/* Logo Image */}
-              <img
-                src="/logo.png"
-                alt="Westend Corporation Logo"
-                className="h-8 md:h-14 w-auto object-contain flex-shrink-0"
-              />
-              {/* Company Name - Show on mobile too */}
-              <div className="min-w-0 flex-shrink">
-                <h1 className="text-sm md:text-xl font-bold text-gray-800 truncate" style={{ fontFamily: 'serif' }}>
-                  Westend Corporation
-                </h1>
-                <p className="text-xs text-primary-600 hidden sm:block">Premium Food Products</p>
-                {/* Visible on both mobile and desktop: exporter badge/pill */}
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 mt-1">
-                  <Globe className="text-amber-700" size={12} />
-                  Exporter from India
+    <>
+      {/* Top Bar (Optional, for contact info or promos) - Keeping it clean for now as per inspiration */}
+
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-white py-4'
+          }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center">
+            {/* Logo */}
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-3 group">
+              <img src="/logo.png" alt="Westend Corporation" className="h-12 w-auto object-contain" />
+              <div className="flex flex-col">
+                <span className="font-bold text-lg md:text-xl text-gray-800 tracking-tight leading-tight group-hover:text-primary-600 transition-colors">
+                  WESTEND CORPORATION
+                </span>
+                <span className="text-[10px] md:text-xs text-gray-500 tracking-wide font-medium">
+                  Exporter from India to World
                 </span>
               </div>
             </Link>
-          </motion.div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link, index) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={`transition-colors duration-300 font-medium ${location.pathname === link.href
-                  ? 'text-primary-700 border-b-2 border-primary-700'
-                  : 'text-gray-700 hover:text-primary-700'
-                  }`}
+            {/* Desktop Navigation - Centered */}
+            <div className="hidden md:flex items-center space-x-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className={`text-sm font-bold tracking-wide transition-colors duration-300 relative group ${location.pathname === link.href ? 'text-primary-500' : 'text-gray-600 hover:text-primary-500'
+                    }`}
+                >
+                  {link.name}
+                  <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full ${location.pathname === link.href ? 'w-full' : ''
+                    }`}></span>
+                </Link>
+              ))}
+            </div>
+
+            {/* Right Icons */}
+            <div className="hidden md:flex items-center gap-4">
+              <a
+                href="https://wa.me/919311933481"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-green-600 hover:text-green-700 font-medium transition-colors"
               >
-                {link.name}
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className="w-6 h-6" />
+                <span className="hidden lg:inline">WhatsApp</span>
+              </a>
+              <Link
+                to="/contact"
+                className="bg-primary-500 text-white px-5 py-2.5 rounded-full font-bold text-sm hover:bg-primary-600 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-300"
+              >
+                Request Quote
               </Link>
-            ))}
-            <Link
-              to="/contact"
-              className="bg-primary-600 text-white px-6 py-2.5 rounded-lg hover:bg-primary-700 hover:shadow-lg transition-all duration-300 font-medium border-2 border-primary-500"
-            >
-              Request Quote
-            </Link>
-          </div>
+            </div>
 
-          {/* Mobile Actions: Store Icon & Menu Button */}
-          <div className="md:hidden flex items-center gap-3 flex-shrink-0">
-            <Link
-              to="/products"
-              className="text-gray-700 hover:text-primary-700 transition-colors p-2"
-              aria-label="View Products"
-            >
-              <ShoppingBag size={24} />
-            </Link>
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-gray-700 hover:text-primary-700 transition-colors p-2"
-              aria-label="Toggle menu"
+              className="md:hidden text-gray-600 hover:text-primary-500 transition-colors"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
-      </div>
+      </motion.nav>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          className="md:hidden bg-white border-t border-gray-200 shadow-lg"
-        >
-          <div className="px-4 pt-3 pb-4 space-y-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`block py-3 px-4 rounded-lg font-medium transition-colors ${location.pathname === link.href
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-gray-700 hover:bg-gray-50'
-                  }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Link
-              to="/contact"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-all duration-300 text-center font-medium border-2 border-primary-500 mt-3"
-            >
-              Request Quote
-            </Link>
-          </div>
-        </motion.div>
-      )}
-
-      {/* Fixed Floating WhatsApp Button - Visible on all devices */}
-      <a
-        href="https://wa.me/919311933481"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed top-24 right-4 md:right-6 z-[10000] bg-green-500 hover:bg-green-600 text-white p-3 md:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
-        aria-label="WhatsApp"
-      >
-        <MessageCircle size={24} className="md:w-8 md:h-8" fill="white" strokeWidth={0} />
-      </a>
-    </motion.nav>
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="fixed top-[60px] left-0 right-0 bg-white shadow-xl z-40 md:hidden border-t border-gray-100"
+          >
+            <div className="p-4 space-y-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block text-sm font-bold py-2 ${location.pathname === link.href ? 'text-primary-500' : 'text-gray-600'
+                    }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <div className="pt-4 border-t border-gray-100 flex gap-4">
+                <button className="flex-1 flex items-center justify-center gap-2 py-2 bg-gray-50 rounded-lg text-gray-600">
+                  <Search size={18} />
+                  <span className="text-sm font-medium">Search</span>
+                </button>
+                <button className="flex-1 flex items-center justify-center gap-2 py-2 bg-primary-50 rounded-lg text-primary-600">
+                  <ShoppingBag size={18} />
+                  <span className="text-sm font-medium">Cart (0)</span>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 
