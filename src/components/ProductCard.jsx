@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Eye, Star } from 'lucide-react';
+import { ShoppingCart, Eye } from 'lucide-react';
 import OptimizedImage from './OptimizedImage';
 
 const ProductCard = ({ product }) => {
@@ -55,17 +55,10 @@ const ProductCard = ({ product }) => {
                     </Link>
                 </h3>
 
-                {/* Rating */}
-                <div className="flex justify-center gap-0.5 mb-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <Star key={star} size={12} className="text-yellow-400 fill-yellow-400" />
-                    ))}
-                </div>
-
                 {/* Price / MOQ */}
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-2 mt-3">
                     <span className="text-primary-600 font-bold text-sm">
-                        {product.price || 'Contact for Price'}
+                        {product.price || 'Request Quote'}
                     </span>
                     {product.oldPrice && (
                         <span className="text-gray-400 text-xs line-through">

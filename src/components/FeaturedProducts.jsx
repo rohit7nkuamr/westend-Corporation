@@ -51,19 +51,6 @@ const FeaturedProducts = () => {
     fetchData()
   }, [])
 
-  // Loading state
-  if (loading) {
-    return (
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-center">
-            <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
   // Error state
   if (error) {
     return (
@@ -75,6 +62,11 @@ const FeaturedProducts = () => {
         </div>
       </section>
     )
+  }
+
+  // No products state
+  if (!verticals || verticals.length === 0) {
+    return null;
   }
 
   // Icon mapping based on vertical name
@@ -95,7 +87,12 @@ const FeaturedProducts = () => {
   };
 
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="py-12 px-4 sm:px-6 lg:px-8 bg-white"
+    >
       <div className="max-w-7xl mx-auto">
         {verticals.map((vertical, index) => (
           <div key={vertical.id} className={index === verticals.length - 1 ? '' : 'mb-12'}>
@@ -133,7 +130,7 @@ const FeaturedProducts = () => {
           </div>
         ))}
       </div>
-    </section>
+    </motion.section>
   )
 }
 

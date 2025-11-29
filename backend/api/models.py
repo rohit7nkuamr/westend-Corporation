@@ -210,3 +210,23 @@ class PageVisit(models.Model):
 
     def __str__(self):
         return f"{self.page} - {self.action} @ {self.timestamp.isoformat()}"
+
+class HeroSlide(models.Model):
+    """Hero carousel slides - separate from categories"""
+    title = models.CharField(max_length=200, help_text="Slide title/headline")
+    subtitle = models.CharField(max_length=300, blank=True, help_text="Optional subtitle")
+    image = models.ImageField(upload_to='hero_slides/', help_text="Recommended: 1920x500px")
+    link_text = models.CharField(max_length=100, blank=True, help_text="Button text (optional)")
+    link_url = models.CharField(max_length=500, blank=True, help_text="Button link (optional)")
+    order = models.IntegerField(default=0, help_text="Display order (lower = first)")
+    is_active = models.BooleanField(default=True, help_text="Show on homepage")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Hero Slide'
+        verbose_name_plural = 'Hero Slides'
+    
+    def __str__(self):
+        return self.title

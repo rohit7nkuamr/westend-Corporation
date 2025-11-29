@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, HeroSlide
 
 class VerticalProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,3 +62,8 @@ class CompanyInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyInfo
         fields = ['id', 'name', 'tagline', 'founded_year', 'description', 'short_description', 'headquarters']
+
+class HeroSlideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HeroSlide
+        fields = ['id', 'title', 'subtitle', 'image', 'link_text', 'link_url', 'order']

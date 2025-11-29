@@ -60,7 +60,7 @@ const Verticals = () => {
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return
-    
+
     const distance = touchStart - touchEnd
     const isLeftSwipe = distance > 50
     const isRightSwipe = distance < -50
@@ -125,7 +125,7 @@ const Verticals = () => {
         const mappedData = data.map((vertical, index) => {
           // Find matching color scheme by name or use index as fallback
           const colorScheme = colorSchemes.find(cs => cs.name === vertical.title) || colorSchemes[index % colorSchemes.length];
-          
+
           return {
             ...vertical,
             icon: iconMap[vertical.icon_name] || Wheat,
@@ -150,24 +150,6 @@ const Verticals = () => {
     fetchVerticals()
   }, [])
 
-  // Loading state
-  if (loading) {
-    return (
-      <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
-        <div className="relative h-[calc(100vh-64px)] overflow-hidden bg-gradient-to-br from-amber-900/20 via-gray-900 to-emerald-900/20 flex items-center justify-center">
-          <div className="text-center">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full mx-auto mb-4"
-            />
-            <p className="text-white text-lg">Loading...</p>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
   // Error state
   if (error) {
     return (
@@ -178,8 +160,8 @@ const Verticals = () => {
               <span className="text-red-500 text-3xl">!</span>
             </div>
             <p className="text-white text-lg mb-4">{error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
+            <button
+              onClick={() => window.location.reload()}
               className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors"
             >
               Retry
@@ -207,9 +189,9 @@ const Verticals = () => {
     <section id="home" style={{ position: 'relative', zIndex: 1, marginTop: '64px' }}>
       {/* Mobile: Full-Screen Slider | Desktop: All 3 Verticals Visible */}
       <div className="relative h-[calc(100vh-64px)] overflow-hidden">
-        
+
         {/* MOBILE VIEW - Slider */}
-        <div 
+        <div
           className="md:hidden relative h-full bg-black"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -221,7 +203,7 @@ const Verticals = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ 
+              transition={{
                 duration: 1,
                 ease: [0.43, 0.13, 0.23, 0.96]
               }}
@@ -240,13 +222,13 @@ const Verticals = () => {
             >
               {/* Background Image */}
               <div className="absolute inset-0 bg-black">
-                <motion.img 
+                <motion.img
                   src={verticals[currentSlide].image}
                   alt={verticals[currentSlide].title}
                   className="w-full h-full object-cover"
                   initial={{ scale: 1 }}
                   animate={{ scale: 1.1 }}
-                  transition={{ 
+                  transition={{
                     duration: 4,
                     ease: "linear"
                   }}
@@ -262,7 +244,7 @@ const Verticals = () => {
                   <motion.div
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
-                    transition={{ 
+                    transition={{
                       delay: 0.3,
                       duration: 0.6,
                       type: "spring",
@@ -270,10 +252,10 @@ const Verticals = () => {
                     }}
                     className={`w-20 h-20 mx-auto bg-gradient-to-br ${verticals[currentSlide].gradient} rounded-2xl flex items-center justify-center shadow-2xl mb-6`}
                   >
-                    {React.createElement(verticals[currentSlide].icon, { 
-                      className: "text-white", 
+                    {React.createElement(verticals[currentSlide].icon, {
+                      className: "text-white",
                       size: 40,
-                      strokeWidth: 2 
+                      strokeWidth: 2
                     })}
                   </motion.div>
 
@@ -346,9 +328,8 @@ const Verticals = () => {
                   className="relative"
                   aria-label={`Slide ${index + 1}`}
                 >
-                  <div className={`transition-all duration-300 rounded-full ${
-                    index === currentSlide ? `bg-gradient-to-r ${verticals[index].gradient} w-8 h-3` : 'bg-white/40 hover:bg-white/60 w-3 h-3'
-                  }`} />
+                  <div className={`transition-all duration-300 rounded-full ${index === currentSlide ? `bg-gradient-to-r ${verticals[index].gradient} w-8 h-3` : 'bg-white/40 hover:bg-white/60 w-3 h-3'
+                    }`} />
                   {/* Progress bar for active slide */}
                   {index === currentSlide && (
                     <motion.div
@@ -372,20 +353,20 @@ const Verticals = () => {
             {verticals.map((vertical, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2, duration: 0.8 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
                 className="group relative"
               >
                 <Link to="/products">
                   {/* Glowing Background Effect */}
                   <div className={`absolute -inset-1 bg-gradient-to-r ${vertical.gradient} rounded-2xl blur-xl opacity-30 group-hover:opacity-60 transition-all duration-500`} />
-                  
+
                   {/* Card */}
                   <div className="relative bg-gradient-to-br from-gray-800/30 to-gray-900/40 backdrop-blur-sm rounded-2xl p-6 lg:p-8 border border-gray-700/50 hover:border-primary-500/50 transition-all duration-500 h-full flex flex-col overflow-hidden">
                     {/* Background Image with Overlay */}
                     <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                      <img 
+                      <img
                         src={vertical.image}
                         alt={vertical.title}
                         className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-700"
@@ -402,10 +383,10 @@ const Verticals = () => {
                         className="mb-4"
                       >
                         <div className={`w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-br ${vertical.gradient} rounded-xl flex items-center justify-center shadow-2xl group-hover:shadow-primary-500/50 transition-all duration-500`}>
-                          {React.createElement(vertical.icon, { 
-                            className: "text-white", 
+                          {React.createElement(vertical.icon, {
+                            className: "text-white",
                             size: 36,
-                            strokeWidth: 2.5 
+                            strokeWidth: 2.5
                           })}
                         </div>
                       </motion.div>

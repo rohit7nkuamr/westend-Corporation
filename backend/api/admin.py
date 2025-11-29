@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide
 from .admin_site import westend_admin_site
 
 class VerticalProductInline(admin.TabularInline):
@@ -19,18 +19,28 @@ class VerticalAdmin(admin.ModelAdmin):
     list_display = ['title', 'image', 'is_active', 'order', 'created_at']
     list_filter = ['is_active']
     search_fields = ['title']
-    list_editable = ['is_active']
-    readonly_fields = ['title', 'description', 'icon_name', 'secondary_icon_name', 
-                      'gradient', 'bg_gradient', 'button_color', 'button_text', 
-                      'order', 'created_at', 'updated_at']
-    fields = ['title', 'image', 'is_active']
-    inlines = [VerticalProductInline]
+    list_editable = ['is_active', 'order']
+    readonly_fields = ['created_at', 'updated_at']
     
-    def get_readonly_fields(self, request, obj=None):
-        # If creating a new object, don't make any fields readonly
-        if obj is None:
-            return []
-        return self.readonly_fields
+    fieldsets = [
+        ('Basic Information', {
+            'fields': ['title', 'description', 'image', 'is_active', 'order']
+        }),
+        ('Display Settings', {
+            'fields': ['icon_name', 'secondary_icon_name', 'gradient', 'bg_gradient'],
+            'classes': ['collapse'],
+        }),
+        ('Button Settings', {
+            'fields': ['button_color', 'button_text'],
+            'classes': ['collapse'],
+        }),
+        ('Timestamps', {
+            'fields': ['created_at', 'updated_at'],
+            'classes': ['collapse'],
+        }),
+    ]
+    
+    inlines = [VerticalProductInline]
 
 class FeaturedProductFilter(admin.SimpleListFilter):
     title = 'Featured Status'
@@ -146,3 +156,23 @@ westend_admin_site.register(PageVisit, PageVisitAdmin)
 # Register Django's default User and Group models
 westend_admin_site.register(User, UserAdmin)
 westend_admin_site.register(Group, GroupAdmin)
+
+@admin.register(HeroSlide, site=westend_admin_site)
+class HeroSlideAdmin(admin.ModelAdmin):
+    list_display = ['title', 'image', 'is_active', 'order', 'created_at']
+    list_filter = ['is_active']
+    list_editable = ['is_active', 'order']
+    search_fields = ['title', 'subtitle']
+    
+    fieldsets = [
+        ('Content', {
+            'fields': ['title', 'subtitle', 'image']
+        }),
+        ('Call to Action (Optional)', {
+            'fields': ['link_text', 'link_url'],
+            'classes': ['collapse']
+        }),
+        ('Settings', {
+            'fields': ['order', 'is_active']
+        }),
+    ]

@@ -7,6 +7,7 @@ router.register(r'verticals', views.VerticalViewSet)
 router.register(r'products', views.ProductViewSet)
 router.register(r'features', views.FeatureViewSet)
 router.register(r'company-info', views.CompanyInfoViewSet)
+router.register(r'hero-slides', views.HeroSlideViewSet, basename='heroslide')
 
 urlpatterns = [
     path('', include(router.urls)),

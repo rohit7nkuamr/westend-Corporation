@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Hero from '../components/Hero'
 import CategoryShowcase from '../components/CategoryShowcase'
 import FeaturedProducts from '../components/FeaturedProducts'
-import WeeklyDeals from '../components/WeeklyDeals'
 import Certifications from '../components/Certifications'
 import WhyChooseUs from '../components/WhyChooseUs'
 
@@ -52,7 +51,6 @@ const Home = () => {
       <Hero />
       <CategoryShowcase />
       <FeaturedProducts />
-      <WeeklyDeals />
       <WhyChooseUs />
       <Certifications />
     </>

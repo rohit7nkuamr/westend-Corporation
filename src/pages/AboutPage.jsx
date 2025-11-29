@@ -103,18 +103,18 @@ const AboutPage = () => {
             <h2 className="text-4xl font-bold text-primary-900 mb-6">Our Story</h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
-                Founded in 2010, Westend Corporation Pvt. Ltd. began with a simple mission: to provide 
-                premium quality food products to businesses worldwide. What started as a small operation 
+                Founded in 2010, Westend Corporation Pvt. Ltd. began with a simple mission: to provide
+                premium quality food products to businesses worldwide. What started as a small operation
                 in Delhi's Okhla Industrial Area has grown into a trusted name in the B2B food supply industry.
               </p>
               <p>
-                Our journey has been marked by continuous innovation, unwavering commitment to quality, 
-                and a deep respect for sustainable practices. We work directly with certified organic farms 
+                Our journey has been marked by continuous innovation, unwavering commitment to quality,
+                and a deep respect for sustainable practices. We work directly with certified organic farms
                 and maintain state-of-the-art processing facilities that adhere to international standards.
               </p>
               <p>
-                Today, we serve over 500 clients across 15+ countries, offering a comprehensive range of 
-                groceries, frozen vegetables, and processed foods. Our success is built on the trust of 
+                Today, we serve over 500 clients across 15+ countries, offering a comprehensive range of
+                groceries, frozen vegetables, and processed foods. Our success is built on the trust of
                 our partners and the dedication of our team.
               </p>
             </div>
@@ -126,14 +126,14 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="relative"
           >
-            <img
-              src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&h=600&fit=crop"
-              alt="Our Facility"
-              className="rounded-2xl shadow-2xl"
-            />
-            <div className="absolute -bottom-6 -left-6 bg-accent-600 text-white p-6 rounded-xl shadow-lg">
-              <p className="text-3xl font-bold">15+</p>
-              <p className="text-sm">Years of Excellence</p>
+            <div className="bg-gradient-to-br from-primary-100 to-blue-100 rounded-2xl p-8 h-full flex items-center justify-center">
+              <div className="text-center">
+                <div className="w-20 h-20 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Award className="text-white" size={40} />
+                </div>
+                <p className="text-4xl font-bold text-primary-900 mb-2">15+</p>
+                <p className="text-gray-700 font-medium">Years of Excellence</p>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -194,9 +194,8 @@ const AboutPage = () => {
                 initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className={`flex items-center gap-8 ${
-                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                }`}
+                className={`flex items-center gap-8 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+                  }`}
               >
                 <div className={`flex-1 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
                   <div className="bg-white rounded-xl p-6 shadow-md">

@@ -27,10 +27,7 @@ const Navbar = () => {
     <>
       {/* Top Bar (Optional, for contact info or promos) - Keeping it clean for now as per inspiration */}
 
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
+      <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-white py-4'
           }`}
       >
@@ -94,7 +91,7 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
