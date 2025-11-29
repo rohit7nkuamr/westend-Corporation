@@ -39,7 +39,7 @@ const Hero = () => {
     }
 
     return (
-        <div className="relative w-full h-[500px] bg-gray-900 overflow-hidden">
+        <div className="relative w-full h-[400px] md:h-[500px] bg-gray-900 overflow-hidden">
             {/* Background Carousel */}
             <AnimatePresence initial={false}>
                 <motion.div

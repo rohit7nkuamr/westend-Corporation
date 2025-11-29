@@ -24,12 +24,19 @@ dist-ssr
 *.sln
 *.sw?
 
-# Environment variables
+# Environment variables - COMPREHENSIVE
 .env
+.env*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.backup
+.env.backup-*
+*.env
+**/backend/.env
+**/backend/.env.*
+**/backend/.env.backup*
 
 # Python/Django
 __pycache__/
@@ -57,6 +64,8 @@ backend/venv/
 backend/staticfiles/
 backend/media/
 backend/.env
+backend/.env.*
+backend/.env.backup*
 backend/db.sqlite3
 
 # Production files
@@ -71,3 +80,9 @@ setup_production.sh
 htmlcov/
 .pytest_cache/
 .tox/
+
+# Secrets and Keys
+*.key
+*.pem
+secrets/
+.secret

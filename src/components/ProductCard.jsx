@@ -55,17 +55,22 @@ const ProductCard = ({ product }) => {
                     </Link>
                 </h3>
 
-                {/* Price / MOQ */}
-                <div className="flex items-center justify-center gap-2 mt-3">
-                    <span className="text-primary-600 font-bold text-sm">
-                        {product.price || 'Request Quote'}
-                    </span>
-                    {product.oldPrice && (
-                        <span className="text-gray-400 text-xs line-through">
-                            {product.oldPrice}
+                {/* Price / Request Quote */}
+                <Link
+                    to={`/contact?product=${encodeURIComponent(product.name)}`}
+                    className="block mt-3"
+                >
+                    <div className="flex items-center justify-center gap-2 bg-primary-50 hover:bg-primary-100 transition-colors py-2 rounded-lg">
+                        <span className="text-primary-600 font-bold text-sm">
+                            {product.price || 'Request Quote'}
                         </span>
-                    )}
-                </div>
+                        {product.oldPrice && (
+                            <span className="text-gray-400 text-xs line-through">
+                                {product.oldPrice}
+                            </span>
+                        )}
+                    </div>
+                </Link>
             </div>
         </div>
     );
