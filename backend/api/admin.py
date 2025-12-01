@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification
 from .admin_site import westend_admin_site
 
 class VerticalProductInline(admin.TabularInline):
@@ -171,6 +171,22 @@ class HeroSlideAdmin(admin.ModelAdmin):
         ('Call to Action (Optional)', {
             'fields': ['link_text', 'link_url'],
             'classes': ['collapse']
+        }),
+        ('Settings', {
+            'fields': ['order', 'is_active']
+        }),
+    ]
+
+@admin.register(Certification, site=westend_admin_site)
+class CertificationAdmin(admin.ModelAdmin):
+    list_display = ['title', 'image', 'is_active', 'order', 'created_at']
+    list_filter = ['is_active']
+    list_editable = ['is_active', 'order']
+    search_fields = ['title', 'description']
+    
+    fieldsets = [
+        ('Content', {
+            'fields': ['title', 'description', 'image']
         }),
         ('Settings', {
             'fields': ['order', 'is_active']

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, HeroSlide
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, HeroSlide, Certification
 
 class VerticalProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,45 +18,33 @@ class VerticalSerializer(serializers.ModelSerializer):
         ]
 
 class ProductSerializer(serializers.ModelSerializer):
-    vertical_name = serializers.CharField(source='vertical.title', read_only=True)
-    stock_status_display = serializers.CharField(source='get_stock_status_display', read_only=True)
-    features_list = serializers.SerializerMethodField()
-    inStock = serializers.SerializerMethodField()
+    vertical_title = serializers.CharField(source='vertical.title', read_only=True)
     
     class Meta:
         model = Product
         fields = [
-            'id', 'slug', 'name', 'description', 'image', 'image_2', 'image_3', 
-            'moq', 'packaging', 'badge', 'vertical', 'vertical_name', 
-            'stock_status', 'stock_status_display', 'inStock', 'origin', 'shelf_life', 
-            'storage', 'certifications', 'features', 'features_list', 'brand',
-            'is_featured', 'featured_order'
+            'id', 'name', 'slug', 'description', 'vertical', 'vertical_title',
+            'image', 'image_2', 'image_3', 'moq', 'packaging', 'badge',
+            'stock_status', 'origin', 'shelf_life', 'storage', 'certifications',
+            'features', 'brand', 'is_featured', 'order'
         ]
     
-    def get_features_list(self, obj):
-        """Convert features text to list"""
-        if not obj.features:
-            return []
-        return [feature.strip() for feature in obj.features.split('\n') if feature.strip()]
-    
-    def get_inStock(self, obj):
-        """Return boolean for frontend compatibility"""
-        return obj.stock_status == 'in_stock'
-
 class ContactInquirySerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactInquiry
         fields = ['name', 'email', 'phone', 'company', 'message']
 
 class QuoteRequestSerializer(serializers.ModelSerializer):
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    
     class Meta:
         model = QuoteRequest
-        fields = ['product', 'name', 'email', 'phone', 'company', 'quantity', 'message']
+        fields = ['product', 'product_name', 'name', 'email', 'phone', 'company', 'quantity', 'message']
 
 class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feature
-        fields = ['id', 'title', 'description', 'icon_name', 'order']
+        fields = ['title', 'description', 'icon_name']
 
 class CompanyInfoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,3 +55,8 @@ class HeroSlideSerializer(serializers.ModelSerializer):
     class Meta:
         model = HeroSlide
         fields = ['id', 'title', 'subtitle', 'image', 'link_text', 'link_url', 'order']
+
+class CertificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Certification
+        fields = ['id', 'title', 'description', 'image', 'order']

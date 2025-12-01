@@ -307,3 +307,46 @@ class HeroSlide(models.Model):
     
     def __str__(self):
         return self.title
+
+class Certification(models.Model):
+    """Certifications and compliance badges"""
+    title = models.CharField(max_length=200, help_text="Certification name (e.g., 'FSSAI Certified')")
+    description = models.TextField(help_text="Brief description")
+    image = models.ImageField(upload_to='certifications/', help_text="Certification badge/logo image")
+    order = models.IntegerField(default=0, help_text="Display order (lower = first)")
+    is_active = models.BooleanField(default=True, help_text="Show on website")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Certification'
+        verbose_name_plural = 'Certifications'
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        # Optimize certification image
+        if self.image:
+            try:
+                img = Image.open(self.image.path)
+                
+                # Convert to RGB if necessary
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    rgb_img = Image.new('RGB', img.size, (255, 255, 255))
+                    if img.mode == 'P':
+                        img = img.convert('RGBA')
+                    rgb_img.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
+                    img = rgb_img
+                
+                # Resize if too large (max 800x800 for certification badges)
+                max_size = (800, 800)
+                img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                
+                # Save with optimization
+                img.save(self.image.path, 'JPEG', quality=90, optimize=True)
+            except Exception as e:
+                print(f"Error optimizing certification image: {e}")
+    
+    def __str__(self):
+        return self.title

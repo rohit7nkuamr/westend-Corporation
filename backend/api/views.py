@@ -5,11 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.core.mail import EmailMessage
 import logging
-from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide
+from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification
 from .serializers import (
     VerticalSerializer, ProductSerializer,
     ContactInquirySerializer, QuoteRequestSerializer,
-    FeatureSerializer, CompanyInfoSerializer, HeroSlideSerializer
+    FeatureSerializer, CompanyInfoSerializer, HeroSlideSerializer, CertificationSerializer
 )
 
 class VerticalViewSet(viewsets.ReadOnlyModelViewSet):
@@ -236,4 +236,9 @@ class HeroSlideViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint for hero carousel slides"""
     queryset = HeroSlide.objects.filter(is_active=True).order_by('order')
     serializer_class = HeroSlideSerializer
+
+class CertificationViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint for certifications"""
+    queryset = Certification.objects.filter(is_active=True).order_by('order')
+    serializer_class = CertificationSerializer
     pagination_class = None  # Return all slides

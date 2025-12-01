@@ -11,7 +11,9 @@ const Hero = () => {
             try {
                 const response = await fetch('https://westendcorporation.in/api/hero-slides/');
                 const data = await response.json();
-                setSlides(data);
+                // Handle paginated response - extract results array
+                const slidesData = data.results || data;
+                setSlides(slidesData);
             } catch (err) {
                 console.error('Error fetching hero slides:', err);
             } finally {
@@ -25,7 +27,7 @@ const Hero = () => {
         if (slides.length === 0) return;
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 5000);
+        }, 3000); // Changed from 5000ms to 3000ms (3 seconds)
         return () => clearInterval(interval);
     }, [slides]);
 
@@ -54,21 +56,23 @@ const Hero = () => {
         <div className="relative w-full h-[400px] md:h-[500px] bg-gray-900 overflow-hidden">
             {/* Background Carousel */}
             <AnimatePresence initial={false}>
-                <motion.div
-                    key={currentSlide}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1 }}
-                    className="absolute inset-0 z-0"
-                >
-                    <img
-                        src={slides[currentSlide].image}
-                        alt={slides[currentSlide].title || "Hero slide"}
-                        className="w-full h-full object-cover opacity-60"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-gray-900/90"></div>
-                </motion.div>
+                {slides[currentSlide] && (
+                    <motion.div
+                        key={currentSlide}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1 }}
+                        className="absolute inset-0 z-0"
+                    >
+                        <img
+                            src={slides[currentSlide].image}
+                            alt={slides[currentSlide].title || "Hero slide"}
+                            className="w-full h-full object-cover opacity-60"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-gray-900/90"></div>
+                    </motion.div>
+                )}
             </AnimatePresence>
 
 

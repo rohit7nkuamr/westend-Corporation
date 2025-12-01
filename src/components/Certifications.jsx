@@ -1,53 +1,62 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Award, Shield, CheckCircle2, FileCheck, Globe, TrendingUp } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const Certifications = () => {
-  const certifications = [
-    {
-      icon: Shield,
-      title: 'FSSAI Certified',
-      description: 'Food Safety and Standards Authority of India',
-      color: 'from-amber-500 to-amber-600'
-    },
-    {
-      icon: Award,
-      title: 'ISO 22000:2018',
-      description: 'Food Safety Management System',
-      color: 'from-primary-600 to-primary-700'
-    },
-    {
-      icon: FileCheck,
-      title: 'HACCP Certified',
-      description: 'Hazard Analysis Critical Control Points',
-      color: 'from-emerald-600 to-emerald-700'
-    },
-    {
-      icon: Globe,
-      title: 'Export Certified',
-      description: 'International Quality Standards',
-      color: 'from-blue-600 to-blue-700'
-    },
-    {
-      icon: CheckCircle2,
-      title: 'Organic Certified',
-      description: 'USDA & India Organic Standards',
-      color: 'from-primary-500 to-emerald-600'
-    },
-    {
-      icon: TrendingUp,
-      title: 'GMP Compliant',
-      description: 'Good Manufacturing Practices',
-      color: 'from-amber-600 to-orange-600'
-    }
-  ]
+  const [certifications, setCertifications] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [loading, setLoading] = useState(true)
 
-  const stats = [
-    { value: '15+', label: 'Years of Excellence', suffix: '' },
-    { value: '500', label: 'Happy Clients', suffix: '+' },
-    { value: '40', label: 'Product Range', suffix: '+' },
-    { value: '10', label: 'Countries Served', suffix: '+' }
-  ]
+  // Fetch certifications from API
+  useEffect(() => {
+    const fetchCertifications = async () => {
+      try {
+        const response = await fetch('https://westendcorporation.in/api/certifications/')
+        const data = await response.json()
+        setCertifications(data)
+      } catch (err) {
+        console.error('Error fetching certifications:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchCertifications()
+  }, [])
+
+  // Auto-play carousel
+  useEffect(() => {
+    if (certifications.length === 0) return
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % certifications.length)
+    }, 4000) // Auto-slide every 4 seconds
+    return () => clearInterval(interval)
+  }, [certifications.length])
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % certifications.length)
+  }
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + certifications.length) % certifications.length)
+  }
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index)
+  }
+
+  if (loading) {
+    return (
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-gray-500">Loading certifications...</p>
+        </div>
+      </section>
+    )
+  }
+
+  if (certifications.length === 0) {
+    return null // Don't show section if no certifications
+  }
 
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white relative overflow-hidden">
@@ -63,46 +72,75 @@ const Certifications = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-20"
+          className="text-center mb-12"
         >
           <span className="text-primary-600 font-semibold tracking-wider uppercase text-sm mb-2 block">Trust & Quality</span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 font-serif">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
             Certifications & Compliance
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-primary-600 mx-auto mb-6 rounded-full"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-accent-500 to-primary-600 mx-auto mb-6 rounded-full"></div>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Committed to maintaining the highest standards of quality, safety, and sustainability
             through internationally recognized certifications.
           </p>
         </motion.div>
 
-        {/* Certifications Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          {certifications.map((cert, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="group bg-white rounded-xl p-8 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1)] transition-all duration-300 border border-gray-100 hover:border-primary-100"
+        {/* Unified Carousel for Both Mobile & Desktop */}
+        <div className="relative max-w-2xl mx-auto mb-12">
+          <div className="overflow-hidden rounded-xl">
+            <div
+              className="flex transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
-              <div className="flex items-start space-x-5">
-                <div className={`w-16 h-16 bg-gradient-to-br ${cert.color} rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  <cert.icon className="text-white" size={32} strokeWidth={1.5} />
+              {certifications.map((cert, index) => (
+                <div
+                  key={cert.id}
+                  className="w-full flex-shrink-0 px-4"
+                >
+                  <div className="bg-cream-100 rounded-xl p-8 md:p-12 text-center shadow-lg border border-primary-100">
+                    <img
+                      src={cert.image}
+                      alt={cert.title}
+                      className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-6 object-contain"
+                    />
+                    <h3 className="font-bold text-gray-900 mb-3 text-xl md:text-2xl">{cert.title}</h3>
+                    <p className="text-gray-600 leading-relaxed">{cert.description}</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors">
-                    {cert.title}
-                  </h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    {cert.description}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg transition-all z-10 border border-gray-200"
+            aria-label="Previous certification"
+          >
+            <ChevronLeft className="text-gray-700" size={24} />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg transition-all z-10 border border-gray-200"
+            aria-label="Next certification"
+          >
+            <ChevronRight className="text-gray-700" size={24} />
+          </button>
+
+          {/* Dots Indicator */}
+          <div className="flex justify-center gap-2 mt-8">
+            {certifications.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`h-2 rounded-full transition-all ${index === currentIndex
+                    ? 'bg-accent-500 w-8'
+                    : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  }`}
+                aria-label={`Go to certification ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
 
         {/* Stats Section */}
@@ -111,14 +149,15 @@ const Certifications = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-primary-900 rounded-3xl p-12 relative overflow-hidden shadow-2xl"
+          className="bg-gradient-to-r from-accent-500 to-accent-600 rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-2xl"
         >
-          {/* Decorative circles */}
-          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-primary-800 rounded-full opacity-50 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-primary-800 rounded-full opacity-50 blur-3xl"></div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 relative z-10">
-            {stats.map((stat, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 relative z-10">
+            {[
+              { value: '15+', label: 'Years of Excellence' },
+              { value: '500+', label: 'Happy Clients' },
+              { value: '40+', label: 'Product Range' },
+              { value: '10+', label: 'Countries Served' }
+            ].map((stat, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -127,10 +166,10 @@ const Certifications = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold text-white mb-3 font-serif">
-                  {stat.value}<span className="text-amber-400">{stat.suffix}</span>
+                <div className="text-3xl md:text-5xl font-bold text-white mb-2">
+                  {stat.value}
                 </div>
-                <div className="text-primary-200 text-sm md:text-base font-medium tracking-wide uppercase">
+                <div className="text-white/90 text-xs md:text-base font-medium tracking-wide uppercase">
                   {stat.label}
                 </div>
               </motion.div>

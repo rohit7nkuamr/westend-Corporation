@@ -61,7 +61,7 @@ const ProductsPage = () => {
 
   // Filter products based on category and search
   const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === 'All Products' || product.vertical_name === selectedCategory
+    const matchesCategory = selectedCategory === 'All Products' || product.vertical_title === selectedCategory
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
@@ -219,7 +219,7 @@ const ProductsPage = () => {
                       </div>
 
                       {/* Stock Status */}
-                      {!product.inStock && (
+                      {product.stock_status === 'out_of_stock' && (
                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                           <span className="bg-white text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">
                             Out of Stock
