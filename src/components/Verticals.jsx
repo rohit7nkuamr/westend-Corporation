@@ -28,19 +28,20 @@ const Verticals = () => {
 
   // Auto-rotate slides - always active for mobile
   useEffect(() => {
+    if (verticals.length === 0) return
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % 3)
+      setCurrentSlide((prev) => (prev + 1) % verticals.length)
     }, 4000) // Change slide every 4 seconds
     return () => clearInterval(interval)
-  }, [])
+  }, [verticals.length])
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % 3)
+    setCurrentSlide((prev) => (prev + 1) % verticals.length)
     setIsAutoPlaying(false)
   }
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + 3) % 3)
+    setCurrentSlide((prev) => (prev - 1 + verticals.length) % verticals.length)
     setIsAutoPlaying(false)
   }
 
@@ -90,7 +91,15 @@ const Verticals = () => {
   // Color schemes for each vertical
   const colorSchemes = [
     {
-      name: 'Groceries & Staples',
+      name: 'Baked Goods',
+      gradient: 'from-pink-500 to-rose-600',
+      button_color: 'from-pink-500 to-rose-600',
+      text_color: 'text-pink-400',
+      hover_color: 'group-hover:text-pink-400',
+      icon_bg: 'bg-pink-500'
+    },
+    {
+      name: 'Groceries & Staples',  // Match exact API title
       gradient: 'from-orange-500 to-amber-600',
       button_color: 'from-orange-500 to-amber-600',
       text_color: 'text-amber-400',
@@ -121,22 +130,35 @@ const Verticals = () => {
       try {
         setLoading(true)
         const data = await getVerticals()
+
+        console.log('🔍 Fetched verticals:', data.map(v => v.title))
+
         // Map icon names to actual icon components and add color schemes
         const mappedData = data.map((vertical, index) => {
           // Find matching color scheme by name or use index as fallback
-          const colorScheme = colorSchemes.find(cs => cs.name === vertical.title) || colorSchemes[index % colorSchemes.length];
+          let colorScheme = colorSchemes.find(cs => cs.name === vertical.title)
+
+          if (!colorScheme) {
+            // Fallback to index-based color scheme
+            colorScheme = colorSchemes[index % colorSchemes.length]
+            console.log(`⚠️ No exact match for "${vertical.title}", using fallback colorScheme:`, colorScheme.name)
+          } else {
+            console.log(`✓ Matched "${vertical.title}" to colorScheme`)
+          }
 
           return {
             ...vertical,
             icon: iconMap[vertical.icon_name] || Wheat,
             secondaryIcon: iconMap[vertical.secondary_icon_name] || Leaf,
-            gradient: colorScheme.gradient,
-            button_color: colorScheme.button_color,
-            text_color: colorScheme.text_color,
-            hover_color: colorScheme.hover_color,
-            icon_bg: colorScheme.icon_bg
+            gradient: colorScheme?.gradient || 'from-gray-500 to-gray-600',
+            button_color: colorScheme?.button_color || 'from-gray-500 to-gray-600',
+            text_color: colorScheme?.text_color || 'text-gray-400',
+            hover_color: colorScheme?.hover_color || 'group-hover:text-gray-400',
+            icon_bg: colorScheme?.icon_bg || 'bg-gray-500'
           };
         })
+
+        console.log('✅ Mapped verticals count:', mappedData.length)
         setVerticals(mappedData)
         setError(null)
       } catch (err) {
@@ -347,9 +369,9 @@ const Verticals = () => {
           </div>
         </div>
 
-        {/* DESKTOP VIEW - All 3 Verticals with Glowing Boxes */}
+        {/* DESKTOP VIEW - All Verticals with Glowing Boxes */}
         <div className="hidden md:flex h-full items-center justify-center px-8 lg:px-12 bg-gradient-to-br from-amber-900/20 via-gray-900 to-emerald-900/20">
-          <div className="max-w-7xl w-full grid grid-cols-3 gap-6 lg:gap-8">
+          <div className="max-w-7xl w-full grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {verticals.map((vertical, index) => (
               <motion.div
                 key={index}

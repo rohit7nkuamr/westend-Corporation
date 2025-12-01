@@ -21,6 +21,13 @@ const CategoryShowcase = () => {
     // Color schemes
     const colorSchemes = [
         {
+            name: 'Baked Goods',
+            gradient: 'from-pink-500 to-rose-600',
+            text_color: 'text-pink-600',
+            bg_color: 'bg-pink-50',
+            border_color: 'border-pink-100'
+        },
+        {
             name: 'Groceries & Staples',
             gradient: 'from-orange-500 to-amber-600',
             text_color: 'text-amber-600',
@@ -74,8 +81,8 @@ const CategoryShowcase = () => {
             {/* <div className="absolute inset-0 bg-[url('path/to/image.jpg')] bg-cover bg-center opacity-10"></div> */}
 
             <div className="max-w-7xl mx-auto">
-                <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-3 gap-6 pb-4 md:pb-0 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
-                    {verticals.slice(0, 3).map((vertical, index) => (
+                <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 pb-4 md:pb-0 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+                    {verticals.map((vertical, index) => (
                         <motion.div
                             key={vertical.id}
                             initial={{ opacity: 0, y: 50 }}
@@ -89,7 +96,7 @@ const CategoryShowcase = () => {
                                 <div className="absolute inset-0 bg-black/50"></div>
                             </div>
 
-                            <Link to={`/products?category=${vertical.id}`} className="flex flex-col items-center text-center h-full relative z-10">
+                            <Link to={`/products?category=${encodeURIComponent(vertical.title)}`} className="flex flex-col items-center text-center h-full relative z-10">
                                 <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 bg-white/20 backdrop-blur-sm`}>
                                     {React.createElement(vertical.icon, {
                                         className: `text-white transition-colors duration-300`,

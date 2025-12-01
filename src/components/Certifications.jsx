@@ -23,12 +23,25 @@ const Certifications = () => {
     fetchCertifications()
   }, [])
 
-  // Auto-play carousel
+  // Auto-play carousel - seamless infinite loop
   useEffect(() => {
     if (certifications.length === 0) return
+
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % certifications.length)
+      setCurrentIndex((prev) => {
+        const next = prev + 1
+        // When we reach the end of duplicated array, instantly reset to start
+        if (next >= certifications.length) {
+          // Use setTimeout to reset position instantly after transition completes
+          setTimeout(() => {
+            setCurrentIndex(0)
+          }, 500) // Match transition duration
+          return prev // Hold at last position briefly
+        }
+        return next
+      })
     }, 4000) // Auto-slide every 4 seconds
+
     return () => clearInterval(interval)
   }, [certifications.length])
 
@@ -85,26 +98,31 @@ const Certifications = () => {
           </p>
         </motion.div>
 
-        {/* Unified Carousel for Both Mobile & Desktop */}
-        <div className="relative max-w-2xl mx-auto mb-12">
+        {/* Seamless Infinite Carousel - Mobile & Desktop */}
+        <div className="relative max-w-6xl mx-auto mb-12">
+          {/* Mobile: 1 card, Tablet: 2 cards, Desktop: 3 cards */}
           <div className="overflow-hidden rounded-xl">
             <div
               className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+              style={{
+                transform: `translateX(-${currentIndex * (100 / (window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1))}%)`,
+                transitionDuration: currentIndex === 0 ? '0s' : '500ms' // Instant reset when looping
+              }}
             >
-              {certifications.map((cert, index) => (
+              {/* Duplicate certifications for seamless loop: 1234512345... */}
+              {[...certifications, ...certifications].map((cert, index) => (
                 <div
-                  key={cert.id}
-                  className="w-full flex-shrink-0 px-4"
+                  key={index}
+                  className="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4"
                 >
-                  <div className="bg-cream-100 rounded-xl p-8 md:p-12 text-center shadow-lg border border-primary-100">
+                  <div className="bg-cream-100 rounded-xl p-8 md:p-10 text-center shadow-lg border border-primary-100 h-full">
                     <img
                       src={cert.image}
                       alt={cert.title}
-                      className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-6 object-contain"
+                      className="w-32 h-32 md:w-36 md:h-36 mx-auto mb-6 object-contain"
                     />
-                    <h3 className="font-bold text-gray-900 mb-3 text-xl md:text-2xl">{cert.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{cert.description}</p>
+                    <h3 className="font-bold text-gray-900 mb-3 text-lg md:text-xl">{cert.title}</h3>
+                    <p className="text-gray-600 leading-relaxed text-sm">{cert.description}</p>
                   </div>
                 </div>
               ))}
@@ -127,15 +145,15 @@ const Certifications = () => {
             <ChevronRight className="text-gray-700" size={24} />
           </button>
 
-          {/* Dots Indicator */}
+          {/* Dots Indicator - only show original count */}
           <div className="flex justify-center gap-2 mt-8">
             {certifications.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`h-2 rounded-full transition-all ${index === currentIndex
-                    ? 'bg-accent-500 w-8'
-                    : 'w-2 bg-gray-300 hover:bg-gray-400'
+                className={`h-2 rounded-full transition-all ${(currentIndex % certifications.length) === index
+                  ? 'bg-accent-500 w-8'
+                  : 'w-2 bg-gray-300 hover:bg-gray-400'
                   }`}
                 aria-label={`Go to certification ${index + 1}`}
               />

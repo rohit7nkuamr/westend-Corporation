@@ -6,7 +6,11 @@ import { getProducts, getVerticals } from '../services/api'
 import OptimizedImage from '../components/OptimizedImage'
 
 const ProductsPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All Products');
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const categoryFromUrl = searchParams.get('category');
+
+  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl || 'All Products');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState([]);
@@ -21,7 +25,6 @@ const ProductsPage = () => {
   }, []);
 
   // Scroll to top on navigation to this page
-  const location = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
