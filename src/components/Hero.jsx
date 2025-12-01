@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const Hero = () => {
     const [slides, setSlides] = useState([]);
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchHeroSlides = async () => {
@@ -13,6 +14,8 @@ const Hero = () => {
                 setSlides(data);
             } catch (err) {
                 console.error('Error fetching hero slides:', err);
+            } finally {
+                setLoading(false);
             }
         };
         fetchHeroSlides();
@@ -26,10 +29,19 @@ const Hero = () => {
         return () => clearInterval(interval);
     }, [slides]);
 
-    // Don't render carousel if no slides
+    // Show loading skeleton instead of empty message during initial load
+    if (loading) {
+        return (
+            <div className="relative w-full h-[400px] md:h-[500px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 animate-pulse">
+                {/* Loading skeleton - no text, just gradient */}
+            </div>
+        );
+    }
+
+    // Only show empty message if data is loaded but no slides exist
     if (slides.length === 0) {
         return (
-            <div className="relative w-full h-[500px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+            <div className="relative w-full h-[400px] md:h-[500px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
                 <div className="text-center px-4">
                     <p className="text-gray-400 text-lg">No hero slides available</p>
                     <p className="text-gray-500 text-sm mt-2">Add slides in the admin panel to display here</p>

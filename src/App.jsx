@@ -17,7 +17,7 @@ function App() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50 to-blue-50" style={{ position: 'relative' }}>
+    <div className="min-h-screen bg-gradient-to-br from-cream-50 via-cream-200 to-primary-50" style={{ position: 'relative' }}>
       <Navbar />
 
       <main style={{ position: 'relative', zIndex: 1 }}>
@@ -38,3 +38,4 @@ function App() {
 }
 
 export default App
+

@@ -389,11 +389,11 @@ const ProductDetail = () => {
               </p>
               <div className="flex gap-3">
                 <Link to="/contact" className="flex-1">
-                  <button className="w-full bg-primary-700 text-white py-3 rounded-lg font-semibold hover:bg-primary-800 transition-colors">
+                  <button className="w-full bg-accent-500 text-white py-3 rounded-lg font-semibold hover:bg-accent-600 transition-colors shadow-lg">
                     Request Quote
                   </button>
                 </Link>
-                <button className="flex-1 border-2 border-primary-700 text-primary-700 py-3 rounded-lg font-semibold hover:bg-primary-50 transition-colors">
+                <button className="flex-1 border-2 border-accent-500 text-accent-600 py-3 rounded-lg font-semibold hover:bg-accent-50 transition-colors">
                   Contact Sales
                 </button>
               </div>
@@ -442,7 +442,7 @@ const ProductDetail = () => {
               <div className="flex gap-3">
                 <Link
                   to={`/contact?product=${encodeURIComponent(product.name)}`}
-                  className="w-full bg-green-600 text-white py-4 rounded-xl font-bold hover:bg-green-700 transition-all text-center shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                  className="w-full bg-accent-500 text-white py-4 rounded-xl font-bold hover:bg-accent-600 transition-all text-center shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                 >
                   <ShoppingCart size={20} />
                   Request Wholesale Quote

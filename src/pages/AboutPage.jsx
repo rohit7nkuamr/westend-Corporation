@@ -253,7 +253,7 @@ const AboutPage = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-primary-900 to-primary-700 rounded-2xl p-12 text-center text-white"
+          className="bg-gradient-to-r from-accent-500 to-accent-600 rounded-2xl p-12 text-center text-white"
         >
           <h2 className="text-4xl font-bold mb-4">Ready to Partner With Us?</h2>
           <p className="text-xl mb-8 text-blue-100">
@@ -261,7 +261,7 @@ const AboutPage = () => {
           </p>
           <a
             href="/contact"
-            className="inline-block bg-accent-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-accent-700 transition-all"
+            className="inline-block bg-white text-accent-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-50 transition-all shadow-lg hover:shadow-xl border-2 border-white"
           >
             Get In Touch
           </a>

@@ -76,7 +76,7 @@ const Navbar = () => {
               </a>
               <Link
                 to="/contact"
-                className="bg-primary-500 text-white px-5 py-2.5 rounded-full font-bold text-sm hover:bg-primary-600 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-300"
+                className="bg-accent-500 text-white px-5 py-2.5 rounded-full font-bold text-sm hover:bg-accent-600 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-300"
               >
                 Request Quote
               </Link>

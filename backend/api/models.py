@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from PIL import Image
+import os
 
 class Feature(models.Model):
     """Features for the About section"""
@@ -71,6 +73,31 @@ class Vertical(models.Model):
     class Meta:
         ordering = ['order']
     
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        # Optimize image after saving
+        if self.image:
+            img_path = self.image.path
+            try:
+                img = Image.open(img_path)
+                                # Convert to RGB if necessary
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    rgb_img = Image.new('RGB', img.size, (255, 255, 255))
+                    if img.mode == 'P':
+                        img = img.convert('RGBA')
+                    rgb_img.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
+                    img = rgb_img
+                
+                # Resize if too large (max 1920x1920)
+                max_size = (1920, 1920)
+                img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                
+                # Save with optimization
+                img.save(img_path, 'JPEG', quality=85, optimize=True)
+            except Exception as e:
+                print(f"Error optimizing image: {e}")
+    
     def __str__(self):
         return self.title
 
@@ -123,6 +150,7 @@ class Product(models.Model):
         ordering = ['order', '-created_at']
     
     def save(self, *args, **kwargs):
+        # Generate slug
         if not self.slug:
             from django.utils.text import slugify
             base_slug = slugify(self.name)
@@ -132,7 +160,31 @@ class Product(models.Model):
                 slug = f"{base_slug}-{counter}"
                 counter += 1
             self.slug = slug
+        
         super().save(*args, **kwargs)
+        
+        # Optimize all product images
+        for image_field in [self.image, self.image_2, self.image_3]:
+            if image_field:
+                try:
+                    img = Image.open(image_field.path)
+                    
+                    # Convert to RGB if necessary
+                    if img.mode in ('RGBA', 'LA', 'P'):
+                        rgb_img = Image.new('RGB', img.size, (255, 255, 255))
+                        if img.mode == 'P':
+                            img = img.convert('RGBA')
+                        rgb_img.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
+                        img = rgb_img
+                    
+                    # Resize if too large (max 1920x1920)
+                    max_size = (1920, 1920)
+                    img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                    
+                    # Save with optimization
+                    img.save(image_field.path, 'JPEG', quality=85, optimize=True)
+                except Exception as e:
+                    print(f"Error optimizing image {image_field.name}: {e}")
 
     def __str__(self):
         return self.name
@@ -227,6 +279,31 @@ class HeroSlide(models.Model):
         ordering = ['order']
         verbose_name = 'Hero Slide'
         verbose_name_plural = 'Hero Slides'
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        # Optimize hero image after saving
+        if self.image:
+            try:
+                img = Image.open(self.image.path)
+                
+                # Convert to RGB if necessary
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    rgb_img = Image.new('RGB', img.size, (255, 255, 255))
+                    if img.mode == 'P':
+                        img = img.convert('RGBA')
+                    rgb_img.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
+                    img = rgb_img
+                
+                # Resize if too large (max 1920x1080 for hero)
+                max_size = (1920, 1080)
+                img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                
+                # Save with high quality optimization
+                img.save(self.image.path, 'JPEG', quality=90, optimize=True)
+            except Exception as e:
+                print(f"Error optimizing hero image: {e}")
     
     def __str__(self):
         return self.title
