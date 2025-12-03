@@ -122,6 +122,13 @@ export const getStats = async () => {
   return apiCall('/stats/');
 };
 
+// Hero Slides API
+export const getHeroSlides = async () => {
+  const response = await apiCall('/hero-slides/');
+  // Handle paginated response format
+  return response.results || response;
+};
+
 // Page visit tracking
 export const submitPageVisit = async (data = {}) => {
   try {
@@ -137,16 +144,33 @@ export const submitPageVisit = async (data = {}) => {
   }
 };
 
+export const getCertifications = async () => {
+  const response = await apiCall('/certifications/');
+  return response.results || response;
+};
+
+export const getPageBackgrounds = async () => {
+  const response = await apiCall('/page-backgrounds/');
+  return response.results || response;
+};
+
+export const getSectionBackgrounds = async () => {
+  const response = await apiCall('/section-backgrounds/');
+  return response.results || response;
+};
+
 export default {
   getVerticals,
-  getVerticalById,
   getProducts,
-  getProductById,
+  getProductBySlug,
   getProductsByCategory,
   submitContactForm,
   submitQuoteRequest,
-  getCompanyInfo,
   getFeatures,
-  getWhyChooseUs,
-  getStats,
+  getCompanyInfo,
+  recordPageVisit: submitPageVisit, // Renamed for export
+  getHeroSlides,
+  getCertifications,
+  getPageBackgrounds,
+  getSectionBackgrounds,
 };

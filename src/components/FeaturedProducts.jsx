@@ -19,29 +19,40 @@ const FeaturedProducts = () => {
         const verticalsData = await getVerticals()
         setVerticals(verticalsData)
 
-        // Fetch products for each vertical
-        const productsData = {}
-        for (const vertical of verticalsData) {
-          // Try to get featured products first
-          const products = await getProductsByCategory(vertical.id, { featured: true })
+        // Fetch products for all verticals in parallel (avoid N+1)
+        const productPromises = verticalsData.map(async (vertical) => {
+          try {
+            // Try to get featured products first
+            const products = await getProductsByCategory(vertical.id, { featured: true })
 
-          if (products && products.length > 0) {
-            // Sort featured products by featured_order
-            const sortedProducts = [...products].sort((a, b) =>
-              (a.featured_order || 999) - (b.featured_order || 999)
-            )
-            // Get up to 4 featured products
-            productsData[vertical.id] = sortedProducts.slice(0, 4)
-          } else {
-            // Fallback to regular products if no featured ones
-            const regularProducts = await getProductsByCategory(vertical.id)
-            productsData[vertical.id] = regularProducts.slice(0, 4)
+            if (products && products.length > 0) {
+              // Sort featured products by featured_order
+              const sortedProducts = [...products].sort((a, b) =>
+                (a.featured_order || 999) - (b.featured_order || 999)
+              )
+              // Get up to 4 featured products
+              return [vertical.id, sortedProducts.slice(0, 4)]
+            } else {
+              // Fallback to regular products if no featured ones
+              const regularProducts = await getProductsByCategory(vertical.id)
+              return [vertical.id, regularProducts.slice(0, 4)]
+            }
+          } catch (error) {
+            console.error(`Error fetching products for ${vertical.title}:`, error)
+            return [vertical.id, []] // Return empty array for this vertical on error
           }
-        }
+        })
+
+        // Wait for all product fetches to complete in parallel
+        const productsResults = await Promise.all(productPromises)
+
+        // Convert array of [id, products] pairs to object
+        const productsData = Object.fromEntries(productsResults)
 
         setProductsByVertical(productsData)
         setError(null)
       } catch (err) {
+        console.error('Error fetching data:', err)
         setError('Failed to load products. Please try again later.')
       } finally {
         setLoading(false)
@@ -115,7 +126,7 @@ const FeaturedProducts = () => {
             {/* Category View All Link - Below Products */}
             <div className="mt-4 text-center">
               <Link
-                to={`/products?category=${vertical.id}`}
+                to={`/products?category=${encodeURIComponent(vertical.title)}`}
                 className={`inline-flex items-center text-sm font-medium ${index === 0 ? 'text-orange-600 hover:text-orange-700' :
                   index === 1 ? 'text-blue-600 hover:text-blue-700' :
                     'text-amber-600 hover:text-amber-700'

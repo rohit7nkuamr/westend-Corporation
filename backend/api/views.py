@@ -5,11 +5,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.core.mail import EmailMessage
 import logging
-from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification
+from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification, PageBackground, SectionBackground
 from .serializers import (
     VerticalSerializer, ProductSerializer,
     ContactInquirySerializer, QuoteRequestSerializer,
-    FeatureSerializer, CompanyInfoSerializer, HeroSlideSerializer, CertificationSerializer
+    FeatureSerializer, CompanyInfoSerializer, HeroSlideSerializer, CertificationSerializer,
+    PageBackgroundSerializer, SectionBackgroundSerializer
 )
 
 class VerticalViewSet(viewsets.ReadOnlyModelViewSet):
@@ -242,3 +243,15 @@ class CertificationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Certification.objects.filter(is_active=True).order_by('order')
     serializer_class = CertificationSerializer
     pagination_class = None  # Return all slides
+
+class PageBackgroundViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint for page backgrounds"""
+    queryset = PageBackground.objects.filter(is_active=True)
+    serializer_class = PageBackgroundSerializer
+    pagination_class = None
+
+class SectionBackgroundViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint for section backgrounds"""
+    queryset = SectionBackground.objects.filter(is_active=True)
+    serializer_class = SectionBackgroundSerializer
+    pagination_class = None

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const Certifications = () => {
   const [certifications, setCertifications] = useState([])
-  const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
 
   // Fetch certifications from API
@@ -22,40 +20,6 @@ const Certifications = () => {
     }
     fetchCertifications()
   }, [])
-
-  // Auto-play carousel - seamless infinite loop
-  useEffect(() => {
-    if (certifications.length === 0) return
-
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => {
-        const next = prev + 1
-        // When we reach the end of duplicated array, instantly reset to start
-        if (next >= certifications.length) {
-          // Use setTimeout to reset position instantly after transition completes
-          setTimeout(() => {
-            setCurrentIndex(0)
-          }, 500) // Match transition duration
-          return prev // Hold at last position briefly
-        }
-        return next
-      })
-    }, 4000) // Auto-slide every 4 seconds
-
-    return () => clearInterval(interval)
-  }, [certifications.length])
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % certifications.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + certifications.length) % certifications.length)
-  }
-
-  const goToSlide = (index) => {
-    setCurrentIndex(index)
-  }
 
   if (loading) {
     return (
@@ -98,24 +62,47 @@ const Certifications = () => {
           </p>
         </motion.div>
 
-        {/* Seamless Infinite Carousel - Mobile & Desktop */}
+        {/* Seamless Circular Ribbon Animation for Certifications */}
         <div className="relative max-w-6xl mx-auto mb-12">
-          {/* Mobile: 1 card, Tablet: 2 cards, Desktop: 3 cards */}
+          {/* Gradient fade edges for seamless appearance */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none"></div>
+
           <div className="overflow-hidden rounded-xl">
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{
-                transform: `translateX(-${currentIndex * (100 / (window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1))}%)`,
-                transitionDuration: currentIndex === 0 ? '0s' : '500ms' // Instant reset when looping
+            <motion.div
+              animate={{
+                x: ['0%', '-50%']
               }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 7,
+                  ease: "linear"
+                }
+              }}
+              className="flex gap-6"
+              style={{ willChange: 'transform' }}
             >
-              {/* Duplicate certifications for seamless loop: 1234512345... */}
-              {[...certifications, ...certifications].map((cert, index) => (
-                <div
+              {/* Double the tripled certifications for ultra-smooth seamless loop */}
+              {[
+                ...certifications,
+                ...certifications,
+                ...certifications,
+                ...certifications,
+                ...certifications,
+                ...certifications
+              ].map((cert, index) => (
+                <motion.div
                   key={index}
-                  className="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: (index % certifications.length) * 0.05 }}
+                  className="flex-shrink-0"
+                  style={{ width: '350px' }}
                 >
-                  <div className="bg-cream-100 rounded-xl p-8 md:p-10 text-center shadow-lg border border-primary-100 h-full">
+                  <div className="bg-cream-100 rounded-xl p-8 md:p-10 text-center shadow-lg border border-primary-100 h-full hover:shadow-xl transition-shadow duration-300">
                     <img
                       src={cert.image}
                       alt={cert.title}
@@ -124,40 +111,9 @@ const Certifications = () => {
                     <h3 className="font-bold text-gray-900 mb-3 text-lg md:text-xl">{cert.title}</h3>
                     <p className="text-gray-600 leading-relaxed text-sm">{cert.description}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
-          </div>
-
-          {/* Navigation Arrows */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg transition-all z-10 border border-gray-200"
-            aria-label="Previous certification"
-          >
-            <ChevronLeft className="text-gray-700" size={24} />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 bg-white hover:bg-gray-50 p-3 rounded-full shadow-lg transition-all z-10 border border-gray-200"
-            aria-label="Next certification"
-          >
-            <ChevronRight className="text-gray-700" size={24} />
-          </button>
-
-          {/* Dots Indicator - only show original count */}
-          <div className="flex justify-center gap-2 mt-8">
-            {certifications.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`h-2 rounded-full transition-all ${(currentIndex % certifications.length) === index
-                  ? 'bg-accent-500 w-8'
-                  : 'w-2 bg-gray-300 hover:bg-gray-400'
-                  }`}
-                aria-label={`Go to certification ${index + 1}`}
-              />
-            ))}
+            </motion.div>
           </div>
         </div>
 

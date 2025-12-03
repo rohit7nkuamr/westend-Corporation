@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getHeroSlides } from '../services/api';
 
 const Hero = () => {
     const [slides, setSlides] = useState([]);
@@ -9,10 +10,7 @@ const Hero = () => {
     useEffect(() => {
         const fetchHeroSlides = async () => {
             try {
-                const response = await fetch('https://westendcorporation.in/api/hero-slides/');
-                const data = await response.json();
-                // Handle paginated response - extract results array
-                const slidesData = data.results || data;
+                const slidesData = await getHeroSlides();
                 setSlides(slidesData);
             } catch (err) {
                 console.error('Error fetching hero slides:', err);
@@ -27,7 +25,7 @@ const Hero = () => {
         if (slides.length === 0) return;
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 3000); // Changed from 5000ms to 3000ms (3 seconds)
+        }, 5000); // 5 seconds per slide
         return () => clearInterval(interval);
     }, [slides]);
 
@@ -54,7 +52,7 @@ const Hero = () => {
 
     return (
         <div className="relative w-full h-[400px] md:h-[500px] bg-gray-900 overflow-hidden">
-            {/* Background Carousel */}
+            {/* Background Carousel - No Text Overlay */}
             <AnimatePresence initial={false}>
                 {slides[currentSlide] && (
                     <motion.div
@@ -68,16 +66,31 @@ const Hero = () => {
                         <img
                             src={slides[currentSlide].image}
                             alt={slides[currentSlide].title || "Hero slide"}
-                            className="w-full h-full object-cover opacity-60"
+                            className="w-full h-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-gray-900/90"></div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-
+            {/* Slide Indicators */}
+            {slides.length > 1 && (
+                <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center gap-2">
+                    {slides.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setCurrentSlide(index)}
+                            className={`h-2 rounded-full transition-all ${index === currentSlide
+                                    ? 'bg-white w-8'
+                                    : 'w-2 bg-white/50 hover:bg-white/75'
+                                }`}
+                            aria-label={`Go to slide ${index + 1}`}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
 
 export default Hero;
+

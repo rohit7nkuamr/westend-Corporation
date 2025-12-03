@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification, PageBackground, SectionBackground
 from .admin_site import westend_admin_site
 
 class VerticalProductInline(admin.TabularInline):
@@ -192,3 +192,81 @@ class CertificationAdmin(admin.ModelAdmin):
             'fields': ['order', 'is_active']
         }),
     ]
+
+@admin.register(PageBackground, site=westend_admin_site)
+class PageBackgroundAdmin(admin.ModelAdmin):
+    list_display = ['page', 'image_preview', 'opacity', 'is_active', 'updated_at']
+    list_editable = ['opacity', 'is_active']
+    list_filter = ['page', 'is_active']
+    search_fields = ['page']
+    readonly_fields = ['created_at', 'updated_at', 'image_preview_large']
+    
+    fieldsets = [
+        ('Page Selection', {
+            'fields': ['page']
+        }),
+        ('Background Image', {
+            'fields': ['background_image', 'image_preview_large'],
+            'description': 'Recommended: 1920x1080px. Images are automatically optimized to JPEG at 80% quality.'
+        }),
+        ('Display Settings', {
+            'fields': ['opacity', 'is_active']
+        }),
+        ('Timestamps', {
+            'fields': ['created_at', 'updated_at'],
+            'classes': ['collapse']
+        }),
+    ]
+    
+    def image_preview(self, obj):
+        if obj.background_image:
+            return f'<img src="{obj.background_image.url}" style="max-width:60px; max-height:60px; object-fit:cover; border-radius:4px;" />'
+        return '-'
+    image_preview.short_description = 'Preview'
+    image_preview.allow_tags = True
+    
+    def image_preview_large(self, obj):
+        if obj.background_image:
+            return f'<img src="{obj.background_image.url}" style="max-width:400px; max-height:300px; object-fit:contain; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />'
+        return 'No image uploaded'
+    image_preview_large.short_description = 'Image Preview'
+    image_preview_large.allow_tags = True
+
+@admin.register(SectionBackground, site=westend_admin_site)  
+class SectionBackgroundAdmin(admin.ModelAdmin):
+    list_display = ['section', 'image_preview', 'opacity', 'is_active', 'updated_at']
+    list_editable = ['opacity', 'is_active']
+    list_filter = ['section', 'is_active']
+    search_fields = ['section']
+    readonly_fields = ['created_at', 'updated_at', 'image_preview_large']
+    
+    fieldsets = [
+        ('Section Selection', {
+            'fields': ['section']
+        }),
+        ('Background Image', {
+            'fields': ['background_image', 'image_preview_large'],
+            'description': 'Recommended: 1920x600px. Images are automatically optimized to JPEG at 80% quality.'
+        }),
+        ('Display Settings', {
+            'fields': ['opacity', 'is_active']
+        }),
+        ('Timestamps', {
+            'fields': ['created_at', 'updated_at'],
+            'classes': ['collapse']
+        }),
+    ]
+    
+    def image_preview(self, obj):
+        if obj.background_image:
+            return f'<img src="{obj.background_image.url}" style="max-width:60px; max-height:60px; object-fit:cover; border-radius:4px;" />'
+        return '-'
+    image_preview.short_description = 'Preview'
+    image_preview.allow_tags = True
+    
+    def image_preview_large(self, obj):
+        if obj.background_image:
+            return f'<img src="{obj.background_image.url}" style="max-width:400px; max-height:300px; object-fit:contain; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);" />'
+        return 'No image uploaded'
+    image_preview_large.short_description = 'Image Preview'
+    image_preview_large.allow_tags = True

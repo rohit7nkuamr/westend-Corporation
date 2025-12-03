@@ -350,3 +350,102 @@ class Certification(models.Model):
     
     def __str__(self):
         return self.title
+
+class PageBackground(models.Model):
+    """Background images for different pages"""
+    PAGE_CHOICES = [
+        ('home', 'Home Page'),
+        ('products', 'Products Page'),
+        ('about', 'About Page'),
+        ('contact', 'Contact Page'),
+        ('certifications', 'Certifications Page'),
+    ]
+    
+    page = models.CharField(max_length=50, choices=PAGE_CHOICES, unique=True, help_text="Select page for background")
+    background_image = models.ImageField(upload_to='page_backgrounds/', help_text="Recommended: 1920x1080px. Will be auto-optimized.")
+    opacity = models.FloatField(default=0.08, help_text="Background opacity: 0.0 (invisible) to 1.0 (fully visible)")
+    is_active = models.BooleanField(default=True, help_text="Enable/disable this background")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = 'Page Background'
+        verbose_name_plural = 'Page Backgrounds'
+        ordering = ['page']
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        # Optimize background image after saving
+        if self.background_image:
+            try:
+                img = Image.open(self.background_image.path)
+                
+                # Convert to RGB if necessary
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    rgb_img = Image.new('RGB', img.size, (255, 255, 255))
+                    if img.mode == 'P':
+                        img = img.convert('RGBA')
+                    rgb_img.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
+                    img = rgb_img
+                
+                # Resize if too large (max 1920x1080 for page backgrounds)
+                max_size = (1920, 1080)
+                img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                
+                # Save with optimization (80% quality for backgrounds)
+                img.save(self.background_image.path, 'JPEG', quality=80, optimize=True)
+            except Exception as e:
+                print(f"Error optimizing page background image: {e}")
+    
+    def __str__(self):
+        return f"{self.get_page_display()} Background"
+
+class SectionBackground(models.Model):
+    """Background images for different sections within pages"""
+    SECTION_CHOICES = [
+        ('category_showcase', 'Category Showcase'),
+        ('featured_products', 'Featured Products'),
+        ('why_choose_us', 'Why Choose Us'),
+        ('certifications', 'Certifications Section'),
+    ]
+    
+    section = models.CharField(max_length=50, choices=SECTION_CHOICES, unique=True, help_text="Select section for background")
+    background_image = models.ImageField(upload_to='section_backgrounds/', help_text="Recommended: 1920x600px. Will be auto-optimized.")
+    opacity = models.FloatField(default=0.05, help_text="Background opacity: 0.0 (invisible) to 1.0 (fully visible)")
+    is_active = models.BooleanField(default=True, help_text="Enable/disable this background")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = 'Section Background'
+        verbose_name_plural = 'Section Backgrounds'
+        ordering = ['section']
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        # Optimize section background image after saving
+        if self.background_image:
+            try:
+                img = Image.open(self.background_image.path)
+                
+                # Convert to RGB if necessary
+                if img.mode in ('RGBA', 'LA', 'P'):
+                    rgb_img = Image.new('RGB', img.size, (255, 255, 255))
+                    if img.mode == 'P':
+                        img = img.convert('RGBA')
+                    rgb_img.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
+                    img = rgb_img
+                
+                # Resize if too large (max 1920x1080 for section backgrounds)
+                max_size = (1920, 1080)
+                img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                
+                # Save with optimization (80% quality for backgrounds)
+                img.save(self.background_image.path, 'JPEG', quality=80, optimize=True)
+            except Exception as e:
+                print(f"Error optimizing section background image: {e}")
+    
+    def __str__(self):
+        return f"{self.get_section_display()} Background"

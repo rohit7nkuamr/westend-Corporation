@@ -1,0 +1,3 @@
+Line 89-110: Add heading section after line 88
+Line 132: Change vertical.id to encodeURIComponent(vertical.title)
+Line 140: Change </motion.section> to </section>

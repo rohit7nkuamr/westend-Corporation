@@ -67,68 +67,68 @@ const WhyChooseUs = () => {
           </p>
         </motion.div>
 
-        {/* Why Choose Us Cards - Mobile: Manual Scroll, Desktop: Auto Ribbon */}
+        {/* Why Choose Us Cards - Seamless Circular Ribbon Animation */}
         <div className="relative mb-16">
-          {/* Desktop: Auto-scrolling ribbon with gradient edges */}
-          <div className="hidden md:block relative -mx-4 sm:mx-0">
-            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-cream-50 to-transparent z-10 pointer-events-none"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-cream-50 to-transparent z-10 pointer-events-none"></div>
+          {/* Gradient fade edges for seamless appearance */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-cream-50 via-cream-50/80 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-cream-50 via-cream-50/80 to-transparent z-10 pointer-events-none"></div>
 
-            <div className="overflow-hidden">
-              <motion.div
-                animate={{
-                  x: [0, '-33.333%']
-                }}
-                transition={{
-                  x: {
-                    repeat: Infinity,
-                    repeatType: "loop",
-                    duration: 5,
-                    ease: "linear"
-                  }
-                }}
-                className="flex gap-6"
-              >
-                {tripledReasons.map((reason, index) => (
-                  <div
-                    key={index}
-                    className="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group"
-                  >
-                    <div className={`w-14 h-14 bg-gradient-to-br ${reason.color} rounded-xl flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                      <reason.icon className="text-white" size={28} strokeWidth={2} />
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors duration-300">
-                      {reason.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">
-                      {reason.description}
-                    </p>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Mobile: Horizontal scroll (user can swipe) */}
-          <div className="md:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
-            <div className="flex gap-4 pb-4">
-              {reasons.map((reason, index) => (
+          <div className="overflow-hidden">
+            <motion.div
+              animate={{
+                x: ['0%', '-50%']
+              }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 7,
+                  ease: "linear"
+                }
+              }}
+              className="flex gap-6"
+              style={{ willChange: 'transform' }}
+            >
+              {/* Double the tripled array for ultra-smooth seamless loop */}
+              {[...tripledReasons, ...tripledReasons].map((reason, index) => (
                 <div
                   key={index}
-                  className="flex-shrink-0 w-64 bg-white rounded-2xl p-5 shadow-lg border border-gray-100"
+                  className="flex-shrink-0 w-80 bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group"
                 >
-                  <div className={`w-12 h-12 bg-gradient-to-br ${reason.color} rounded-xl flex items-center justify-center mb-3 shadow-md`}>
-                    <reason.icon className="text-white" size={24} strokeWidth={2} />
+                  <div className={`w-14 h-14 bg-gradient-to-br ${reason.color} rounded-xl flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                    <reason.icon className="text-white" size={28} strokeWidth={2} />
                   </div>
-                  <h3 className="text-base font-bold text-gray-900 mb-2">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-700 transition-colors duration-300">
                     {reason.title}
                   </h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     {reason.description}
                   </p>
                 </div>
               ))}
-            </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Mobile: Horizontal scroll (user can swipe) */}
+        <div className="md:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
+          <div className="flex gap-4 pb-4">
+            {reasons.map((reason, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-64 bg-white rounded-2xl p-5 shadow-lg border border-gray-100"
+              >
+                <div className={`w-12 h-12 bg-gradient-to-br ${reason.color} rounded-xl flex items-center justify-center mb-3 shadow-md`}>
+                  <reason.icon className="text-white" size={24} strokeWidth={2} />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-2">
+                  {reason.title}
+                </h3>
+                <p className="text-xs text-gray-600 leading-relaxed">
+                  {reason.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 

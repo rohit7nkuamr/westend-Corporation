@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import ErrorBoundary from './components/ErrorBoundary'
 import Home from './pages/Home'
 import ProductsPage from './pages/ProductsPage'
 import ProductDetail from './pages/ProductDetail'
@@ -21,16 +22,18 @@ function App() {
       <Navbar />
 
       <main style={{ position: 'relative', zIndex: 1 }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/product/:slug" element={<ProductDetail />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/certifications" element={<CertificationsPage />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsConditions />} />
-        </Routes>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/product/:slug" element={<ProductDetail />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/certifications" element={<CertificationsPage />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsConditions />} />
+          </Routes>
+        </ErrorBoundary>
       </main>
       <Footer />
     </div>

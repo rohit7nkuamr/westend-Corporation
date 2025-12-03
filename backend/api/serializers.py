@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, HeroSlide, Certification
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, HeroSlide, Certification, PageBackground, SectionBackground
 
 class VerticalProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -60,3 +60,13 @@ class CertificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Certification
         fields = ['id', 'title', 'description', 'image', 'order']
+
+class PageBackgroundSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PageBackground
+        fields = ['id', 'page', 'background_image', 'opacity', 'is_active']
+
+class SectionBackgroundSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SectionBackground
+        fields = ['id', 'section', 'background_image', 'opacity', 'is_active']

@@ -9,6 +9,8 @@ router.register(r'features', views.FeatureViewSet)
 router.register(r'company-info', views.CompanyInfoViewSet)
 router.register(r'hero-slides', views.HeroSlideViewSet, basename='heroslide')
 router.register(r'certifications', views.CertificationViewSet, basename='certification')
+router.register(r'page-backgrounds', views.PageBackgroundViewSet, basename='page-background')
+router.register(r'section-backgrounds', views.SectionBackgroundViewSet, basename='section-background')
 
 urlpatterns = [
     path('', include(router.urls)),
