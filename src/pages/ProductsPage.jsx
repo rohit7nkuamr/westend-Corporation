@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Filter, SlidersHorizontal, Package } from 'lucide-react'
+import { Search, Filter, SlidersHorizontal, Package, Grid3x3, List } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { getProducts, getVerticals } from '../services/api'
 import OptimizedImage from '../components/OptimizedImage'
 import Breadcrumbs from '../components/Breadcrumbs'
+import ProductSidebar from '../components/ProductSidebar'
+
 
 const ProductsPage = () => {
   const location = useLocation();
@@ -13,7 +15,8 @@ const ProductsPage = () => {
 
   const [selectedCategory, setSelectedCategory] = useState('All Products');
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortOrder, setSortOrder] = useState('featured'); // New: sort state
+  const [sortOrder, setSortOrder] = useState('featured');
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'catalog'
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -101,7 +104,7 @@ const ProductsPage = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen pt-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-amber-50/30 to-primary-50">
+      <div className="min-h-screen pt-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-amber-50/30 to-primary-50">
         <div className="max-w-7xl mx-auto py-20 text-center">
           <motion.div
             animate={{ rotate: 360 }}
@@ -117,7 +120,7 @@ const ProductsPage = () => {
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen pt-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-amber-50/30 to-primary-50">
+      <div className="min-h-screen pt-28 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-amber-50/30 to-primary-50">
         <div className="max-w-7xl mx-auto py-20 text-center">
           <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-red-500 text-3xl">!</span>
@@ -137,7 +140,7 @@ const ProductsPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Page Header */}
-      <div className="bg-primary-900 text-white py-12 pt-20">
+      <div className="bg-primary-900 text-white py-12 pt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -165,190 +168,226 @@ const ProductsPage = () => {
                 setSearchQuery(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
         </div>
 
-        {/* Horizontal Category Chips */}
-        <div className="mb-6 overflow-x-auto scrollbar-hide">
-          <div className="flex gap-3 pb-2">
-            {categories.map((category, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setSelectedCategory(category.name);
-                  setCurrentPage(1);
-                }}
-                className={`flex-shrink-0 px-5 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === category.name
-                  ? 'bg-gray-900 text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-              >
-                {category.name}
-                <span className="ml-2 text-xs opacity-75">({category.count})</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Products Grid */}
-        <div>
-          <div className="mb-4 flex items-center justify-between flex-wrap gap-4">
-            <p className="text-gray-600">
-              <span className="font-semibold text-gray-900">{sortedProducts.length}</span> results
-            </p>
-            <select
-              value={sortOrder}
-              onChange={(e) => {
-                setSortOrder(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
-            >
-              <option value="featured">Sort by: Featured</option>
-              <option value="newest">Newest First</option>
-              <option value="name-asc">Name: A to Z</option>
-              <option value="name-desc">Name: Z to A</option>
-            </select>
+        {/* Main Layout: Sidebar + Products */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Left Sidebar */}
+          <div className="lg:col-span-1">
+            <ProductSidebar onSubcategoryClick={(sub) => console.log(sub)} />
           </div>
 
-          {/* Product Grid */}
-          {currentProducts.length === 0 ? (
-            <div className="text-center py-20">
-              <Package className="mx-auto text-gray-400 mb-4" size={64} />
-              <p className="text-gray-600 text-lg">No products found</p>
-              <p className="text-gray-500 text-sm mt-2">Try adjusting your filters or search query</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {currentProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="group"
-                >
-                  <Link to={`/product/${product.slug}`}>
-                    <div className="bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
-                      {/* Image Container */}
-                      <div className="relative aspect-square bg-gray-100 overflow-hidden">
-                        <OptimizedImage
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full"
-                          aspectRatio="1/1"
-                        />
+          {/* Right Side - Products */}
+          <div className="lg:col-span-3">
 
-                        {/* Badge */}
-                        {product.badge && (
-                          <div className="absolute top-2 left-2">
-                            <span className="bg-primary-600 text-white text-xs font-semibold px-2 py-1 rounded">
-                              {product.badge}
+
+            {/* Product Display - Grid or Catalog */}
+            {currentProducts.length === 0 ? (
+              <div className="text-center py-20">
+                <Package className="mx-auto text-gray-400 mb-4" size={64} />
+                <p className="text-gray-600 text-lg">No products found</p>
+                <p className="text-gray-500 text-sm mt-2">Try adjusting your filters or search query</p>
+              </div>
+            ) : viewMode === 'catalog' ? (
+              /* Catalog Table View */
+              <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Product</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider hidden md:table-cell">Category</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider hidden lg:table-cell">MOQ</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider hidden lg:table-cell">Packaging</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider hidden sm:table-cell">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {currentProducts.map((product) => (
+                        <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                          <td className="px-4 py-4">
+                            <Link to={`/product/${product.slug}`} className="flex items-center gap-3 group">
+                              <div className="flex-shrink-0 w-16 h-16 bg-gray-100 rounded overflow-hidden">
+                                <OptimizedImage
+                                  src={product.image}
+                                  alt={product.name}
+                                  className="w-full h-full"
+                                  aspectRatio="1/1"
+                                />
+                              </div>
+                              <div>
+                                <p className="font-medium text-gray-900 group-hover:text-primary-600 transition-colors">
+                                  {product.name}
+                                </p>
+                                {product.badge && (
+                                  <span className="inline-block mt-1 bg-primary-100 text-primary-700 text-xs px-2 py-0.5 rounded">
+                                    {product.badge}
+                                  </span>
+                                )}
+                              </div>
+                            </Link>
+                          </td>
+                          <td className="px-4 py-4 text-sm text-gray-600 hidden md:table-cell">
+                            {product.vertical_title}
+                          </td>
+                          <td className="px-4 py-4 text-sm text-gray-600 hidden lg:table-cell">
+                            {product.moq || '—'}
+                          </td>
+                          <td className="px-4 py-4 text-sm text-gray-600 hidden lg:table-cell">
+                            {product.packaging || '—'}
+                          </td>
+                          <td className="px-4 py-4 hidden sm:table-cell">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${product.stock_status === 'in_stock'
+                              ? 'bg-green-100 text-green-800'
+                              : product.stock_status === 'low_stock'
+                                ? 'bg-yellow-100 text-yellow-800'
+                                : 'bg-red-100 text-red-800'
+                              }`}>
+                              {product.stock_status === 'in_stock' ? '✓ In Stock' :
+                                product.stock_status === 'low_stock' ? '⚠ Low Stock' :
+                                  '✗ Out of Stock'}
                             </span>
-                          </div>
-                        )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              /* Grid View */
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {currentProducts.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="group"
+                  >
+                    <Link to={`/product/${product.slug}`}>
+                      <div className="bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        {/* Image Container */}
+                        <div className="relative aspect-square bg-gray-100 overflow-hidden">
+                          <OptimizedImage
+                            src={product.image}
+                            alt={product.name}
+                            className="w-full h-full"
+                            aspectRatio="1/1"
+                          />
 
-                        {/* Stock Status */}
-                        {product.stock_status === 'out_of_stock' && (
-                          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                            <span className="bg-white text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">
-                              Out of Stock
-                            </span>
-                          </div>
-                        )}
-                      </div>
+                          {/* Badge */}
+                          {product.badge && (
+                            <div className="absolute top-2 left-2">
+                              <span className="bg-primary-600 text-white text-xs font-semibold px-2 py-1 rounded">
+                                {product.badge}
+                              </span>
+                            </div>
+                          )}
 
-                      {/* Product Info */}
-                      <div className="p-3">
-                        <h3 className="font-medium text-gray-900 text-sm mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
-                          {product.name}
-                        </h3>
-
-                        {/* B2B Info */}
-                        {product.moq && (
-                          <div className="flex items-center gap-1 mb-1">
-                            <Package size={12} className="text-gray-500" />
-                            <span className="text-xs text-gray-600">{product.moq}</span>
-                          </div>
-                        )}
-                        {product.packaging && (
-                          <p className="text-xs text-gray-500 mb-2">Packaging: {product.packaging}</p>
-                        )}
-
-                        {/* Request Quote Button */}
-                        <div className="mt-2">
-                          <Link to="/contact">
-                            <button className="w-full bg-primary-600 text-white text-xs py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium border border-primary-500">
-                              Request Quote
-                            </button>
-                          </Link>
+                          {/* Stock Status */}
+                          {product.stock_status === 'out_of_stock' && (
+                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                              <span className="bg-white text-gray-900 px-3 py-1 rounded-full text-sm font-semibold">
+                                Out of Stock
+                              </span>
+                            </div>
+                          )}
                         </div>
 
-                        {/* Category Tag */}
-                        <p className="text-xs text-gray-500 mt-2">{product.vertical_title}</p>
+                        {/* Product Info */}
+                        <div className="p-3">
+                          <h3 className="font-medium text-gray-900 text-sm mb-2 line-clamp-2 group-hover:text-primary-600 transition-colors">
+                            {product.name}
+                          </h3>
+
+                          {/* B2B Info */}
+                          {product.moq && (
+                            <div className="flex items-center gap-1 mb-1">
+                              <Package size={12} className="text-gray-500" />
+                              <span className="text-xs text-gray-600">{product.moq}</span>
+                            </div>
+                          )}
+                          {product.packaging && (
+                            <p className="text-xs text-gray-500 mb-2">Packaging: {product.packaging}</p>
+                          )}
+
+                          {/* Request Quote Button */}
+                          <div className="mt-2">
+                            <Link to="/contact">
+                              <button className="w-full bg-primary-600 text-white text-xs py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium border border-primary-500">
+                                Request Quote
+                              </button>
+                            </Link>
+                          </div>
+
+                          {/* Category Tag */}
+                          <p className="text-xs text-gray-500 mt-2">{product.vertical_title}</p>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          )}
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-8 flex justify-center">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className={`px-4 py-2 border border-gray-300 rounded-lg transition-colors ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
-                    }`}
-                >
-                  Previous
-                </button>
-                {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
-                  // Show first page, last page, current page, and 2 pages around current
-                  let pageNum;
-                  if (totalPages <= 7) {
-                    pageNum = i + 1;
-                  } else if (currentPage <= 3) {
-                    pageNum = i + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNum = totalPages - 6 + i;
-                  } else {
-                    pageNum = currentPage - 3 + i;
-                  }
-
-                  return (
-                    <button
-                      key={pageNum}
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`px-4 py-2 rounded-lg transition-colors ${pageNum === currentPage
-                        ? 'bg-primary-600 text-white'
-                        : 'border border-gray-300 hover:bg-gray-50'
-                        }`}
-                    >
-                      {pageNum}
-                    </button>
-                  );
-                })}
-                <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className={`px-4 py-2 border border-gray-300 rounded-lg transition-colors ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
-                    }`}
-                >
-                  Next
-                </button>
+                    </Link>
+                  </motion.div>
+                ))}
               </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
+            )}
 
-export default ProductsPage
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex justify-center">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className={`px-4 py-2 border border-gray-300 rounded-lg transition-colors ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+                      }`}
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                    // Show first page, last page, current page, and 2 pages around current
+                    let pageNum;
+                    if (totalPages <= 7) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 6 + i;
+                    } else {
+                      pageNum = currentPage - 3 + i;
+                    }
+
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setCurrentPage(pageNum)}
+                        className={`px-4 py-2 rounded-lg transition-colors ${pageNum === currentPage
+                          ? 'bg-primary-600 text-white'
+                          : 'border border-gray-300 hover:bg-gray-50'
+                          }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className={`px-4 py-2 border border-gray-300 rounded-lg transition-colors ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+                      }`}
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
+          </div> {/* End Right Side Products */}
+        </div> {/* End Main Grid */}
+      </div> {/* End Container */}
+    </div>
+  );
+};
+
+export default ProductsPage;

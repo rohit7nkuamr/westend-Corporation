@@ -39,8 +39,68 @@ class CompanyInfo(models.Model):
     short_description = models.TextField()
     headquarters = models.CharField(max_length=200, default='Delhi, India')
     
+    # Logo fields
+    logo_image = models.ImageField(
+        upload_to='company/logos/', 
+        blank=True, 
+        null=True,
+        help_text="Company logo image (PNG/JPG). Recommended: 500x500px with transparent background."
+    )
+    logo_video = models.FileField(
+        upload_to='company/logos/videos/', 
+        blank=True, 
+        null=True,
+        help_text="Company logo video (MP4/WebM). Max 5MB. Recommended: 500x500px, short loop."
+    )
+    use_video_logo = models.BooleanField(
+        default=False,
+        help_text="If enabled and video is uploaded, video logo will be displayed instead of image."
+    )
+    
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Optimize logo image if uploaded
+        if self.logo_image:
+            self._optimize_logo_image()
+    
+    def _optimize_logo_image(self):
+        """Optimize logo image to reasonable size"""
+        from PIL import Image
+        import os
+        
+        img_path = self.logo_image.path
+        try:
+            img = Image.open(img_path)
+            
+            # Preserve transparency for PNG
+            if img.mode in ('RGBA', 'LA', 'P'):
+                # Keep as PNG with transparency
+                max_size = (500, 500)
+                img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                img.save(img_path, 'PNG', optimize=True)
+            else:
+                # Convert to JPEG for opaque images
+                if img.mode != 'RGB':
+                    img = img.convert('RGB')
+                max_size = (500, 500)
+                img.thumbnail(max_size, Image.Resampling.LANCZOS)
+                # Change extension to .jpg
+                base = os.path.splitext(img_path)[0]
+                new_path = f"{base}.jpg"
+                img.save(new_path, 'JPEG', quality=90, optimize=True)
+                # Update the field to point to new file
+                if new_path != img_path:
+                    if os.path.exists(img_path):
+                        os.remove(img_path)
+                    self.logo_image.name = self.logo_image.name.replace(
+                        os.path.basename(img_path), 
+                        os.path.basename(new_path)
+                    )
+        except Exception as e:
+            print(f"Error optimizing logo image: {e}")
     
     class Meta:
         verbose_name_plural = 'Company Info'
@@ -268,6 +328,8 @@ class HeroSlide(models.Model):
     title = models.CharField(max_length=200, help_text="Slide title/headline")
     subtitle = models.CharField(max_length=300, blank=True, help_text="Optional subtitle")
     image = models.ImageField(upload_to='hero_slides/', help_text="Recommended: 1920x500px")
+    video = models.FileField(upload_to='hero_videos/', blank=True, null=True, help_text="Optional: Video background (MP4)")
+    use_video = models.BooleanField(default=False, help_text="Use video instead of image")
     link_text = models.CharField(max_length=100, blank=True, help_text="Button text (optional)")
     link_url = models.CharField(max_length=500, blank=True, help_text="Button link (optional)")
     order = models.IntegerField(default=0, help_text="Display order (lower = first)")
@@ -307,6 +369,41 @@ class HeroSlide(models.Model):
     
     def __str__(self):
         return self.title
+
+class ProductCategory(models.Model):
+    """Product categories for sidebar navigation"""
+    title = models.CharField(max_length=200, help_text="Category name (e.g., 'Punjabi Jaggery')")
+    icon = models.CharField(max_length=50, blank=True, help_text="Optional icon name")
+    bg_color = models.CharField(max_length=20, default='#1e293b', help_text="Header background color (hex)")
+    order = models.IntegerField(default=0, help_text="Display order (lower = first)")
+    is_active = models.BooleanField(default=True, help_text="Show in sidebar")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['order', 'title']
+        verbose_name = 'Product Category'
+        verbose_name_plural = 'Product Categories'
+    
+    def __str__(self):
+        return self.title
+
+class ProductSubcategory(models.Model):
+    """Subcategories under product categories - simple text list items"""
+    category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE, related_name='subcategories')
+    title = models.CharField(max_length=200, help_text="Product name (e.g., 'Pesi Jaggery')")
+    order = models.IntegerField(default=0, help_text="Display order within category")
+    is_active = models.BooleanField(default=True, help_text="Show in sidebar")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['order', 'title']
+        verbose_name = 'Product Subcategory'
+        verbose_name_plural = 'Product Subcategories'
+    
+    def __str__(self):
+        return f"{self.category.title} - {self.title}"
 
 class Certification(models.Model):
     """Certifications and compliance badges"""

@@ -70,3 +70,20 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #658a2d;
 }
+
+/* Gradient animation for tagline */
+@keyframes gradient-x {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 4s ease infinite;
+  background-size: 200% 200%;
+}

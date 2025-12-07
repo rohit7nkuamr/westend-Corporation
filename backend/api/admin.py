@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification, PageBackground, SectionBackground
+from django.utils.html import format_html
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification, PageBackground, SectionBackground, ProductCategory, ProductSubcategory
 from .admin_site import westend_admin_site
 
 class VerticalProductInline(admin.TabularInline):
@@ -132,7 +133,48 @@ class FeatureAdmin(admin.ModelAdmin):
 
 @admin.register(CompanyInfo)
 class CompanyInfoAdmin(admin.ModelAdmin):
-    list_display = ['name', 'tagline', 'founded_year']
+    list_display = ['name', 'tagline', 'logo_preview', 'use_video_logo']
+    readonly_fields = ['logo_preview_large', 'video_preview']
+    
+    fieldsets = [
+        ('Basic Information', {
+            'fields': ['name', 'tagline', 'founded_year', 'headquarters']
+        }),
+        ('Logo Settings', {
+            'fields': ['logo_image', 'logo_preview_large', 'logo_video', 'video_preview', 'use_video_logo'],
+            'description': 'Upload logo image (PNG recommended for transparency) and/or logo video (MP4/WebM). Toggle to switch between them.'
+        }),
+        ('About Content', {
+            'fields': ['short_description', 'description']
+        }),
+    ]
+    
+    def logo_preview(self, obj):
+        """Small logo preview for list view"""
+        if obj.logo_image:
+            return format_html('<img src="{}" style="max-height:40px; max-width:40px; object-fit:contain;" />', obj.logo_image.url)
+        return '-'
+    logo_preview.short_description = 'Logo'
+    
+    def logo_preview_large(self, obj):
+        """Large logo preview for detail view"""
+        if obj.logo_image:
+            return format_html('<img src="{}" style="max-height:200px; max-width:200px; object-fit:contain; border:1px solid #ddd; padding:10px; background:white;" />', obj.logo_image.url)
+        return 'No logo image uploaded'
+    logo_preview_large.short_description = 'Logo Preview'
+    
+    def video_preview(self, obj):
+        """Video preview for detail view"""
+        if obj.logo_video:
+            return format_html(
+                '<video autoplay loop muted style="max-height:200px; max-width:200px; border:1px solid #ddd; background:#f0f0f0;">'
+                '<source src="{}" type="video/mp4">'
+                'Your browser does not support video.'
+                '</video>',
+                obj.logo_video.url
+            )
+        return 'No logo video uploaded'
+    video_preview.short_description = 'Video Preview'
 
 
 @admin.register(PageVisit)
@@ -159,23 +201,82 @@ westend_admin_site.register(Group, GroupAdmin)
 
 @admin.register(HeroSlide, site=westend_admin_site)
 class HeroSlideAdmin(admin.ModelAdmin):
-    list_display = ['title', 'image', 'is_active', 'order', 'created_at']
-    list_filter = ['is_active']
+    list_display = ['title', 'media_type_display', 'is_active', 'order', 'created_at']
+    list_filter = ['is_active', 'use_video']
     list_editable = ['is_active', 'order']
     search_fields = ['title', 'subtitle']
+    readonly_fields = ['media_preview', 'created_at', 'updated_at']
     
     fieldsets = [
         ('Content', {
-            'fields': ['title', 'subtitle', 'image']
+            'fields': ['title', 'subtitle']
+        }),
+        ('Media (Image or Video)', {
+            'fields': ['image', 'video', 'use_video', 'media_preview'],
+            'description': 'Upload an image AND/OR a video. Check "Use video" to show video instead of image.'
         }),
         ('Call to Action (Optional)', {
             'fields': ['link_text', 'link_url'],
             'classes': ['collapse']
         }),
         ('Settings', {
+            'fields': ['order', 'is_active', 'created_at', 'updated_at']
+        }),
+    ]
+    
+    def media_type_display(self, obj):
+        if obj.use_video and obj.video:
+            return '🎥 Video'
+        return '🖼️ Image'
+    media_type_display.short_description = 'Type'
+    
+    def media_preview(self, obj):
+        if obj.use_video and obj.video:
+            return format_html(
+                '<video width="400" controls><source src="{}" type="video/mp4"></video>',
+                obj.video.url
+            )
+        elif obj.image:
+            return format_html(
+                '<img src="{}" width="400" style="max-height: 300px; object-fit: contain;" />',
+                obj.image.url
+            )
+        return "No media uploaded"
+    media_preview.short_description = 'Preview'
+
+class ProductSubcategoryInline(admin.TabularInline):
+    model = ProductSubcategory
+    extra = 1
+    fields = ['title', 'order', 'is_active']
+
+
+@admin.register(ProductCategory, site=westend_admin_site)
+class ProductCategoryAdmin(admin.ModelAdmin):
+    list_display = ['title', 'order', 'is_active', 'subcategory_count', 'created_at']
+    list_filter = ['is_active']
+    list_editable = ['order', 'is_active']
+    search_fields = ['title']
+    inlines = [ProductSubcategoryInline]
+    
+    fieldsets = [
+        ('Category Information', {
+            'fields': ['title', 'icon', 'bg_color']
+        }),
+        ('Settings', {
             'fields': ['order', 'is_active']
         }),
     ]
+    
+    def subcategory_count(self, obj):
+        return obj.subcategories.count()
+    subcategory_count.short_description = 'Subcategories'
+
+@admin.register(ProductSubcategory, site=westend_admin_site)
+class ProductSubcategoryAdmin(admin.ModelAdmin):
+    list_display = ['title', 'category', 'order', 'is_active']
+    list_filter = ['is_active', 'category']
+    list_editable = ['order', 'is_active']
+    search_fields = ['title', 'category__title']
 
 @admin.register(Certification, site=westend_admin_site)
 class CertificationAdmin(admin.ModelAdmin):

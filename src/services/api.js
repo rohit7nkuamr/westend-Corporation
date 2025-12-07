@@ -35,6 +35,26 @@ const apiCall = async (endpoint, options = {}) => {
   }
 };
 
+export const getSectionBackground = async (section) => {
+  try {
+    const response = await apiCall(`/section-backgrounds/?section=${encodeURIComponent(section)}`);
+    return response.results?.[0] || null;
+  } catch (error) {
+    console.error('Error fetching section background:', error);
+    return null;
+  }
+};
+
+export const getProductCategories = async () => {
+  try {
+    const response = await apiCall('/product-categories/');
+    return response.results || response || [];
+  } catch (error) {
+    console.error('Error fetching product categories:', error);
+    return [];
+  }
+};
+
 // Verticals/Categories API
 export const getVerticals = async () => {
   const response = await apiCall('/verticals/');

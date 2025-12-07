@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from 'react'
-import { Menu, X, Search, Settings, ShoppingBag, User } from 'lucide-react'
+import { Menu, X, Search, Settings, ShoppingBag, User, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
+import Logo from './Logo'
+import { getVerticals } from '../services/api'
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isProductsHovered, setIsProductsHovered] = useState(false)
+  const [categories, setCategories] = useState([])
   const location = useLocation()
+
+  // Fetch categories for dropdown
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const verticalsData = await getVerticals()
+        setCategories(verticalsData)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+    fetchCategories()
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,49 +34,102 @@ const Navbar = () => {
   }, [])
 
   const navLinks = [
-    { name: 'HOME', href: '/' },
-    { name: 'PRODUCTS', href: '/products' },
-    { name: 'ABOUT', href: '/about' },
-    { name: 'CONTACT', href: '/contact' },
+    { name: 'HOME', to: '/', hasDropdown: false },
+    { name: 'PRODUCTS', to: '/products', hasDropdown: true },
+    { name: 'ABOUT', to: '/about', hasDropdown: false },
+    { name: 'CONTACT', to: '/contact', hasDropdown: false },
   ]
 
   return (
     <>
-      {/* Top Bar (Optional, for contact info or promos) - Keeping it clean for now as per inspiration */}
+      {/* Blue Top Banner Ribbon */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-primary-700 text-white py-2 shadow-md">
+        <p className="text-xs md:text-sm font-medium tracking-wide text-right md:text-center px-4">
+          Indian Exporter to the World – Premium Quality Food Products
+        </p>
+      </div>
 
+      {/* Main Navigation */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-2' : 'bg-white py-4'
+        className={`fixed top-8 left-0 right-0 z-40 transition-all duration-300 ${isScrolled
+          ? 'bg-white shadow-lg py-1'
+          : 'bg-transparent py-2'
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            {/* Logo */}
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <img src="/logo.png" alt="Westend Corporation" className="h-12 w-auto object-contain" />
-              <div className="flex flex-col">
-                <span className="font-bold text-lg md:text-xl text-gray-800 tracking-tight leading-tight group-hover:text-primary-600 transition-colors">
-                  WESTEND CORPORATION
-                </span>
-                <span className="text-[10px] md:text-xs text-gray-500 tracking-wide font-medium">
-                  Exporter from India to World
-                </span>
-              </div>
+            {/* Logo with Company Name */}
+            <Link to="/" className="flex items-center gap-2 md:gap-3 group">
+              <Logo className={`w-auto object-contain transition-all duration-300 ${isScrolled ? 'h-10 md:h-12' : 'h-12 md:h-16'
+                }`} />
+              <span className={`hidden sm:block font-bold text-base md:text-lg tracking-wide transition-all duration-300 ${isScrolled
+                ? 'text-gray-800'
+                : 'text-white drop-shadow-lg'
+                }`}
+                style={!isScrolled ? {
+                  textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                  WebkitTextStroke: '0.5px rgba(0,0,0,0.3)'
+                } : {}}
+              >
+                WESTEND CORPORATION
+              </span>
             </Link>
 
             {/* Desktop Navigation - Centered */}
             <div className="hidden md:flex items-center space-x-8">
               {navLinks.map((link) => (
-                <Link
+                <div
                   key={link.name}
-                  to={link.href}
-                  className={`text-sm font-bold tracking-wide transition-colors duration-300 relative group ${location.pathname === link.href ? 'text-primary-500' : 'text-gray-600 hover:text-primary-500'
-                    }`}
+                  className="relative"
+                  onMouseEnter={() => link.hasDropdown && setIsProductsHovered(true)}
+                  onMouseLeave={() => link.hasDropdown && setIsProductsHovered(false)}
                 >
-                  {link.name}
-                  <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full ${location.pathname === link.href ? 'w-full' : ''
-                    }`}></span>
-                </Link>
+                  <Link
+                    to={link.to}
+                    className={`text-sm font-bold tracking-wide transition-all duration-300 relative group flex items-center gap-1 ${isScrolled
+                      ? (location.pathname === link.to ? 'text-primary-500' : 'text-gray-600 hover:text-primary-500')
+                      : (location.pathname === link.to ? 'text-white drop-shadow-lg' : 'text-white/90 hover:text-white drop-shadow-lg')
+                      }`}
+                    style={!isScrolled ? {
+                      textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                      WebkitTextStroke: '0.5px rgba(0,0,0,0.3)'
+                    } : {}}
+                  >
+                    {link.name}
+                    {link.hasDropdown && <ChevronDown size={16} className={`transition-transform ${isProductsHovered ? 'rotate-180' : ''}`} />}
+                    <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${isScrolled ? 'bg-primary-500' : 'bg-white'
+                      } ${location.pathname === link.to ? 'w-full' : ''}`}></span>
+                  </Link>
+
+                  {/* Products Dropdown */}
+                  {link.hasDropdown && isProductsHovered && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute top-full left-0 mt-2 w-64 bg-white shadow-xl rounded-lg overflow-hidden border border-gray-100"
+                    >
+                      <div className="py-2">
+                        <Link
+                          to="/products"
+                          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary-600 transition-colors font-medium"
+                        >
+                          All Products
+                        </Link>
+                        <div className="border-t border-gray-100 my-1"></div>
+                        {categories.map((category) => (
+                          <Link
+                            key={category.id}
+                            to={`/products?category=${encodeURIComponent(category.title)}`}
+                            className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary-600 transition-colors"
+                          >
+                            {category.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
               ))}
             </div>
 
@@ -69,14 +139,21 @@ const Navbar = () => {
                 href="https://wa.me/919311933481"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-green-600 hover:text-green-700 font-medium transition-colors"
+                className={`flex items-center gap-2 font-medium transition-colors ${isScrolled
+                  ? 'text-green-600 hover:text-green-700'
+                  : 'text-white hover:text-white/80'
+                  }`}
+                style={!isScrolled ? { textShadow: '0 2px 4px rgba(0,0,0,0.3)' } : {}}
               >
                 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className="w-6 h-6" />
                 <span className="hidden lg:inline">WhatsApp</span>
               </a>
               <Link
                 to="/contact"
-                className="bg-accent-500 text-white px-5 py-2.5 rounded-full font-bold text-sm hover:bg-accent-600 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-300"
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${isScrolled
+                  ? 'bg-primary-600 text-white hover:bg-primary-700'
+                  : 'bg-white/90 text-primary-600 hover:bg-white backdrop-blur-sm'
+                  }`}
               >
                 Request Quote
               </Link>
@@ -85,7 +162,12 @@ const Navbar = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden text-gray-600 hover:text-primary-500 transition-colors"
+              className={`md:hidden transition-colors ${isScrolled
+                ? 'text-gray-600 hover:text-primary-500'
+                : 'text-white hover:text-white/80'
+                }`}
+              style={!isScrolled ? { filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' } : {}}
+              aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -100,7 +182,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="fixed top-[60px] left-0 right-0 bg-white shadow-xl z-40 md:hidden border-t border-gray-100"
+            className="fixed top-16 left-0 right-0 bg-white shadow-xl z-40 md:hidden border-t border-gray-100"
           >
             <div className="p-4 space-y-4">
               {navLinks.map((link) => (

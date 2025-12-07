@@ -52,7 +52,7 @@ const Hero = () => {
 
     return (
         <div className="relative w-full h-[400px] md:h-[500px] bg-gray-900 overflow-hidden">
-            {/* Background Carousel - No Text Overlay */}
+            {/* Background Carousel - Supports Video and Images */}
             <AnimatePresence initial={false}>
                 {slides[currentSlide] && (
                     <motion.div
@@ -63,11 +63,24 @@ const Hero = () => {
                         transition={{ duration: 1 }}
                         className="absolute inset-0 z-0"
                     >
-                        <img
-                            src={slides[currentSlide].image}
-                            alt={slides[currentSlide].title || "Hero slide"}
-                            className="w-full h-full object-cover"
-                        />
+                        {slides[currentSlide].use_video && slides[currentSlide].video ? (
+                            /* Video Background */
+                            <video
+                                src={slides[currentSlide].video}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            /* Image Background */
+                            <img
+                                src={slides[currentSlide].image}
+                                alt={slides[currentSlide].title || "Hero slide"}
+                                className="w-full h-full object-cover"
+                            />
+                        )}
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -80,8 +93,8 @@ const Hero = () => {
                             key={index}
                             onClick={() => setCurrentSlide(index)}
                             className={`h-2 rounded-full transition-all ${index === currentSlide
-                                    ? 'bg-white w-8'
-                                    : 'w-2 bg-white/50 hover:bg-white/75'
+                                ? 'bg-white w-8'
+                                : 'w-2 bg-white/50 hover:bg-white/75'
                                 }`}
                             aria-label={`Go to slide ${index + 1}`}
                         />

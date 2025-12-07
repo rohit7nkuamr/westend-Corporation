@@ -1,16 +1,18 @@
+
 from rest_framework import viewsets, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from django.conf import settings
 from django.core.mail import EmailMessage
 import logging
-from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification, PageBackground, SectionBackground
+from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification, PageBackground, SectionBackground, ProductCategory
 from .serializers import (
     VerticalSerializer, ProductSerializer,
     ContactInquirySerializer, QuoteRequestSerializer,
     FeatureSerializer, CompanyInfoSerializer, HeroSlideSerializer, CertificationSerializer,
-    PageBackgroundSerializer, SectionBackgroundSerializer
+    PageBackgroundSerializer, SectionBackgroundSerializer, ProductCategorySerializer
 )
 
 class VerticalViewSet(viewsets.ReadOnlyModelViewSet):
@@ -252,6 +254,22 @@ class PageBackgroundViewSet(viewsets.ReadOnlyModelViewSet):
 
 class SectionBackgroundViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint for section backgrounds"""
-    queryset = SectionBackground.objects.filter(is_active=True)
     serializer_class = SectionBackgroundSerializer
-    pagination_class = None
+    
+    def get_queryset(self):
+        section = self.request.query_params.get('section')
+        queryset = SectionBackground.objects.filter(is_active=True)
+        if section:
+            queryset = queryset.filter(section=section)
+        return queryset.first() if queryset.exists() else SectionBackground.objects.none()
+
+class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint for product categories sidebar"""
+    queryset = ProductCategory.objects.filter(is_active=True).prefetch_related('subcategories')
+    serializer_class = ProductCategorySerializer
+    
+    def get_queryset(self):
+        return ProductCategory.objects.filter(is_active=True).prefetch_related(
+            'subcategories'
+        ).order_by('order', 'title')
+

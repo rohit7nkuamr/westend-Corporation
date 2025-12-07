@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, HeroSlide, Certification, PageBackground, SectionBackground
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, HeroSlide, Certification, PageBackground, SectionBackground, ProductCategory, ProductSubcategory
 
 class VerticalProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,12 +49,26 @@ class FeatureSerializer(serializers.ModelSerializer):
 class CompanyInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyInfo
-        fields = ['id', 'name', 'tagline', 'founded_year', 'description', 'short_description', 'headquarters']
+        fields = ['id', 'name', 'tagline', 'founded_year', 'description', 'short_description', 'headquarters', 'logo_image', 'logo_video', 'use_video_logo']
 
 class HeroSlideSerializer(serializers.ModelSerializer):
     class Meta:
         model = HeroSlide
-        fields = ['id', 'title', 'subtitle', 'image', 'link_text', 'link_url', 'order']
+        fields = ['id', 'title', 'subtitle', 'image', 'video', 'use_video', 'link_text', 'link_url', 'order']
+
+
+class ProductSubcategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductSubcategory
+        fields = ['id', 'title', 'order']
+
+
+class ProductCategorySerializer(serializers.ModelSerializer):
+    subcategories = ProductSubcategorySerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = ProductCategory
+        fields = ['id', 'title', 'icon', 'bg_color', 'subcategories', 'order']
 
 class CertificationSerializer(serializers.ModelSerializer):
     class Meta:

@@ -229,7 +229,7 @@ const ProductDetail = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 pt-28 flex items-center justify-center">
         <div className="text-center">
           <Loader className="animate-spin h-10 w-10 text-primary-600 mx-auto mb-4" />
           <p className="text-gray-600">Loading product details...</p>
@@ -241,7 +241,7 @@ const ProductDetail = () => {
   // Error state
   if (error || !product) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 pt-28 flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-6 bg-white rounded-xl shadow-md">
           <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-900 mb-2">Product Not Found</h2>
@@ -258,7 +258,7 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-gray-50 pt-28">
       {/* SEO Meta Tags and Structured Data */}
       <SEO
         title={`${product.name} - International Exporter to USA, Canada & Worldwide | Westend Corporation`}
