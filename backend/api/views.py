@@ -7,12 +7,12 @@ from django.views.decorators.http import require_http_methods
 from django.conf import settings
 from django.core.mail import EmailMessage
 import logging
-from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification, PageBackground, SectionBackground, ProductCategory
+from .models import Vertical, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification, PageBackground, SectionBackground, ProductCategory, Brochure
 from .serializers import (
     VerticalSerializer, ProductSerializer,
     ContactInquirySerializer, QuoteRequestSerializer,
     FeatureSerializer, CompanyInfoSerializer, HeroSlideSerializer, CertificationSerializer,
-    PageBackgroundSerializer, SectionBackgroundSerializer, ProductCategorySerializer
+    PageBackgroundSerializer, SectionBackgroundSerializer, ProductCategorySerializer, BrochureSerializer
 )
 
 class VerticalViewSet(viewsets.ReadOnlyModelViewSet):
@@ -273,3 +273,9 @@ class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
             'subcategories'
         ).order_by('order', 'title')
 
+
+class BrochureViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint for brochures/catalogs"""
+    queryset = Brochure.objects.filter(is_active=True).order_by('-created_at')
+    serializer_class = BrochureSerializer
+    pagination_class = None

@@ -546,3 +546,19 @@ class SectionBackground(models.Model):
     
     def __str__(self):
         return f"{self.get_section_display()} Background"
+
+class Brochure(models.Model):
+    """Product Catalog/Brochure PDF"""
+    title = models.CharField(max_length=200, help_text="Brochure title (e.g., 'Product Catalog 2024')")
+    file = models.FileField(upload_to='brochures/', help_text="PDF file")
+    is_active = models.BooleanField(default=True, help_text="Show on website. Only the most recent active one will be used.")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Brochure'
+        verbose_name_plural = 'Brochures'
+    
+    def __str__(self):
+        return self.title

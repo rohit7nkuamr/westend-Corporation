@@ -12,6 +12,7 @@ router.register(r'certifications', views.CertificationViewSet, basename='certifi
 router.register(r'page-backgrounds', views.PageBackgroundViewSet, basename='page-background')
 router.register(r'section-backgrounds', views.SectionBackgroundViewSet, basename='section-background')
 router.register(r'product-categories', views.ProductCategoryViewSet)
+router.register(r'brochures', views.BrochureViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

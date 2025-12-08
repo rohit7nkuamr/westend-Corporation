@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, HeroSlide, Certification, PageBackground, SectionBackground, ProductCategory, ProductSubcategory
+from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, HeroSlide, Certification, PageBackground, SectionBackground, ProductCategory, ProductSubcategory, Brochure
 
 class VerticalProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -84,3 +84,8 @@ class SectionBackgroundSerializer(serializers.ModelSerializer):
     class Meta:
         model = SectionBackground
         fields = ['id', 'section', 'background_image', 'opacity', 'is_active']
+
+class BrochureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brochure
+        fields = ['id', 'title', 'file']

@@ -179,6 +179,11 @@ export const getSectionBackgrounds = async () => {
   return response.results || response;
 };
 
+export const getBrochures = async () => {
+  const response = await apiCall('/brochures/');
+  return response.results || response;
+};
+
 export default {
   getVerticals,
   getProducts,
@@ -193,4 +198,5 @@ export default {
   getCertifications,
   getPageBackgrounds,
   getSectionBackgrounds,
+  getBrochures,
 };

@@ -2,7 +2,13 @@ from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from django.utils.html import format_html
-from .models import Vertical, VerticalProduct, Product, ContactInquiry, QuoteRequest, Feature, CompanyInfo, PageVisit, HeroSlide, Certification, PageBackground, SectionBackground, ProductCategory, ProductSubcategory
+from .models import (
+    CompanyInfo, Feature, Vertical, Product,
+    HeroSlide, ProductCategory, ProductSubcategory,
+    PageBackground, SectionBackground,
+    Certification, VerticalProduct, Brochure,
+    ContactInquiry, QuoteRequest, PageVisit
+)
 from .admin_site import westend_admin_site
 
 class VerticalProductInline(admin.TabularInline):
@@ -186,6 +192,11 @@ class PageVisitAdmin(admin.ModelAdmin):
     date_hierarchy = 'timestamp'
     ordering = ['-timestamp']
 
+class BrochureAdmin(admin.ModelAdmin):
+    list_display = ['title', 'is_active', 'created_at']
+    list_filter = ['is_active', 'created_at']
+    search_fields = ['title']
+
 # Register models with custom admin site
 westend_admin_site.register(Vertical, VerticalAdmin)
 westend_admin_site.register(Product, ProductAdmin)
@@ -194,6 +205,7 @@ westend_admin_site.register(QuoteRequest, QuoteRequestAdmin)
 westend_admin_site.register(Feature, FeatureAdmin)
 westend_admin_site.register(CompanyInfo, CompanyInfoAdmin)
 westend_admin_site.register(PageVisit, PageVisitAdmin)
+westend_admin_site.register(Brochure, BrochureAdmin)
 
 # Register Django's default User and Group models
 westend_admin_site.register(User, UserAdmin)
@@ -371,3 +383,4 @@ class SectionBackgroundAdmin(admin.ModelAdmin):
         return 'No image uploaded'
     image_preview_large.short_description = 'Image Preview'
     image_preview_large.allow_tags = True
+
