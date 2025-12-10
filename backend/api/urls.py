@@ -15,6 +15,7 @@ router.register(r'product-categories', views.ProductCategoryViewSet)
 router.register(r'brochures', views.BrochureViewSet)
 
 urlpatterns = [
+    path('catalog/download/', views.download_catalog_pdf, name='catalog-download'),
     path('', include(router.urls)),
     path('contact/', views.contact_inquiry, name='contact'),
     path('quote-request/', views.quote_request, name='quote-request'),

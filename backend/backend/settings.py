@@ -65,7 +65,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'api.middleware.DisableCSRFMiddleware',  # Custom middleware to disable CSRF for API routes
-    'api.middleware.VisitorTrackingMiddleware',  # Custom middleware for visitor tracking
+    # 'api.middleware.VisitorTrackingMiddleware',  # Custom middleware for visitor tracking
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -109,7 +109,8 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            # Move DB out of code folder for security/permissions
+            'NAME': BASE_DIR.parent / 'data/db.sqlite3',
         }
     }
 
@@ -157,7 +158,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # CORS Settings
 # Allow all origins for development and testing
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_CREDENTIALS = True
 
 # Fallback to specific origins if needed
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if os.environ.get('CORS_ALLOWED_ORIGINS') else [
@@ -217,6 +219,8 @@ if os.environ.get('EMAIL_HOST'):
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 500,  # Increased to support large product catalogs with client-side pagination
+    'PAGE_SIZE_QUERY_PARAM': 'page_size', # Allow client to override page size
+    'MAX_PAGE_SIZE': 1000,
     'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [],
 }
@@ -240,3 +244,34 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
     X_FRAME_OPTIONS = 'DENY'
+
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/django_error.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+             'class': 'logging.StreamHandler',
+             'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}

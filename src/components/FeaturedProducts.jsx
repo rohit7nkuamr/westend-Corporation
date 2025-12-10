@@ -23,7 +23,8 @@ const FeaturedProducts = () => {
         const productPromises = verticalsData.map(async (vertical) => {
           try {
             // Try to get featured products first
-            const products = await getProductsByCategory(vertical.id, { featured: true })
+            // Limit to 10 to avoid fetching entire catalog for large categories
+            const products = await getProductsByCategory(vertical.id, { featured: true, limit: 10 })
 
             if (products && products.length > 0) {
               // Sort featured products by featured_order
@@ -34,7 +35,7 @@ const FeaturedProducts = () => {
               return [vertical.id, sortedProducts.slice(0, 4)]
             } else {
               // Fallback to regular products if no featured ones
-              const regularProducts = await getProductsByCategory(vertical.id)
+              const regularProducts = await getProductsByCategory(vertical.id, { limit: 10 })
               return [vertical.id, regularProducts.slice(0, 4)]
             }
           } catch (error) {
@@ -102,9 +103,9 @@ const FeaturedProducts = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="py-12 px-4 sm:px-6 lg:px-8 bg-white"
+      className="py-12 bg-white"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {verticals.map((vertical, index) => (
           <div key={vertical.id} className={index === verticals.length - 1 ? '' : 'mb-12'}>
             <div className="flex items-center mb-6">

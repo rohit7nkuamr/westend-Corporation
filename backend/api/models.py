@@ -38,6 +38,8 @@ class CompanyInfo(models.Model):
     description = models.TextField()
     short_description = models.TextField()
     headquarters = models.CharField(max_length=200, default='Delhi, India')
+    phone = models.CharField(max_length=50, default='+91 93119 33481')
+    email = models.CharField(max_length=100, default='support@westendcorporation.in')
     
     # Logo fields
     logo_image = models.ImageField(
@@ -104,6 +106,7 @@ class CompanyInfo(models.Model):
     
     class Meta:
         verbose_name_plural = 'Company Info'
+        ordering = ['id']
 
 class Vertical(models.Model):
     """Product Categories/Verticals"""
@@ -199,6 +202,13 @@ class Product(models.Model):
     features = models.TextField(blank=True, help_text="Product features, one per line")
     brand = models.CharField(max_length=100, default='Westend Organic', help_text="Brand name")
     is_active = models.BooleanField(default=True)
+    
+    # New flag for Catalog-Only products (Hidden from website)
+    is_public = models.BooleanField(
+        default=True, 
+        help_text="Uncheck to hide this product from the website (it will still appear in the PDF Catalog)."
+    )
+    
     is_featured = models.BooleanField(default=False, help_text="Feature this product on the home page")
     featured_order = models.IntegerField(default=0, help_text="Order in which featured products appear (lower numbers appear first)")
     order = models.IntegerField(default=0)

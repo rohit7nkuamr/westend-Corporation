@@ -177,7 +177,11 @@ const ProductsPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Sidebar */}
           <div className="lg:col-span-1">
-            <ProductSidebar onSubcategoryClick={(sub) => console.log(sub)} />
+            <ProductSidebar
+              categories={categories}
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+            />
           </div>
 
           {/* Right Side - Products */}

@@ -72,7 +72,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ['name', 'slug', 'description', 'features']
     list_editable = ['stock_status', 'badge', 'is_featured', 'featured_order']
     readonly_fields = ['slug']
-    actions = ['mark_as_in_stock', 'mark_as_out_of_stock', 'mark_as_low_stock', 'mark_as_featured', 'mark_as_not_featured']
+    actions = ['mark_as_in_stock', 'mark_as_out_of_stock', 'mark_as_low_stock', 'mark_as_featured', 'mark_as_not_featured', 'fast_delete_products']
     
     fieldsets = [
         ('Basic Information', {
@@ -116,6 +116,13 @@ class ProductAdmin(admin.ModelAdmin):
     def mark_as_not_featured(self, request, queryset):
         queryset.update(is_featured=False)
     mark_as_not_featured.short_description = "Remove selected products from featured"
+
+    def fast_delete_products(self, request, queryset):
+        count = queryset.count()
+        queryset.delete()
+        self.message_user(request, f"Successfully deleted {count} products.")
+    fast_delete_products.short_description = "Fast Delete (Avoids 502 Timeout)"
+
 
 @admin.register(ContactInquiry)
 class ContactInquiryAdmin(admin.ModelAdmin):

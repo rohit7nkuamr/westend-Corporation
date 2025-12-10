@@ -76,11 +76,11 @@ const CategoryShowcase = () => {
     if (loading) return null;
 
     return (
-        <section className="relative z-20 -mt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <section className="relative z-20 -mt-24 pb-16">
             {/* Optional: Add a background image container if needed, currently relying on Hero overlap */}
             {/* <div className="absolute inset-0 bg-[url('path/to/image.jpg')] bg-cover bg-center opacity-10"></div> */}
 
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 pb-4 md:pb-0 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
                     {verticals.map((vertical, index) => (
                         <motion.div

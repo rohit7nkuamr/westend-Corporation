@@ -1,0 +1,236 @@
+BOONDI -> Processed Drinks & Confectionery
+ANGOORI PETHA -> Processed Drinks & Confectionery
+PANJABI WADI -> Processed Foods
+RAJGIRI LADOO -> Processed Drinks & Confectionery
+SUGAR REWARI -> Processed Drinks & Confectionery
+PEANUT GACHAK -> Processed Drinks & Confectionery
+BODHI GACHAK -> Processed Drinks & Confectionery
+MARUNDA GACHAK -> Processed Drinks & Confectionery
+SOYA CHUNK BIG -> Processed Foods
+SOYA CHUNK MINI -> Processed Foods
+NUTELLA SOYA CHUNKS -> Processed Foods
+PHOOL MAKHANA -> Processed Foods
+ROASTED CHANA (WITH/WITHOUT SKIN, HINGH CHANA, LEMON FLAVOUR, TURMERIC CHANA, BOMBAY MASALA CHANA) -> Processed Foods
+DABUR CHAWANPRASH (SUGER FREE & regular) -> Processed Foods
+DABUR ACTIVE BLOOD PURIFIER -> Processed Foods
+CHIPS/WAFERS PUDINA JALJIRA -> Processed Drinks & Confectionery
+CHIPS/WAFERS SAUCY TOMATO -> Processed Drinks & Confectionery
+CORNITOS SUPER SEED (MIX SEED) -> Processed Drinks & Confectionery
+CORNITOS CORN NUT (LEMON CHILLI CILANTRO, CHEESY JALAPENO) -> Processed Drinks & Confectionery
+CORNITOS SUNFLOWER SEEDS NATURAL -> Processed Drinks & Confectionery
+CORNITOS ROSTED PUMPKIN SEEDS SALTED -> Processed Drinks & Confectionery
+CORNITOS PARTY MIX -> Processed Drinks & Confectionery
+CORNITOS ROSTED PEANUTS SALTED -> Processed Drinks & Confectionery
+CORNITOS COATED GREEN PEAS (SWABI, HOT & SPICE) -> Processed Drinks & Confectionery
+CORNITOS TACO SHELL (4", 6") -> Processed Drinks & Confectionery
+TOO YUMM (MGC DP CHAAT, TANGY TOMATO, VS CHILLI CHATAKA, SOUR CREAM & ONION, CHIPS INDIAN MASALA, CHIPS SPANISH TOMATO, KARARE CHILLI ACHARI, KARARE MUNCHY MASALA, KARARE NOODLE MASALA, PS ALOO CHAAT, CHIPS ASCO) -> Processed Drinks & Confectionery
+LIJJAT DHAMTA SPECIAL PAPAD -> Processed Foods
+LIJJAT UDADA SINDHI MASALA SPECIAL PAPAD -> Processed Foods
+LIJJAT PUNJABI MASALA SPECIAL PAPAD -> Processed Foods
+LIJJAT MOONG PAPAD (PLAIN, WITH PEPPER, SPECIAL) -> Processed Foods
+LIJJAT UDAD PAPAD (VARIOUS TYPES: WITH PAPPER, GREEN CHILLI, RED CHILLI, PLAIN, JEERA, SPECIAL) -> Processed Foods
+YIPPEE MAGIC MSL NOODLES -> Processed Foods
+TOP RAMEN CURRY NOODLES -> Processed Foods
+TOP RAMEN MASALA NOODLES -> Processed Foods
+CHINGS SINGAPORE NOODLES -> Processed Foods
+THANDA MITHA PAN GULKAND JAR -> Processed Drinks & Confectionery
+AMLA PACHAK CAN -> Processed Drinks & Confectionery
+HAZMA HAZAM CAN -> Processed Drinks & Confectionery
+MANCHALI IMLI CAN -> Processed Drinks & Confectionery
+IMLI LADOO (MODAK) CAN -> Processed Drinks & Confectionery
+ANARDANA GOLI CAN -> Processed Drinks & Confectionery
+APLAM CHAPLAM CAN -> Processed Drinks & Confectionery
+MADRASI SONFF( GREEN) CAN -> Processed Drinks & Confectionery
+MADRASI SONFF( WHITE) CAN -> Processed Drinks & Confectionery
+SUGAR COATED SONFF CAN -> Processed Drinks & Confectionery
+ROYAL OLYMPIC MUKHWAS CAN -> Processed Drinks & Confectionery
+CALCUTTA PAN JAR -> Processed Drinks & Confectionery
+BANASARI PAN JAR (W/O SUPARI) -> Processed Drinks & Confectionery
+GREEN MUKHWASH CAN -> Processed Drinks & Confectionery
+KASHMIRI MIX CAN (W/O SUPARI) -> Processed Drinks & Confectionery
+MITH PAN CHURAN JAR -> Processed Drinks & Confectionery
+JHILMIL SUPARI CONT (W/O SUPARI) -> Processed Drinks & Confectionery
+DRY PAN JAR -> Processed Drinks & Confectionery
+PAN GULKAND JAR -> Processed Drinks & Confectionery
+COCONUT LADDU CAN -> Processed Drinks & Confectionery
+MADHUR CHURAN CONT -> Processed Drinks & Confectionery
+SUPER MIX CAN -> Processed Drinks & Confectionery
+DHANNA DAL CAN -> Processed Drinks & Confectionery
+SHODHY HARAD CAN -> Processed Drinks & Confectionery
+AAM GOLI CAN -> Processed Drinks & Confectionery
+COMPLAN (CHOCOLATE FLAVOUR, KESAR BADAM FLAVOUR) -> Processed Foods
+BOOST POWDER -> Processed Foods
+HORLICKS (CHOCOLATE, ELACHI, KESAR BADAM, LITE, MOTHER) -> Processed Foods
+ANIL RAGI VERMICELLI -> Processed Foods
+BAMBINO VERMICELLI (400 GM, 800 GM, ROSTED) -> Processed Foods
+PACHRANGA AMLA PICKLE PLASTIC JAR -> Processed Foods
+PACHRANGA RED CHILLI STUFFED -> Processed Foods
+PACHRANGA MIX PICKLE -> Processed Foods
+PACHRANGA MANGO UNPEELED/PEELES -> Processed Foods
+PACHRANGA TURNIP CAULIFLOWER CARROT -> Processed Foods
+PACHRANGA APPLE MURABBA JAR -> Processed Foods
+PACHRANGA CARROT MURABBA PJ JAR -> Processed Foods
+VEEBA SAUCE -> Processed Foods
+PATANJALI SPECIAL CHYANWANPRASH WITH SAFFRON -> Processed Foods
+PATANJALI AMLA JUICE -> Processed Foods
+PATANJALI ALOVERA JUICE -> Processed Foods
+PATANJALI AMLA MURABBA -> Processed Foods
+KNORR SOUP (HOT & SWEET, HOT & SOUR VEG, MIX VEG, THICK TOMATO, SWEET CORN VEG/CHICKEN, MANCHOW SOUP, ITALIAN, MAXICON) -> Processed Foods
+EVEREST SAMBHAR MASALA -> Spices & Seasonings
+EVEREST GARAM MASALA -> Spices & Seasonings
+EVEREST PAV BHAJI MASALA -> Spices & Seasonings
+EVEREST MEAT MASALA -> Spices & Seasonings
+EVEREST RAJMAAH MASALA -> Spices & Seasonings
+EVEREST CHAT MASALA -> Spices & Seasonings
+EVEREST CHOLE MASALA -> Spices & Seasonings
+EVEREST TEA MASALA -> Spices & Seasonings
+MDH CHANNA MASALA -> Spices & Seasonings
+MDH SAMBER MSL -> Spices & Seasonings
+MDH PANI PURI MSL -> Spices & Seasonings
+MDH DAL MAKHNI MSL -> Spices & Seasonings
+MDH RAJMAH MSL -> Spices & Seasonings
+MDH PAV BHAJI MSL -> Spices & Seasonings
+MDH CHICKEN MSL -> Spices & Seasonings
+MDH MEAT MSL (100 GM, 500 GM) -> Spices & Seasonings
+MDH GARAM MSL (100 GM, 500 GM) -> Spices & Seasonings
+MDH KITCHEN KING MSL (100 GM, 500 GM) -> Spices & Seasonings
+MDH CHAT MSL / CHUNKY CHAAT MASALA -> Processed Foods
+MDH DEGGI MIRCH PWD (100 GM, 500 GM) -> Spices & Seasonings
+SOHNA CHILLI PICKLES -> Processed Foods
+SOHNA MIX PIKLES -> Processed Foods
+ROSTED MAKHANA (PUDINA POP, HIMALAYAN SALT, PERI PERI, CHEES HERBS) -> Processed Drinks & Confectionery
+KAALA JADOO CHURAN STICK -> Processed Drinks & Confectionery
+LAL JUBAN CHURAN STICK -> Processed Drinks & Confectionery
+CHAND TARA -> Processed Drinks & Confectionery
+DIAMOND CHIPS (CREAM N ONION, MAGIC MASALA, TOM-CHI, CLASIC SALTED, PlAIN SALTED, PIRI PIRI) -> Processed Drinks & Confectionery
+UNCLE CHIPS SPICY TREAT -> Processed Drinks & Confectionery
+LAYS (AMERICAN STYLE CREAM & ONION, WEST INDIES HOT & SWEET CHILLI, SPANISH TOMATO TANGO, CLASIC SALTED, MAGIC MASALA, CHILLLI LEMON, MAX MACHO CHILLI) -> Processed Drinks & Confectionery
+KURKURE (MASALA MUNCH, SOLID MASTI, RED CHILLI CHATAKA, GREEN CHUTNEY) -> Processed Drinks & Confectionery
+BINGO MAD ANGLE (MASALA, CHESSES NACHOS, TOMATO MADNESS, ACHARI MASTI, CHAT, PIZZA) -> Processed Drinks & Confectionery
+PLAIN KHEEL + PATASHA IN JAR -> Processed Drinks & Confectionery
+SWEET KHEEL -> Processed Drinks & Confectionery
+RINKAS IMLI JELLY BAR JAR -> Processed Drinks & Confectionery
+RINKAS AAM PAPAD JAR -> Processed Drinks & Confectionery
+RINKAS KACHI KERY CANDY JAR -> Processed Drinks & Confectionery
+RINKAS MIX FRUIT CANDY JAR -> Processed Drinks & Confectionery
+RINKAS LICHI CANDY JAR -> Processed Drinks & Confectionery
+RINKAS ORANGE CANDY JAR -> Processed Drinks & Confectionery
+RINKAS COLA CANDY JAR -> Processed Drinks & Confectionery
+RINKAS CHATMOLA CANDY JAR/GOLI JAR/POUCH -> Processed Drinks & Confectionery
+RINKAS MANGO CANDY JAR -> Processed Drinks & Confectionery
+SHADANI CHENNAI SAUNF CAN -> Processed Drinks & Confectionery
+SHADANI ROASTED SPECIAL SAUNF CAN -> Processed Drinks & Confectionery
+SHADANI PLAIN MIX SAUNF CAN -> Processed Drinks & Confectionery
+SHADANI MADRASI SAUNF CAN -> Processed Drinks & Confectionery
+SHADANI MANGO BITE CAN -> Processed Drinks & Confectionery
+SHADANI KALA KHATTA CAN -> Processed Drinks & Confectionery
+SHADANI JELLY JELLY CAN -> Processed Drinks & Confectionery
+SHADANI AJWAIN PACHAK CAN -> Processed Drinks & Confectionery
+SHADANI CHATPATA AMLA CAN -> Processed Drinks & Confectionery
+SHADANI IMLI BOOTA CAN -> Processed Drinks & Confectionery
+SHADANI HING PEDA CAN -> Processed Drinks & Confectionery
+SHADANI RAM LADOO CAN -> Processed Drinks & Confectionery
+SHADANI KHATTA MEETHA AAMPAK CAN -> Processed Drinks & Confectionery
+SHADANI ANARDANA GOLI CAN -> Processed Drinks & Confectionery
+SHADANI FRUIT JELLY CAN -> Processed Drinks & Confectionery
+SHADANI SWEET IMLI CANDY CAN -> Processed Drinks & Confectionery
+SHADANI KACHA AAM CANDY CAN -> Processed Drinks & Confectionery
+SHADANI LITCHI CANDY CAN -> Processed Drinks & Confectionery
+SHADANI BLACK CURRENT CANDY CAN -> Processed Drinks & Confectionery
+SHADANI LEMON CANDY CAN -> Processed Drinks & Confectionery
+SHADANI MANGO CANDY CAN -> Processed Drinks & Confectionery
+SHADANI PAAN CANDY CAN -> Processed Drinks & Confectionery
+SHADANI MIX FRUIT CANDY CAN -> Processed Drinks & Confectionery
+SHADANI CHATPATI CANDY CAN -> Processed Drinks & Confectionery
+SHADANI CHATPTA AMLA CANDY -> Processed Drinks & Confectionery
+SHADANI IMLI BITE -> Processed Drinks & Confectionery
+SHADANI PAAN MIX SAUNF -> Processed Drinks & Confectionery
+SHADANI COCONUT SWEET -> Processed Drinks & Confectionery
+SHADANI COCONUT PEDA -> Processed Drinks & Confectionery
+MELODY CHOCOLATY TOFFEE -> Processed Drinks & Confectionery
+LONDONDERRY TOFFEE -> Processed Drinks & Confectionery
+PULSE KACHHA AAM CANDY JAR -> Processed Drinks & Confectionery
+NESTLE MAHA MUNCH CHOCOLATE -> Processed Drinks & Confectionery
+CHINGS SHEZWAN CHUTNY -> Processed Foods
+CHINGS SAUCE DARK SOY -> Processed Foods
+CHINGS SAUCE RED CHILLY -> Processed Foods
+CHINGS SAUCE GREEN CHILLY -> Processed Foods
+CHINGS HAKKA NOODLES -> Processed Foods
+ROOHAFAZA SHARBAT -> Processed Drinks & Confectionery
+MAGGI MASALA (6 GM, 200 GM) -> Processed Foods
+KISSAN TOMATO KETCHUP BOTTLE -> Processed Foods
+MAGGI MASALA NOODLES (LAGE PACK, 70 GM, 420 GM) -> Processed Foods
+ENO ORANGE -> Processed Foods
+ENO REGULAR -> Processed Foods
+ENO LEMON (100 GM, SACHETS) -> Processed Foods
+KISSAN JAM ORANGE (1 KG) -> Processed Foods
+KISSAN JAM MANGO (1 KG, 500 GM) -> Processed Foods
+KISSAN JAM PINEAPPLE (1 KG, 500 GM) -> Processed Foods
+KISSAN MIX FRUIT JAM (1 KG, 500 GM) -> Processed Foods
+RUBY PEDHA SWEET -> Processed Drinks & Confectionery
+KASMIRA JEERA DRINK CAN/GLASS BTL -> Processed Drinks & Confectionery
+KANCHAZ MINT MOJITO DRINKS -> Processed Drinks & Confectionery
+KANCHAZ KACHA AAM DRINKS -> Processed Drinks & Confectionery
+KANCHAZ SHIKANJI DRINKS -> Processed Drinks & Confectionery
+KANCHAZ LEMON DRINKS -> Processed Drinks & Confectionery
+LAHORI JEERA DRINK (300 ML, 160 ML) -> Processed Drinks & Confectionery
+KASHMIRA GLASS BOTTEL -> Processed Drinks & Confectionery
+KASHMIRA MALA JEERA CAN -> Processed Drinks & Confectionery
+JALANI AAM PANNA -> Processed Drinks & Confectionery
+JALANI NIMBU PANI -> Processed Drinks & Confectionery
+FROOTI (125 ML, 1.2 LTR, 600 ML) -> Processed Drinks & Confectionery
+APPY FIZZ (1 LTR, 600 ML) -> Processed Drinks & Confectionery
+CAMPA ORANGE -> Processed Drinks & Confectionery
+CAMPA LEMON -> Processed Drinks & Confectionery
+CAMPA COLA -> Processed Drinks & Confectionery
+THUMS UP PET BOTTEL (1 LTR, 750 ML, 2 LTR) -> Processed Drinks & Confectionery
+LIMCA PET BOTTEL (1 LTR, 750 ML, 2 LTR) -> Processed Drinks & Confectionery
+FANTA PET BOTTEL (1 LTR, 750 ML, 2 LTR) -> Processed Drinks & Confectionery
+LIMCA GLASS BOTTLE -> Processed Drinks & Confectionery
+THUMS UP GLASS BOTTLE -> Processed Drinks & Confectionery
+MAZZA GLASS BOTTLE -> Processed Drinks & Confectionery
+FANTA GLASS BOTTLE -> Processed Drinks & Confectionery
+THUMS UP CAN -> Processed Drinks & Confectionery
+LIMCA CAN -> Processed Drinks & Confectionery
+FANTA CAN -> Processed Drinks & Confectionery
+BINGO TEDHE MEDHE -> Processed Drinks & Confectionery
+IMLI LADOO (MODAK) -> Processed Foods
+KNORR SOUP HOT & SOUR VEG -> Processed Foods
+Instant Khichdi Mix -> Processed Foods
+Ready to Cook Butter Chicken Mix -> Processed Foods
+ANIL VERMICELLI -> Processed Foods
+PACHRANGA AMLA MURABBA JAR -> Processed Foods
+SOHNA MANGO PICKLES -> Processed Foods
+MAGGI HOT & SWEET SAUCE -> Processed Foods
+MAGGI MASALA NOODLES LAGE PACK -> Processed Foods
+EGGLESS CAKE RUSK -> Processed Foods
+COCONUT ALMOND COOKIES -> Processed Foods
+PUNJABI ATTA BISCUITS -> Processed Foods
+FROZEN CHOLIYA -> Frozen Vegetables
+FROZEN METHI -> Frozen Vegetables
+FROZEN JACKFRUIT -> Frozen Vegetables
+FROZEN KARELA -> Frozen Vegetables
+FROZEN OKRA -> Frozen Vegetables
+FROZEN MIX VEG -> Frozen Vegetables
+FROZEN GREEN PEAS -> Frozen Vegetables
+GUR REWARI -> Processed Drinks & Confectionery
+DOUBLE PATTI GACHAK -> Processed Drinks & Confectionery
+PESI GUR IN JAR -> Groceries & Staples
+TAJ MAHAL TEA -> Groceries & Staples
+LIPTON GREEN LABLE TEA BAG -> Groceries & Staples
+TATA TEA GOLD -> Groceries & Staples
+COW GHEE -> Groceries & Staples
+SOHNA MUSTARD OIL BOTTLE -> Groceries & Staples
+AMUL GHEE -> Groceries & Staples
+VERKA GHEE IN TIN -> Groceries & Staples
+MDH CHAT MSL -> Spices & Seasonings
+MIRCH POWDER -> Spices & Seasonings
+HALDI POWDER (300 GM) -> Spices & Seasonings
+BESAN (50 LB) -> Groceries & Staples
+INDIA GATE CLASSIC RICE -> Groceries & Staples
+Rajma Red (Capsule) -> Groceries & Staples
+Moth Whole -> Groceries & Staples
+Urad Whole Black -> Groceries & Staples
+Chana Dal -> Groceries & Staples
+Chana Whole -> Groceries & Staples
+Arhar Dal (Toor Dal) -> Groceries & Staples

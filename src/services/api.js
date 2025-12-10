@@ -55,6 +55,12 @@ export const getProductCategories = async () => {
   }
 };
 
+export const downloadCatalog = () => {
+  // Ensure trailing slash handling
+  const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL : `${API_BASE_URL}/`;
+  return `${baseUrl}catalog/download/`;
+};
+
 // Verticals/Categories API
 export const getVerticals = async () => {
   const response = await apiCall('/verticals/');
@@ -87,6 +93,12 @@ export const getProductsByCategory = async (categoryId, options = {}) => {
   // Add featured filter if specified
   if (options.featured) {
     queryParams += '&featured=true';
+  }
+
+  // Support for limiting results (using backend pagination)
+  if (options.limit || options.pageSize) {
+    const size = options.limit || options.pageSize;
+    queryParams += `&page_size=${size}`;
   }
 
   const response = await apiCall(`/products/?${queryParams}`);
@@ -179,11 +191,6 @@ export const getSectionBackgrounds = async () => {
   return response.results || response;
 };
 
-export const getBrochures = async () => {
-  const response = await apiCall('/brochures/');
-  return response.results || response;
-};
-
 export default {
   getVerticals,
   getProducts,
@@ -193,10 +200,10 @@ export default {
   submitQuoteRequest,
   getFeatures,
   getCompanyInfo,
-  recordPageVisit: submitPageVisit, // Renamed for export
+  recordPageVisit: submitPageVisit,
   getHeroSlides,
   getCertifications,
   getPageBackgrounds,
   getSectionBackgrounds,
-  getBrochures,
+  downloadCatalog,
 };

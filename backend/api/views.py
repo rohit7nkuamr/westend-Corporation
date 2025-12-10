@@ -22,7 +22,8 @@ class VerticalViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint for products"""
-    queryset = Product.objects.filter(is_active=True)
+    # Only show PUBLIC products on the website
+    queryset = Product.objects.filter(is_active=True, is_public=True)
     serializer_class = ProductSerializer
     lookup_field = 'slug'
     
@@ -279,3 +280,29 @@ class BrochureViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Brochure.objects.filter(is_active=True).order_by('-created_at')
     serializer_class = BrochureSerializer
     pagination_class = None
+
+@require_http_methods(["GET"])
+@csrf_exempt
+def download_catalog_pdf(request):
+    """
+    Generate and download the full product catalog PDF.
+    This is a standard Django view to force file download in browsers.
+    """
+    try:
+        from .pdf_generator import generate_catalog_pdf
+        from django.http import FileResponse
+        
+        pdf_buffer = generate_catalog_pdf()
+        
+        response = FileResponse(
+            pdf_buffer, 
+            as_attachment=True, 
+            filename='Westend_Corporation_Catalog.pdf',
+            content_type='application/pdf'
+        )
+        return response
+    except Exception as e:
+        logging.getLogger(__name__).exception('PDF generation failed')
+        # Return standard JSON error for failures
+        from django.http import JsonResponse
+        return JsonResponse({'error': 'Unable to generate catalog.'}, status=500)

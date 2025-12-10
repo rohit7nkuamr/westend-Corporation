@@ -13,9 +13,11 @@ const Footer = () => {
       { name: 'Certifications', href: '/certifications' }
     ],
     products: [
-      { name: 'Groceries & Staples', href: '/products' },
-      { name: 'Frozen Vegetables', href: '/products' },
-      { name: 'Processed Foods', href: '/products' }
+      { name: 'Spices & Seasonings', href: '/products?category=Spices%20%26%20Seasonings' },
+      { name: 'Processed Drinks & Confectionery', href: '/products?category=Processed%20Drinks%20%26%20Confectionery' },
+      { name: 'Baked Goods', href: '/products?category=Baked%20Goods' },
+      { name: 'Health Mixes', href: '/products?category=Health%20Mixes' },
+      { name: 'Frozen Vegetables', href: '/products?category=Frozen%20Vegetables' }
     ],
     support: [
       { name: 'Contact Us', href: '/contact' },

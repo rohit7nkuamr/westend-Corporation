@@ -16,37 +16,37 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     // Basic form validation
     if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
-      setSubmitStatus({ 
-        type: 'error', 
-        message: 'Please fill in all required fields (Name, Email, and Message).' 
+      setSubmitStatus({
+        type: 'error',
+        message: 'Please fill in all required fields (Name, Email, and Message).'
       })
       return
     }
-    
+
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(formData.email.trim())) {
-      setSubmitStatus({ 
-        type: 'error', 
-        message: 'Please enter a valid email address.' 
+      setSubmitStatus({
+        type: 'error',
+        message: 'Please enter a valid email address.'
       })
       return
     }
-    
+
     setSubmitting(true)
     setSubmitStatus(null)
 
     try {
       await submitContactForm(formData)
-      setSubmitStatus({ 
-        type: 'success', 
-        message: 'Thank you for your inquiry! We will get back to you soon.' 
+      setSubmitStatus({
+        type: 'success',
+        message: 'Thank you for your inquiry! We will get back to you soon.'
       })
       setFormData({ name: '', email: '', phone: '', company: '', message: '' })
-      
+
       // Scroll to the status message
       setTimeout(() => {
         window.scrollTo({
@@ -56,9 +56,9 @@ const Contact = () => {
       }, 100)
     } catch (error) {
       console.error('Error submitting form:', error)
-      setSubmitStatus({ 
-        type: 'error', 
-        message: 'Failed to submit form. Please try again or contact us directly.' 
+      setSubmitStatus({
+        type: 'error',
+        message: 'Failed to submit form. Please try again or contact us directly.'
       })
     } finally {
       setSubmitting(false)
@@ -100,8 +100,8 @@ const Contact = () => {
   ]
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white via-amber-50/30 to-primary-50">
-      <div className="max-w-7xl mx-auto">
+    <section id="contact" className="py-20 bg-gradient-to-br from-white via-amber-50/30 to-primary-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -116,7 +116,7 @@ const Contact = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Connect with our team to discuss bulk orders, partnerships, or custom requirements. 
+            Connect with our team to discuss bulk orders, partnerships, or custom requirements.
             We typically respond within 24 business hours.
           </p>
         </motion.div>
@@ -142,9 +142,9 @@ const Contact = () => {
                 >
                   {/* Glowing effect */}
                   <div className={`absolute -inset-0.5 bg-gradient-to-r ${info.color} rounded-2xl blur opacity-20 group-hover:opacity-40 transition-all duration-500`} />
-                  
+
                   <div className="relative bg-white rounded-2xl p-6 flex items-start space-x-4 shadow-md hover:shadow-xl transition-all border border-gray-100">
-                    <motion.div 
+                    <motion.div
                       whileHover={{ rotate: 360, scale: 1.1 }}
                       transition={{ duration: 0.6 }}
                       className={`w-12 h-12 bg-gradient-to-br ${info.color} rounded-xl flex items-center justify-center flex-shrink-0 shadow-md`}
@@ -291,11 +291,10 @@ const Contact = () => {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`p-4 rounded-xl ${
-                      submitStatus.type === 'success' 
-                        ? 'bg-green-50 text-green-800 border border-green-200' 
+                    className={`p-4 rounded-xl ${submitStatus.type === 'success'
+                        ? 'bg-green-50 text-green-800 border border-green-200'
                         : 'bg-red-50 text-red-800 border border-red-200'
-                    }`}
+                      }`}
                   >
                     {submitStatus.message}
                   </motion.div>
@@ -306,9 +305,8 @@ const Contact = () => {
                   disabled={submitting}
                   whileHover={{ scale: submitting ? 1 : 1.02 }}
                   whileTap={{ scale: submitting ? 1 : 0.98 }}
-                  className={`w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white py-4 rounded-xl font-semibold hover:shadow-2xl transition-all duration-300 flex items-center justify-center group border-2 border-transparent hover:border-amber-600 ${
-                    submitting ? 'opacity-70 cursor-not-allowed' : ''
-                  }`}
+                  className={`w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white py-4 rounded-xl font-semibold hover:shadow-2xl transition-all duration-300 flex items-center justify-center group border-2 border-transparent hover:border-amber-600 ${submitting ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
                 >
                   {submitting ? (
                     <>
