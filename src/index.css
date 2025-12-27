@@ -48,27 +48,219 @@ html {
   scroll-snap-align: start;
 }
 
+/* Modern chatbot styles */
+.chat-widget {
+  /* Custom scrollbar for chat messages */
+  .chat-messages::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .chat-messages::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+  }
+  
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #10b981, #059669);
+    border-radius: 10px;
+  }
+  
+  .chat-messages::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #059669, #047857);
+  }
+  
+  /* Message animations */
+  @keyframes messageSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .message-animate {
+    animation: messageSlideIn 0.3s ease-out;
+  }
+  
+  /* Modern typing indicator */
+  @keyframes modernTyping {
+    0%, 60%, 100% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-8px);
+    }
+  }
+  
+  .typing-dot {
+    animation: modernTyping 1.4s infinite;
+  }
+  
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  
+  /* Enhanced mobile responsive */
+  @media (max-width: 640px) {
+    .chat-window {
+      width: calc(100vw - 1rem) !important;
+      height: calc(100vh - 6rem) !important;
+      bottom: 1rem !important;
+      right: 0.5rem !important;
+      left: 0.5rem !important;
+      max-height: calc(100vh - 6rem) !important;
+      border-radius: 1rem !important;
+    }
+    
+    .chat-window.minimized {
+      width: auto !important;
+      height: auto !important;
+      left: auto !important;
+      right: 1rem !important;
+    }
+    
+    .chat-message-bubble {
+      max-width: 85% !important;
+    }
+    
+    .chat-quick-actions {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .chat-quick-actions button {
+      font-size: 0.75rem;
+      padding: 0.5rem 0.75rem;
+    }
+  }
+  
+  /* Tablet adjustments */
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .chat-window {
+      width: 28rem !important;
+    }
+  }
+  
+  /* Modern focus states */
+  .chat-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    border-color: #10b981;
+  }
+  
+  /* Enhanced hover states */
+  .chat-send-button:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+  }
+  
+  .chat-quick-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Modern loading states */
+  .chat-loading {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .chat-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  
+  /* Modern pulse animation */
+  @keyframes modernPulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+  }
+  
+  .online-indicator {
+    animation: modernPulse 2s infinite;
+  }
+  
+  /* Smooth transitions */
+  .chat-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Modern glass morphism effect */
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  /* Cache busting for dynamic updates */
+  .chat-widget::before {
+    content: attr(data-cache-buster);
+    display: none;
+  }
+}
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Modern custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #7fad39;
+  background: linear-gradient(to bottom, #10b981, #059669);
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #658a2d;
+  background: linear-gradient(to bottom, #059669, #047857);
+}
+
+/* Modern selection */
+::selection {
+  background: #10b981;
+  color: white;
+}
+
+/* Modern focus visible */
+:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
 }
 
 /* Gradient animation for tagline */

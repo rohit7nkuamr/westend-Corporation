@@ -10,6 +10,7 @@ from api.sitemap import sitemap_view
 urlpatterns = [
     path('admin/', westend_admin_site.urls),  # Use custom admin site with analytics dashboard
     path('api/', include('api.urls')),
+    path('api/chat/', include('chatbot.urls')),  # Chatbot API endpoints
     path('sitemap.xml', sitemap_view, name='sitemap'),  # XML sitemap for SEO
 ]
 

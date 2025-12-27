@@ -156,23 +156,6 @@ const ProductsPage = () => {
       <Breadcrumbs />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search Bar */}
-        <div className="bg-white rounded-xl shadow-md p-4 mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            />
-          </div>
-        </div>
-
         {/* Main Layout: Sidebar + Products */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Sidebar */}
@@ -186,7 +169,19 @@ const ProductsPage = () => {
 
           {/* Right Side - Products */}
           <div className="lg:col-span-3">
-
+            {/* Search Bar */}
+            <div className="bg-white rounded-xl shadow-md p-4 mb-6">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-100 rounded-lg focus:border-primary-500 focus:ring-4 focus:ring-primary-50/50 outline-none transition-all text-gray-700 placeholder-gray-400"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
 
             {/* Product Display - Grid or Catalog */}
             {currentProducts.length === 0 ? (

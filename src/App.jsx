@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
 import FloatingCTA from './components/FloatingCTA'
+import ChatWidget from './components/ChatWidget'
 import Home from './pages/Home'
 import ProductsPage from './pages/ProductsPage'
 import ProductDetail from './pages/ProductDetail'
@@ -22,6 +23,7 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-cream-50 via-cream-200 to-primary-50" style={{ position: 'relative' }}>
       <Navbar />
       <FloatingCTA />
+      <ChatWidget />
 
       <main style={{ position: 'relative', zIndex: 1 }}>
         <ErrorBoundary>

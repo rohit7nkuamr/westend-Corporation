@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Debug</title>
+</head>
+<body>
+    <h1>Chatbot Debug Page</h1>
+    <button onclick="clearSession()">Clear Session</button>
+    <button onclick="testAPI()">Test API</button>
+    <button onclick="checkLocalStorage()">Check LocalStorage</button>
+    <div id="output"></div>
+
+    <script>
+        const API_BASE_URL = 'https://westendcorporation.in/api';
+
+        function log(message) {
+            document.getElementById('output').innerHTML += '<pre>' + message + '</pre>';
+        }
+
+        function clearSession() {
+            localStorage.removeItem('chatbot_session_id');
+            log('Session cleared from localStorage');
+        }
+
+        function checkLocalStorage() {
+            const sessionId = localStorage.getItem('chatbot_session_id');
+            log('Current session ID: ' + sessionId);
+            log('Session ID type: ' + typeof sessionId);
+            log('Session ID length: ' + (sessionId ? sessionId.length : 'null'));
+        }
+
+        async function testAPI() {
+            try {
+                log('Testing session creation...');
+                const response = await fetch(API_BASE_URL + '/chat/sessions/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({})
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Session creation failed: ${response.status}`);
+                }
+
+                const data = await response.json();
+                log('✅ Session created: ' + data.session_id);
+
+                // Test message
+                log('Testing message...');
+                const msgResponse = await fetch(API_BASE_URL + '/chat/message/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        session_id: data.session_id,
+                        message: 'hello'
+                    })
+                });
+
+                if (!msgResponse.ok) {
+                    throw new Error(`Message failed: ${msgResponse.status}`);
+                }
+
+                const msgData = await msgResponse.json();
+                log('✅ Message response: ' + msgData.message.content.substring(0, 100) + '...');
+
+                // Test history
+                log('Testing history...');
+                const historyResponse = await fetch(API_BASE_URL + '/chat/history/' + data.session_id + '/');
+                
+                if (!historyResponse.ok) {
+                    throw new Error(`History failed: ${historyResponse.status}`);
+                }
+
+                const historyData = await historyResponse.json();
+                log('✅ History loaded: ' + historyData.messages.length + ' messages');
+
+            } catch (error) {
+                log('❌ Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

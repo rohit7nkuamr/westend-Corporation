@@ -151,14 +151,29 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden transition-colors text-gray-600 hover:text-primary-600"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            {/* Mobile Actions */}
+            <div className="flex md:hidden items-center gap-3">
+              <a
+                href="https://wa.me/919311933481"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex items-center justify-center p-2 rounded-full transition-colors ${isScrolled
+                  ? 'text-green-600 bg-green-50'
+                  : 'text-white bg-white/10'
+                  }`}
+                aria-label="Contact on WhatsApp"
+              >
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className="w-5 h-5" />
+              </a>
+
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden transition-colors text-gray-600 hover:text-primary-600"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -176,9 +191,9 @@ const Navbar = () => {
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
-                  to={link.href}
+                  to={link.to}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block text-sm font-bold py-2 ${location.pathname === link.href ? 'text-primary-500' : 'text-gray-600'
+                  className={`block text-sm font-bold py-2 ${location.pathname === link.to ? 'text-primary-500' : 'text-gray-600'
                     }`}
                 >
                   {link.name}

@@ -27,6 +27,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY MUST be set in environment variables
 SECRET_KEY = os.environ.get('SECRET_KEY')
+# AI Configuration
+DEEPSEEK_API_KEY = os.environ.get('DEEPSEEK_API_KEY', '')
+DEEPSEEK_API_BASE = os.environ.get('DEEPSEEK_API_BASE', 'https://api.deepseek.com/v1')
+DEEPSEEK_MODEL = os.environ.get('DEEPSEEK_MODEL', 'deepseek-chat')
+
+# AI Cost Control Settings
+AI_MAX_TOKENS_PER_REQUEST = int(os.environ.get('AI_MAX_TOKENS_PER_REQUEST', '150'))
+AI_TEMPERATURE = float(os.environ.get('AI_TEMPERATURE', '0.3'))
+AI_DAILY_TOKEN_LIMIT = int(os.environ.get('AI_DAILY_TOKEN_LIMIT', '50000'))
+AI_ENABLE_CACHING = os.environ.get('AI_ENABLE_CACHING', 'True').lower() == 'true'
 if not SECRET_KEY:
     raise ValueError(
         "SECRET_KEY environment variable is not set! "
@@ -53,6 +63,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # Local apps
     'api',
+    'chatbot',
 ]
 
 MIDDLEWARE = [
@@ -232,9 +243,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Production Security Settings
 if not DEBUG:
-    # HTTPS settings
+    # HTTPS settings - allow Unix socket requests
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_SSL_REDIRECT = True
+    # Only redirect to HTTPS for external requests, not Unix socket
+    SECURE_SSL_REDIRECT = not os.environ.get('ALLOW_UNIX_SOCKET', '').lower() == 'true'
     SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
