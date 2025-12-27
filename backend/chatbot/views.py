@@ -98,51 +98,19 @@ def chat_message(request):
         intent = intent_result[0] if intent_result else None
         confidence = intent_result[1] if intent_result else 0.0
         
-        # Generate template response if intent found and doesn't require AI (FREE)
-        if intent and not chatbot.should_use_ai(message, intent):
-            # Prepare context for template
-            context = {'original_message': message}
-            if intent == 'product_search':
-                # Search for products to include in response
-                products = chatbot.search_products_locally(message)
-                context['products'] = products
-            
-            template_response = chatbot.generate_template_response(intent, context)
-            if template_response:
-                bot_message = ChatMessage.objects.create(
-                    session=session,
-                    message_type='bot',
-                    content=template_response['response'],
-                    intent=intent,
-                    confidence=confidence,
-                    response_data=context
-                )
-                session.update_activity()
-                
-                # Cache the response
-                chatbot.cache_response(
-                    message, template_response['response'], 
-                    context, intent, confidence
-                )
-                
-                return Response({
-                    'session_id': session_id,
-                    'message': ChatMessageSerializer(bot_message).data,
-                    'source': 'template'
-                })
+        # DISABLED: Template responses - now fully AI-dependent
+        # All responses will be handled by AI for natural conversation
         
-        # Handle specific intents locally (FREE) - only for non-template handled intents
+        # Initialize variables
         response_data = {}
-        bot_response = ""
-        
-        # These are now handled by template responses above
-        # product_search, contact_info, categories are handled by generate_template_response
+        bot_response = None
+        confidence = 0.3  # Low confidence to trigger AI
         
         # Handle any remaining specific intents that aren't template-based
         if intent and intent not in ['product_search', 'contact_info', 'categories', 'greeting', 'about_company', 'pricing', 'shipping', 'quality', 'certification', 'ticket_create', 'goodbye']:
-            # Fallback for any unhandled intents
-            bot_response = "I can help you with product information, contact details, pricing, and more. What would you like to know?"
-            confidence = 0.6
+            # Fallback for any unhandled intents - will be handled by AI
+            bot_response = None
+            confidence = 0.3  # Low confidence to trigger AI
         
         # If we have a response, save and return it
         if bot_response:
@@ -170,37 +138,11 @@ def chat_message(request):
         # AI ENABLED with new OpenRouter API key
         if deepseek_service.is_available():
             try:
-                # Use AI for general questions, typos, or when confidence is low (COST-EFFECTIVE)
-                use_ai = False
+                # FULLY AI-DEPENDENT: Always use AI for all queries
+                use_ai = True
                 
-                # Use AI only for extremely low confidence responses (< 0.3)
-                if confidence < 0.3:
-                    use_ai = True
-                
-                # Use AI for specific conversational patterns only
-                general_patterns = [
-                    'how are you', 'what is your name', 'who are you', 
-                    'can you help me', 'tell me about yourself', 'what can you do'
-                ]
-                
-                message_lower = message.lower()
-                for pattern in general_patterns:
-                    if pattern in message_lower:
-                        use_ai = True
-                        break
-                
-                # Use AI for potential typos (very short messages only)
-                if len(message.strip()) < 3:
-                    use_ai = True
-                
-                # Use AI for messages that don't match known intents
-                if not intent:
-                    use_ai = True
-                
-                # IMPORTANT: Don't use AI for product-related queries
-                product_keywords = ['show me', 'products', 'rice', 'ghee', 'spices', 'dairy', 'basmati', 'amul', 'india gate']
-                if any(keyword in message_lower for keyword in product_keywords):
-                    use_ai = False
+                # No more template responses - AI handles everything
+                # This ensures natural, conversational responses for all user queries
                 
                 if use_ai:
                     # Get recent session history for context
@@ -234,6 +176,12 @@ def chat_message(request):
                             'session_id': session_id,
                             'message': ChatMessageSerializer(bot_message).data,
                             'source': 'deepseek_ai'
+                        }, headers={
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache',
+                            'Expires': '0',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Headers': 'Cache-Control'
                         })
                     else:
                         # Use fallback response if AI fails
@@ -251,6 +199,12 @@ def chat_message(request):
                             'session_id': session_id,
                             'message': ChatMessageSerializer(bot_message).data,
                             'source': 'ai_fallback'
+                        }, headers={
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache',
+                            'Expires': '0',
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Headers': 'Cache-Control'
                         })
                     
             except Exception as e:

@@ -156,25 +156,10 @@ class CostOptimizedChatbot:
         return formatted_results
     
     def should_use_ai(self, message: str, intent: str = None) -> bool:
-        """Determine if AI should be used for this message"""
-        message_lower = message.lower().strip()
-        
-        # Don't use AI if we have a clear intent match
-        if intent and intent not in ['general_inquiry', 'fallback']:
-            return False
-        
-        # Don't use AI for very short messages that are likely typos
-        if len(message_lower) < 3:
-            return False
-        
-        # Don't use AI for clear product searches
-        product_keywords = [
-            'show me', 'products', 'product', 'rice', 'ghee', 'spice', 'masala',
-            'amul', 'everest', 'mdh', 'contact', 'address', 'phone', 'email'
-        ]
-        
-        if any(keyword in message_lower for keyword in product_keywords):
-            return False
+        """FULLY AI-DEPENDENT: Always use AI for all messages"""
+        # Always return True to ensure AI handles all queries
+        # This provides natural, conversational responses instead of templates
+        return True
         
         # Use AI for conversational questions
         ai_triggers = [

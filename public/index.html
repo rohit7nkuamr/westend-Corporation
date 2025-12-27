@@ -29,29 +29,70 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-CTBgTvb_.js?v=202412271340&t=1735300100000&adjusted-size=true"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-DYBFCT6O.css?v=202412271340&t=1735300100000&adjusted-size=true">
+  <script type="module" crossorigin src="/assets/index-CTBgTvb_.js?v=202412271950&t=1735315800000&mobile-cache-fix=true&ai-only=true"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-DYBFCT6O.css?v=202412271950&t=1735315800000&mobile-cache-fix=true&ai-only=true">
   <script>
-    // Force cache busting and debug info
-    console.log('🚀 Loading Westend Corporation Chatbot v202412271340 (ADJUSTED SIZE)');
+    // GENTLE MOBILE CACHE FIX - Avoid excessive refreshing
+    console.log('🚀 Loading Westend Corporation Chatbot v202412271950 (GENTLE MOBILE FIX)');
     console.log('⏰ Cache busting timestamp:', Date.now());
-    console.log('📏 Optimized size: 420px × 650px desktop');
-    console.log('📱 Mobile optimized: 90vw × 65vh mobile');
-    console.log('⚖️ Better balance: Not too big, not too small');
+    console.log('🤖 AI-ONLY: Fully AI-dependent chatbot');
+    console.log('📱 Gentle mobile cache fix: One-time cache clearing');
     
-    // Clear any potential service worker cache
-    if ('caches' in window) {
-      caches.keys().then(function(names) {
-        names.forEach(function(name) {
-          caches.delete(name);
+    // Check if we already did the cache clearing
+    const cacheCleared = sessionStorage.getItem('westend_cache_cleared');
+    
+    // Only clear cache once per session
+    if (!cacheCleared) {
+      console.log('🧹 First visit - clearing cache gently...');
+      
+      // Clear only service worker caches (most important)
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          Promise.all(names.map(name => caches.delete(name))).then(function() {
+            console.log('✅ Service worker caches cleared');
+            sessionStorage.setItem('westend_cache_cleared', 'true');
+          });
         });
-      });
+      }
+      
+      // Clear only chat-related localStorage
+      if (typeof(Storage) !== "undefined") {
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && (key.includes('chat') || key.includes('westend') || key.includes('session'))) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+        console.log('✅ Chat-related localStorage cleared');
+      }
+    } else {
+      console.log('✅ Cache already cleared this session');
     }
     
-    // Force reload if needed
-    if (performance.navigation.type === 1) {
-      console.log('🔄 Page was reloaded');
+    // Gentle API cache busting - only for chat endpoints
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+      if (args[0] && args[0].includes && args[0].includes('/api/chat/')) {
+        // Add simple cache bust parameter
+        const separator = args[0].includes('?') ? '&' : '?';
+        const cacheBust = 'v=' + new Date().toISOString().slice(0, 10); // Only date, not full timestamp
+        args[0] = args[0] + separator + cacheBust;
+        console.log('🔄 Gentle cache bust for API call:', args[0]);
+      }
+      return originalFetch.apply(this, args);
+    };
+    
+    // Mobile detection without forced reload
+    if (/Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      console.log('📱 Mobile device detected - gentle cache clearing applied');
+      
+      // NO AUTO-RELOAD - just clear cache once
+      console.log('📱 Mobile cache clearing completed - no forced reload');
     }
+    
+    console.log('🎉 Cache fix completed - ready for AI chatbot!');
   </script>
 </head>
 
