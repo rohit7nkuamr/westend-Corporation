@@ -23,9 +23,9 @@ class DeepSeekAIService:
         self.api_key = getattr(settings, 'DEEPSEEK_API_KEY', '')
         self.api_base = getattr(settings, 'DEEPSEEK_API_BASE', 'https://api.deepseek.com/v1')
         self.model = getattr(settings, 'DEEPSEEK_MODEL', 'deepseek-chat')
-        self.max_tokens = getattr(settings, 'AI_MAX_TOKENS_PER_REQUEST', 150)
+        self.max_tokens = getattr(settings, 'AI_MAX_TOKENS_PER_REQUEST', 1000)
         self.temperature = getattr(settings, 'AI_TEMPERATURE', 0.3)
-        self.daily_limit = getattr(settings, 'AI_DAILY_TOKEN_LIMIT', 50000)
+        self.daily_limit = getattr(settings, 'AI_DAILY_TOKEN_LIMIT', 100000)
         self.enable_caching = getattr(settings, 'AI_ENABLE_CACHING', True)
         
         if self.api_key:
@@ -112,6 +112,47 @@ RESPONSE GUIDELINES:
             logger.error(f"Error getting database context: {e}")
             return "Error retrieving database context"
     
+    def get_dynamic_max_tokens(self, message: str) -> int:
+        """Dynamically allocate tokens based on query complexity"""
+        message_lower = message.lower().strip()
+        
+        # Simple queries get fewer tokens
+        simple_patterns = [
+            'hello', 'hi', 'thanks', 'bye', 'contact', 'phone', 'email',
+            'address', 'hours', 'location', 'price', 'cost'
+        ]
+        
+        # Medium complexity queries
+        medium_patterns = [
+            'products', 'show me', 'what do you have', 'categories',
+            'rice', 'ghee', 'spices', 'dairy', 'baked goods'
+        ]
+        
+        # Complex queries get more tokens
+        complex_patterns = [
+            'recipe', 'cook', 'how to', 'ingredients', 'preparation',
+            'tell me about', 'explain', 'detailed', 'comprehensive'
+        ]
+        
+        # Check complexity
+        if any(pattern in message_lower for pattern in simple_patterns):
+            return 200  # Short, concise responses
+        
+        elif any(pattern in message_lower for pattern in medium_patterns):
+            return 500  # Moderate detail
+        
+        elif any(pattern in message_lower for pattern in complex_patterns):
+            return 1000  # Detailed responses
+        
+        else:
+            # Default based on message length
+            if len(message) < 20:
+                return 300
+            elif len(message) < 50:
+                return 600
+            else:
+                return 1000
+
     def generate_ai_response(self, message: str, session_history: List[Dict] = None) -> Dict:
         """Generate AI response using DeepSeek"""
         if not self.is_available():
@@ -169,11 +210,13 @@ IMPORTANT:
                     elif msg.get('message_type') == 'bot':
                         messages.append({"role": "assistant", "content": msg.get('content', '')})
             
-            # Generate response
+            # Generate response with dynamic tokens
+            dynamic_max_tokens = self.get_dynamic_max_tokens(message)
+            
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=messages,
-                max_tokens=self.max_tokens,
+                max_tokens=dynamic_max_tokens,
                 temperature=self.temperature,
                 stream=False
             )
@@ -184,14 +227,16 @@ IMPORTANT:
             # Track usage
             self.track_token_usage(tokens_used)
             
-            # Cache successful responses
-            if self.enable_caching and tokens_used < self.max_tokens * 0.8:
-                cache.set(cache_key, ai_response, 3600)  # Cache for 1 hour
+            # Smart caching based on query type
+            if self.enable_caching:
+                cache_duration = self._get_cache_duration(message)
+                cache.set(cache_key, ai_response, cache_duration)
             
             return {
                 'success': True,
                 'response': ai_response,
                 'tokens_used': tokens_used,
+                'dynamic_tokens': dynamic_max_tokens,
                 'cached': False
             }
             
@@ -203,6 +248,35 @@ IMPORTANT:
                 'fallback_response': self._get_fallback_response(message)
             }
     
+    def _get_cache_duration(self, message: str) -> int:
+        """Determine cache duration based on query type"""
+        message_lower = message.lower().strip()
+        
+        # Static information cache longer
+        static_patterns = [
+            'contact', 'phone', 'email', 'address', 'hours', 'location',
+            'about', 'company', 'shipping', 'payment'
+        ]
+        
+        # Product information cache medium duration
+        product_patterns = [
+            'products', 'rice', 'ghee', 'spices', 'dairy', 'categories'
+        ]
+        
+        # Recipe/cooking advice cache shorter (might want fresh ideas)
+        recipe_patterns = [
+            'recipe', 'cook', 'how to', 'ingredients', 'preparation'
+        ]
+        
+        if any(pattern in message_lower for pattern in static_patterns):
+            return 24 * 3600  # 24 hours - static info doesn't change
+        elif any(pattern in message_lower for pattern in product_patterns):
+            return 12 * 3600  # 12 hours - products might update
+        elif any(pattern in message_lower for pattern in recipe_patterns):
+            return 2 * 3600   # 2 hours - cooking advice might vary
+        else:
+            return 6 * 3600   # 6 hours default
+
     def _get_fallback_response(self, message: str) -> str:
         """Generate fallback response when AI is unavailable"""
         message_lower = message.lower()

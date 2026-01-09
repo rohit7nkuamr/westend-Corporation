@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Send, Globe } from 'lucide-react'
+import { Mail, Phone, MapPin, Send, Globe, Instagram, Facebook } from 'lucide-react'
 import { submitContactForm } from '../services/api'
 
 const Contact = () => {
@@ -192,6 +192,38 @@ const Contact = () => {
                   </div>
                 </motion.div>
               ))}
+
+              {/* Social Media Links */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="pt-6 border-t border-gray-200"
+              >
+                <h5 className="text-lg font-semibold text-gray-900 mb-4">Connect With Us</h5>
+                <p className="text-gray-600 mb-4">Follow us on social media for updates, products, and news</p>
+                <div className="flex space-x-4">
+                  <a
+                    href="https://www.instagram.com/westendcorporation"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full hover:from-purple-700 hover:to-pink-700 transition-all duration-300 group shadow-lg hover:shadow-xl transform hover:scale-105"
+                    aria-label="Follow us on Instagram"
+                  >
+                    <Instagram size={20} className="text-white" />
+                  </a>
+                  <a
+                    href="https://www.facebook.com/westendcorporation"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full hover:from-blue-700 hover:to-blue-800 transition-all duration-300 group shadow-lg hover:shadow-xl transform hover:scale-105"
+                    aria-label="Follow us on Facebook"
+                  >
+                    <Facebook size={20} className="text-white" />
+                  </a>
+                </div>
+              </motion.div>
 
               {/* Embedded Google Map - Satellite View */}
               <motion.div

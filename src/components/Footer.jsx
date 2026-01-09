@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin } from 'lucide-react'
+import { Mail, Phone, MapPin, Instagram, Facebook } from 'lucide-react'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
@@ -73,6 +73,31 @@ const Footer = () => {
                   className="hover:text-primary-400 transition-colors"
                 >
                   support@westendcorporation.in
+                </a>
+              </div>
+            </div>
+            
+            {/* Social Media Links */}
+            <div className="mt-6">
+              <h5 className="text-sm font-semibold text-white mb-3">Follow Us</h5>
+              <div className="flex space-x-4">
+                <a
+                  href="https://www.instagram.com/westendcorporation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-gray-800 rounded-full hover:bg-primary-600 transition-colors duration-300 group"
+                  aria-label="Follow us on Instagram"
+                >
+                  <Instagram size={18} className="text-gray-400 group-hover:text-white transition-colors" />
+                </a>
+                <a
+                  href="https://www.facebook.com/westendcorporation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-gray-800 rounded-full hover:bg-primary-600 transition-colors duration-300 group"
+                  aria-label="Follow us on Facebook"
+                >
+                  <Facebook size={18} className="text-gray-400 group-hover:text-white transition-colors" />
                 </a>
               </div>
             </div>
@@ -157,10 +182,33 @@ const Footer = () => {
             <p className="text-gray-500 text-sm mb-4 md:mb-0">
               © {currentYear} Westend Corporation Pvt. Ltd. All rights reserved.
             </p>
-            <div className="flex space-x-6 text-sm text-gray-500">
-              <a href="/privacy" className="hover:text-primary-400 transition-colors">Privacy Policy</a>
-              <a href="/terms" className="hover:text-primary-400 transition-colors">Terms of Service</a>
-              <a href="/contact" className="hover:text-primary-400 transition-colors">Contact</a>
+            <div className="flex items-center space-x-6">
+              {/* Social Media Links */}
+              <div className="flex space-x-3 mr-6">
+                <a
+                  href="https://www.instagram.com/westendcorporation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-primary-400 transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={18} />
+                </a>
+                <a
+                  href="https://www.facebook.com/westendcorporation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-primary-400 transition-colors"
+                  aria-label="Facebook"
+                >
+                  <Facebook size={18} />
+                </a>
+              </div>
+              <div className="flex space-x-6 text-sm text-gray-500">
+                <a href="/privacy" className="hover:text-primary-400 transition-colors">Privacy Policy</a>
+                <a href="/terms" className="hover:text-primary-400 transition-colors">Terms of Service</a>
+                <a href="/contact" className="hover:text-primary-400 transition-colors">Contact</a>
+              </div>
             </div>
           </div>
         </motion.div>

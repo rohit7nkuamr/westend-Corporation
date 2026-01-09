@@ -168,7 +168,7 @@ def chat_message(request):
                             intent='ai_assisted',
                             confidence=0.9,
                             ai_tokens_used=ai_result.get('tokens_used', 0),
-                            response_data={'source': 'deepseek_ai', 'cached': ai_result.get('cached', False)}
+                            response_data={'source': 'deepseek_ai', 'cached': ai_result.get('cached', False), 'tokens_used': ai_result.get('tokens_used', 0), 'dynamic_tokens': ai_result.get('dynamic_tokens', 0)}
                         )
                         session.update_activity()
                         

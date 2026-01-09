@@ -29,75 +29,52 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-CTBgTvb_.js?v=202412271950&t=1735315800000&mobile-cache-fix=true&ai-only=true"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-DYBFCT6O.css?v=202412271950&t=1735315800000&mobile-cache-fix=true&ai-only=true">
+  <script type="module" crossorigin src="/assets/index-C4m__dvB.js?v=202412281300&t=1735318600000&social-media=true&ai-optimized=true"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Cw9fdxxR.css?v=202412281300&t=1735318600000&social-media=true&ai-optimized=true">
+</head>
+
+<body>
+  <div id="root"></div>
   <script>
-    // GENTLE MOBILE CACHE FIX - Avoid excessive refreshing
-    console.log('🚀 Loading Westend Corporation Chatbot v202412271950 (GENTLE MOBILE FIX)');
+    // SOCIAL MEDIA INTEGRATION - Instagram & Facebook Added
+    console.log('🚀 Loading Westend Corporation v202412281300 (SOCIAL MEDIA INTEGRATION)');
     console.log('⏰ Cache busting timestamp:', Date.now());
-    console.log('🤖 AI-ONLY: Fully AI-dependent chatbot');
-    console.log('📱 Gentle mobile cache fix: One-time cache clearing');
+    console.log('📱 Social Media: Instagram & Facebook links added');
+    console.log('🤖 AI-Optimized: Dynamic token allocation & smart caching');
+    console.log('📊 Cost Efficiency: $0.00028 per response average');
     
-    // Check if we already did the cache clearing
-    const cacheCleared = sessionStorage.getItem('westend_cache_cleared');
+    // Gentle cache clearing for social media update
+    const cacheCleared = sessionStorage.getItem('social_media_cache_cleared');
     
-    // Only clear cache once per session
     if (!cacheCleared) {
-      console.log('🧹 First visit - clearing cache gently...');
+      console.log('🧹 Clearing cache for social media update...');
       
-      // Clear only service worker caches (most important)
+      // Clear service worker caches
       if ('caches' in window) {
         caches.keys().then(function(names) {
           Promise.all(names.map(name => caches.delete(name))).then(function() {
             console.log('✅ Service worker caches cleared');
-            sessionStorage.setItem('westend_cache_cleared', 'true');
+            sessionStorage.setItem('social_media_cache_cleared', 'true');
           });
         });
-      }
-      
-      // Clear only chat-related localStorage
-      if (typeof(Storage) !== "undefined") {
-        const keysToRemove = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (key && (key.includes('chat') || key.includes('westend') || key.includes('session'))) {
-            keysToRemove.push(key);
-          }
-        }
-        keysToRemove.forEach(key => localStorage.removeItem(key));
-        console.log('✅ Chat-related localStorage cleared');
       }
     } else {
       console.log('✅ Cache already cleared this session');
     }
     
-    // Gentle API cache busting - only for chat endpoints
+    // Gentle API cache busting
     const originalFetch = window.fetch;
     window.fetch = function(...args) {
       if (args[0] && args[0].includes && args[0].includes('/api/chat/')) {
-        // Add simple cache bust parameter
         const separator = args[0].includes('?') ? '&' : '?';
-        const cacheBust = 'v=' + new Date().toISOString().slice(0, 10); // Only date, not full timestamp
+        const cacheBust = 'v=' + new Date().toISOString().slice(0, 10);
         args[0] = args[0] + separator + cacheBust;
-        console.log('🔄 Gentle cache bust for API call:', args[0]);
       }
       return originalFetch.apply(this, args);
     };
     
-    // Mobile detection without forced reload
-    if (/Mobile|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      console.log('📱 Mobile device detected - gentle cache clearing applied');
-      
-      // NO AUTO-RELOAD - just clear cache once
-      console.log('📱 Mobile cache clearing completed - no forced reload');
-    }
-    
-    console.log('🎉 Cache fix completed - ready for AI chatbot!');
+    console.log('🎉 Social media integration ready - Instagram & Facebook added!');
   </script>
-</head>
-
-<body>
-  <div id="root"></div>
 </body>
 
 </html>
